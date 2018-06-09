@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="428px"
+        android:layout_height="428px"
+        android:layout_marginLeft="50px"
+        android:layout_gravity="center_vertical"
+        android:background="@mipmap/ebook_img_bg">
+    <ImageView
+        android:id="@+id/ebook_img"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_gravity="center"
+        />
+    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30px">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40px"
+        android:textSize="30px"
+        android:layout_marginTop="90px"
+        android:text="@string/intru"/>
+
+        <Button
+            android:layout_width="117px"
+            android:layout_height="57px"
+            android:layout_marginTop="80px"
+            android:layout_marginLeft="350px"
+            android:onClick="onReadBook"
+            android:text="@string/open"
+            android:textSize="28px"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_bg_selector"/>
+
+        <TextView
+            android:id="@+id/ebook_brief"
+            android:layout_width="400px"
+            android:layout_height="305px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="150px"
+            android:ellipsize="end"
+            android:textSize="22px" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="onBack"
+            android:background="@drawable/back_selector"/>
+    </RelativeLayout>
+
+</LinearLayout>

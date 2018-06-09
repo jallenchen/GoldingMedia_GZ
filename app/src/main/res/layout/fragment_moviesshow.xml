@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="58px"
+    android:paddingRight="58px"
+    android:orientation="horizontal">
+
+
+        <FrameLayout
+            android:id="@+id/fl_to_1"
+            android:layout_width="528px"
+            android:layout_height="432px"
+            android:gravity="center"
+            android:padding="6px"
+            android:background="@drawable/moviesshow_1_bg">
+
+            <ImageView
+                android:id="@+id/iv_to_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="150px"
+                android:background="@mipmap/moviesshow_line1"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="21px" />
+
+        </FrameLayout>
+
+        <GridView
+            android:id="@+id/gv_to"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:numColumns="1"
+            android:listSelector="@color/transparent"
+            android:verticalSpacing="2px"
+            android:layout_marginLeft="5px"
+            />
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+     <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/img_cb1"
+            android:layout_width="327px"
+            android:layout_height="432px"
+            android:background="@drawable/hotzone_item1_bg"
+            android:padding="6px"
+            />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/img_cb2"
+            android:layout_width="296px"
+            android:layout_height="215px"
+            android:background="@drawable/hotzone_item3_bg"
+            android:padding="6px"
+            />
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/img_cb3"
+            android:layout_width="296px"
+            android:layout_height="215px"
+            android:background="@drawable/hotzone_item3_bg"
+            android:padding="6px"
+            android:layout_marginTop="10px"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/img_cb4"
+            android:layout_width="296px"
+            android:layout_height="215px"
+            android:background="@drawable/hotzone_item3_bg"
+            android:padding="6px"
+            />
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/img_cb5"
+            android:layout_width="296px"
+            android:layout_height="215px"
+            android:background="@drawable/hotzone_item3_bg"
+            android:padding="6px"
+            android:layout_marginTop="10px"
+            />
+
+    </LinearLayout>
+</LinearLayout>

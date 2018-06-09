@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="41.0px"
+    android:orientation="horizontal"
+    android:background="@drawable/play_list_selector" >
+
+    <com.goldingmedia.mvp.view.ui.MTextView
+        android:id="@+id/medianametext"
+        android:layout_width="match_parent"
+        android:layout_height="41.0px"
+        android:paddingLeft="10.0px"
+        android:paddingRight="10.0px"
+        android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:text="@string/_null"
+        android:textColor="@drawable/item_txt_color_selector"
+        android:textSize="20.0sp" />
+
+</LinearLayout>

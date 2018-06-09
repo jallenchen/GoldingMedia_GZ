@@ -1,0 +1,105 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="horizontal">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="100px"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/lang_cn_fl"
+            android:layout_width="205px"
+            android:layout_height="163px"
+            android:padding="8px"
+            android:background="@drawable/lang_bg_selector">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/cn"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22px"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/zn"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/lang_tw_fl"
+            android:layout_width="205px"
+            android:layout_height="163px"
+            android:gravity="center"
+            android:padding="8px"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="30px"
+            android:background="@drawable/lang_bg_selector">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/cn"/>
+
+
+        </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22px"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/tw"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="100px"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/lang_en_fl"
+            android:layout_width="205px"
+            android:layout_height="163px"
+            android:gravity="center"
+            android:padding="8px"
+            android:background="@drawable/lang_bg_selector">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/en" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22px"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/en"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:onClick="onBack"
+        android:background="@drawable/back_selector"/>
+
+</FrameLayout>

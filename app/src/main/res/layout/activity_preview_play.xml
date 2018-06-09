@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="389.0px"
+            android:orientation="horizontal" >
+			<LinearLayout
+    			android:id="@+id/relbody" 
+			    android:layout_width="522.0px"
+        		android:layout_height="333.0px"
+				android:layout_marginLeft="41.0px"
+				android:layout_marginTop="26.0px"
+				android:background="@mipmap/preview_movie_bg">
+	            <SurfaceView
+	        		android:id="@+id/surfaceView"
+	        		android:layout_width="match_parent"
+	        		android:layout_height="match_parent"
+	        		android:layout_margin="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="389.0px"
+                android:orientation="vertical" >
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="320.0px"
+					android:layout_marginLeft="8.0px"
+					android:orientation="vertical">
+
+					<TextView
+						android:id="@+id/infomation"
+						android:layout_width="434.0px"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="50.0px"
+						android:text="@string/movie_info"
+						android:textColor="@android:color/white"
+						android:textSize="20sp" />
+
+					<ScrollView
+						android:layout_width="match_parent"
+						android:layout_height="150.0px">
+
+						<TextView
+							android:id="@+id/details"
+							android:layout_width="410.0px"
+							android:layout_height="wrap_content"
+							android:text="@string/movie_content"
+							android:textColor="@android:color/white"
+							android:textSize="20sp" />
+					</ScrollView>
+				</LinearLayout>
+	            
+	            <LinearLayout
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal" >
+	
+	                <Button
+	                    android:id="@+id/playBtn"
+	                    android:layout_width="110.0px"
+	                    android:layout_height="51.0px"
+						android:layout_marginLeft="290.0px"
+	                    android:text="@string/play"
+	                    android:textColor="@android:color/white"
+	                    android:textSize="28sp"
+						android:background="@drawable/btn_bg_selector" />
+	            </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+		
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="1.0px"
+			android:background="@mipmap/preview_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+	        <com.goldingmedia.mvp.view.ui.HListView
+	            android:id="@+id/gallery"
+	            android:layout_width="842.0px"
+	            android:layout_height="164.0px"
+				android:layout_marginLeft="91.0px"
+				android:layout_marginTop="16.0px" />
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1">
+
+
+
+			<ImageButton
+				android:id="@+id/backBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentBottom="true"
+				android:background="@drawable/back_selector" />
+			</RelativeLayout>
+		</LinearLayout>
+    </LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/versionLay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dip" >
+
+    <TextView
+        android:id="@+id/versionCodeTv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="1"
+        android:background="@color/greenAAFFAA"
+        android:gravity="center"
+        android:textColor="@color/actionsheet_blue"
+        android:textSize="80sp" />
+
+    <TextView
+        android:id="@+id/versionNameTv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="1"
+        android:background="@color/greenAAFFAA"
+        android:gravity="center"
+        android:textColor="@color/actionsheet_blue"
+        android:textSize="30sp" />
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@mipmap/bg_1</item>
+    </style>
+
+    <style name="CustomCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="seat_button_style1">
+        <item name="android:layout_width">171.0px</item>
+        <item name="android:layout_height">59.0px</item>
+        <item name="android:background">@drawable/seat_btn1_selector</item>
+    </style>
+
+    <style name="seat_button_style2">
+        <item name="android:layout_width">171.0px</item>
+        <item name="android:layout_height">39.0px</item>
+        <item name="android:background">@drawable/seat_btn2_selector</item>
+    </style>
+
+    <style name="seat_button_style3">
+        <item name="android:layout_width">229.0px</item>
+        <item name="android:layout_height">59.0px</item>
+        <item name="android:background">@drawable/seat_btn3_selector</item>
+    </style>
+</resources>

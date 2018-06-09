@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '27.0.3'
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.goldingmedia"
+        minSdkVersion 19
+        targetSdkVersion 19
+        versionCode 1
+        versionName "yg.1.0604.1452"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+
+    signingConfigs {
+        release {
+            storeFile file('../GoldingSignature.jks')
+            storePassword 'gd123456'
+            keyAlias 'goldingapp'
+            keyPassword 'gd123456'
+        }
+        debug {
+            storeFile file('../GoldingSignature.jks')
+            storePassword 'gd123456'
+            keyAlias 'goldingapp'
+            keyPassword 'gd123456'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "GoldingMedia_yg.apk"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api files('libs/protobuf_3.0.jar')
+    api files('libs/commons-compress-1.14.jar')
+    api files('libs/uk-co-senab-photoview.jar')
+    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    api 'com.android.support:support-v4:25.1.0'
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    testImplementation 'junit:junit:4.12'
+}

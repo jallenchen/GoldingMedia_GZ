@@ -1,0 +1,152 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="800px"
+    android:layout_height="400px"
+    android:orientation="horizontal">
+
+    
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:orientation="vertical"
+        android:layout_marginLeft="100dp"
+		android:layout_marginRight="30dp">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text100"
+            android:textSize="22sp"
+            android:text="@string/eq10"/>
+    	<com.goldingmedia.utils.VerticalSeekBar
+	        android:id="@+id/seekbar1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="250dp"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dp"
+			android:layout_marginBottom="20dp"
+			android:max="20" />
+        
+    	<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="@string/eq100"/>
+    	
+	</LinearLayout>
+    	
+	<LinearLayout android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+		android:layout_marginRight="30dp">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text500"
+            android:textSize="22sp"
+            android:text="@string/eqn10"/>
+    	<com.goldingmedia.utils.VerticalSeekBar
+	        android:id="@+id/seekbar2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="250dp"
+			android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dp"
+			android:layout_marginBottom="20dp"
+			android:max="20" />
+        
+    	<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="@string/eq500"/>
+	</LinearLayout>
+	
+	<LinearLayout android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+		android:layout_marginRight="30dp">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text1000"
+            android:textSize="22sp"
+            android:text="@string/eq0"/>
+    	<com.goldingmedia.utils.VerticalSeekBar
+	        android:id="@+id/seekbar3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="250dp"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dp"
+			android:layout_marginBottom="20dp"
+			android:max="20" />
+        
+    	<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="@string/eq1k"/>
+	</LinearLayout>
+
+		<LinearLayout android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+		android:layout_marginRight="30dp">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text4000"
+            android:textSize="22sp"
+            android:text="@string/eq0"/>
+    	<com.goldingmedia.utils.VerticalSeekBar
+	        android:id="@+id/seekbar4"
+	        android:layout_width="wrap_content"
+	        android:layout_height="250dp"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dp"
+			android:layout_marginBottom="20dp"
+			android:max="20" />
+        
+    	<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="@string/eq4k"/>
+	</LinearLayout>
+	
+		<LinearLayout android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+		android:layout_marginRight="100dp">
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text16k"
+            android:textSize="22sp"
+            android:text="@string/eq0"/>
+    	<com.goldingmedia.utils.VerticalSeekBar
+	        android:id="@+id/seekbar5"
+	        android:layout_width="wrap_content"
+	        android:layout_height="250dp"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dp"
+			android:layout_marginBottom="20dp"
+			android:max="20" />
+        
+    	<TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"
+            android:text="@string/eq16k"/>
+	</LinearLayout>
+</LinearLayout>

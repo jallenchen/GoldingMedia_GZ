@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="52.0px"
+    android:paddingRight="64dp">
+
+	<TextView
+		android:id="@+id/seatnum"
+		android:layout_width="match_parent"
+		android:layout_height="50.0px"
+		android:layout_marginTop="48.0px"
+		android:background="@mipmap/seat_edit"
+		android:gravity="center"
+		android:hint="@string/seathint"
+		android:textColor="#ffbbbbbb"
+		android:textSize="30.0sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.0px"
+    	android:orientation="horizontal" >
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	    	android:orientation="vertical" >
+	
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@mipmap/seat_1">
+					<ImageButton
+						android:id="@+id/b_1"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_2">
+					<ImageButton
+						android:id="@+id/b_2"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_3" >
+					<ImageButton
+						android:id="@+id/b_3"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+		    </LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8.0px"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@mipmap/seat_4">
+					<ImageButton
+						android:id="@+id/b_4"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_5">
+					<ImageButton
+						android:id="@+id/b_5"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_6" >
+					<ImageButton
+						android:id="@+id/b_6"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8.0px"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@mipmap/seat_7">
+					<ImageButton
+						android:id="@+id/b_7"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_8">
+					<ImageButton
+						android:id="@+id/b_8"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_9" >
+					<ImageButton
+						android:id="@+id/b_9"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8.0px"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@mipmap/seat_bracket_left">
+					<ImageButton
+						android:id="@+id/b_left"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_0">
+					<ImageButton
+						android:id="@+id/b_0"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="5.0px"
+					android:background="@mipmap/seat_bracket_right" >
+					<ImageButton
+						android:id="@+id/b_right"
+						style="@style/seat_button_style1"/>
+				</LinearLayout>
+			</LinearLayout>
+	    </LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5.0px"
+			android:orientation="vertical">
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@mipmap/seat_a">
+				<ImageButton
+					android:id="@+id/b_A"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5.0px"
+				android:background="@mipmap/seat_b">
+				<ImageButton
+					android:id="@+id/b_B"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5.0px"
+				android:background="@mipmap/seat_c" >
+				<ImageButton
+					android:id="@+id/b_C"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5.0px"
+				android:background="@mipmap/seat_d" >
+				<ImageButton
+					android:id="@+id/b_D"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5.0px"
+				android:background="@mipmap/seat_e" >
+				<ImageButton
+					android:id="@+id/b_E"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5.0px"
+				android:background="@mipmap/seat_f" >
+				<ImageButton
+					android:id="@+id/b_F"
+					style="@style/seat_button_style2"/>
+			</LinearLayout>
+		</LinearLayout>
+    </LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8.0px"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@mipmap/seat_delete">
+			<ImageButton
+				android:id="@+id/b_delete"
+				style="@style/seat_button_style1"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5.0px"
+			android:background="@mipmap/seat_line">
+			<ImageButton
+				android:id="@+id/b_line"
+				style="@style/seat_button_style1"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5.0px"
+			android:background="@mipmap/seat_slash" >
+			<ImageButton
+				android:id="@+id/b_backlash"
+				style="@style/seat_button_style1"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="5.0px"
+			android:background="@mipmap/seat_enter" >
+			<ImageButton
+				android:id="@+id/b_enter"
+				style="@style/seat_button_style1"/>
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10.0px"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@mipmap/seat_empty">
+			<ImageButton
+				android:id="@+id/whole_seat_empty"
+				style="@style/seat_button_style3"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6.0px"
+			android:background="@mipmap/seat_setting">
+			<ImageButton
+				android:id="@+id/whole_seat_set"
+				style="@style/seat_button_style3"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6.0px"
+			android:background="@mipmap/seat_off" >
+			<ImageButton
+				android:id="@+id/whole_seat_off"
+				style="@style/seat_button_style3"/>
+		</LinearLayout>
+	</LinearLayout>
+
+</LinearLayout>

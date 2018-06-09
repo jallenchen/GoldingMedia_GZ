@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="golding_array">
+        <item>喜粤电视</item>
+        <item>喜粤月刊</item>
+        <item>喜粤直购</item>
+    </string-array>
+
+    <string-array name="e_live_array">
+        <item>商城</item>
+        <item>酒店</item>
+        <item>美食</item>
+        <item>购物</item>
+        <item>旅游</item>
+    </string-array>
+
+    <string-array name="myapp_array">
+        <item>电子书</item>
+        <item>应用</item>
+        <item>设置</item>
+    </string-array>
+
+    <string-array name="movie_array">
+        <item>院线热门</item>
+        <item>广东卫视</item>
+        <item>金鼎影约</item>
+        <item>金点大片</item>
+    </string-array>
+
+    <string-array name="mediatype_array">
+        <item>电影</item>
+        <item>综艺</item>
+        <item>动漫</item>
+        <item>体育</item>
+        <item>戏剧</item>
+        <item>MTV</item>
+        <item>音乐</item>
+    </string-array>
+
+    <string-array name="setting">
+        <item>座位号</item>
+        <!-- <item>座位排列</item>-->
+        <!--<item>输入法设置</item>-->
+        <item>应用管理</item>
+        <!--<item>系统信息</item>-->
+        <item>烧写INIC</item>
+    </string-array>
+
+    <string-array name="seat_plan">
+        <item>巴士座位排列</item>
+    </string-array>
+
+    <string-array name="app_operation">
+        <item>全车查看该应用版本</item>
+        <item>本机打开该应用</item>
+        <item>全车打开该应用</item>
+        <item>本机卸载该应用</item>
+        <item>全车卸载该应用</item>
+    </string-array>
+</resources>

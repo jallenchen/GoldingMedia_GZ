@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="100px"
+    android:orientation="horizontal" >
+    
+    <Button android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/flash"
+        android:layout_weight="1"
+        android:id="@+id/btn"/>
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40px"
+        android:id="@+id/msg"
+        android:textSize="32sp"
+        android:textColor="#ffff0000"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/failure_inic"/>
+
+</LinearLayout>

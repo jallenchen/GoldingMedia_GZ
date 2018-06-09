@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47.0px"
+    android:orientation="horizontal"
+    android:background="@drawable/play_list_selector" >
+
+    <TextView
+        android:id="@+id/groupnametext"
+        android:layout_width="186.0px"
+        android:layout_height="47.0px"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="54.0px"
+        android:maxLines="1"
+        android:text="@string/_null"
+        android:textColor="@drawable/item_txt_color_selector"
+        android:textSize="20.0sp" />
+
+    <ImageView
+        android:id="@+id/grouptips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@mipmap/play_group_tip_normal" />
+
+</LinearLayout>

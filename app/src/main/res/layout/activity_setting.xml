@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/setting_contaner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/passwd_lay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#de1d1d43" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/input_psw"
+                android:textSize="30sp"/>
+            <EditText
+                android:id="@+id/passwd"
+                android:layout_width="600dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:labelFor="@id/passwd"
+                android:textSize="40sp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:onClick="onBack"
+                    style="?android:attr/buttonStyle"
+                    android:text="@string/back"
+                    android:textSize="20sp"/>
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="80dp"
+                    android:onClick="onPasswdOK"
+                    style="?android:attr/buttonStyle"
+                    android:text="@string/enter"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBack"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/back_selector"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

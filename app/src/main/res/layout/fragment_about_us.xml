@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="320px"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26px"
+            android:textStyle="bold"
+            android:layout_marginTop="60px"
+            android:layout_marginLeft="70px"
+            android:text="@string/about_us"/>
+        <ImageView
+            android:layout_width="213px"
+            android:layout_height="178px"
+            android:layout_marginTop="50px"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/about_golding"/>
+        <ImageView
+            android:layout_width="130px"
+            android:layout_height="130px"
+            android:layout_marginTop="40px"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/about_code"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="704px"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/golding"
+            android:textSize="24px"
+            android:layout_marginTop="110px"
+            android:textStyle="bold"/>
+
+        <ScrollView
+            android:layout_width="630px"
+            android:layout_height="350px"
+            android:layout_marginTop="40px"
+            android:layout_below="@+id/company_name">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_us_txt"
+            android:lineSpacingExtra="10px"
+            android:textSize="22px"/>
+        </ScrollView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_selector"
+            android:onClick="onBack"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

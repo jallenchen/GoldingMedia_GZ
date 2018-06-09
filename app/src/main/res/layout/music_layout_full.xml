@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="521.0px"
+        android:layout_height="554.0px"
+        android:layout_marginLeft="76.0px"
+        android:layout_marginTop="22.0px"
+        android:orientation="vertical"
+        android:background="@mipmap/music_lrc_bg">
+
+        <com.goldingmedia.mvp.view.lrc.LrcView
+            android:id="@+id/lrc_full"
+            android:layout_width="472.0px"
+            android:layout_height="510.0px"
+            android:layout_marginLeft="26.0px"
+            android:layout_marginTop="22.0px"
+            android:gravity="center"
+            android:textColor="#99ffffff" />
+
+        <TextView
+            android:id="@+id/nolrc_full"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/nolrc"
+            android:textColor="#80ffffff"
+            android:textSize="26.0sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10.0px"
+        android:layout_marginRight="10.0px"
+        android:orientation="vertical">
+
+
+        <com.goldingmedia.mvp.view.ui.MTextView
+            android:id="@+id/musicname_full"
+            android:layout_width="350px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46.0px"
+            android:drawableStart="@mipmap/music_name_full"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="20.0sp" />
+
+
+        <com.goldingmedia.mvp.view.ui.MTextView
+                android:id="@+id/musicalbum_full"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34.0px"
+                android:gravity="center_vertical"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:drawableStart="@mipmap/music_album_full"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textSize="20.0sp" />
+
+
+            <com.goldingmedia.mvp.view.ui.MTextView
+                android:id="@+id/musicsinger_full"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34.0px"
+                android:gravity="center_vertical"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:drawableStart="@mipmap/music_singer_full"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textSize="20.0sp" />
+
+        <RelativeLayout
+            android:layout_width="227.0px"
+            android:layout_height="227.0px"
+            android:layout_marginLeft="16.0px"
+            android:layout_marginTop="61.0px">
+
+            <ImageView
+                android:id="@+id/musiccover_full"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7.0px"
+                android:layout_marginTop="16.0px"
+                android:src="@mipmap/music_default" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

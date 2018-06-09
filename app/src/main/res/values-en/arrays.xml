@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="golding_array">
+        <item>喜粤电视</item>
+        <item>喜粤月刊</item>
+        <item>喜粤直购</item>
+    </string-array>
+
+    <string-array name="e_live_array">
+        <item>商城</item>
+        <item>酒店</item>
+        <item>美食</item>
+        <item>购物</item>
+        <item>旅游</item>
+    </string-array>
+
+    <string-array name="myapp_array">
+        <item>电子书</item>
+        <item>应用</item>
+        <item>设置</item>
+    </string-array>
+
+    <string-array name="movie_array">
+        <item>Cinema</item>
+        <item>GD TV</item>
+        <item>Golding Movie</item>
+        <item>Golding Film</item>
+    </string-array>
+
+    <string-array name="mediatype_array">
+        <item>Movie</item>
+        <item>Arts</item>
+        <item>Cartoon</item>
+        <item>Sports</item>
+        <item>Drama</item>
+        <item>MTV</item>
+        <item>Music</item>
+    </string-array>
+
+    <string-array name="setting">
+        <item>Seat Num</item>
+        <!-- <item>座位排列</item>-->
+        <!--<item>输入法设置</item>-->
+        <item>Apps Manage</item>
+        <!--<item>系统信息</item>-->
+        <item>Burn INIC</item>
+    </string-array>
+
+    <string-array name="seat_plan">
+        <item>巴士座位排列</item>
+    </string-array>
+
+    <string-array name="app_operation">
+        <item>Vehicle Overview</item>
+        <item>Open App On Local</item>
+        <item>Open App On All</item>
+        <item>Uninstall App On Local</item>
+        <item>Uninstall App On All</item>
+    </string-array>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47.0px"
+    android:orientation="horizontal"
+    android:background="@drawable/engmode_list_selector" >
+
+    <TextView
+        android:id="@+id/nametext"
+        android:layout_width="186.0px"
+        android:layout_height="47.0px"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="54.0px"
+        android:maxLines="1"
+        android:text="@string/_null"
+        android:textSize="20.0sp" />
+
+</LinearLayout>

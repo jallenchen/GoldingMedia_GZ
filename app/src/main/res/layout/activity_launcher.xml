@@ -27,11 +27,21 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/weather"
-                    android:layout_width="100px"
+                    android:id="@+id/login"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:textSize="18px"
+                    android:clickable="true"
+                    android:text="@string/login"/>
+
+                <TextView
+                    android:id="@+id/weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textSize="18px"
+                    android:layout_marginLeft="10px"
                     android:text="@string/sun"/>
 
                 <ImageView
@@ -151,11 +161,20 @@
                         android:gravity="center" />
 
                     <RadioButton
-                        android:id="@+id/rb_golding_media"
+                        android:id="@+id/rb_mylive"
                         android:layout_width="0.0px"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:button="@drawable/golding_selector"
+                        android:button="@drawable/mylive_selector"
+                        android:gravity="center" />
+
+
+                    <RadioButton
+                        android:id="@+id/rb_e_line"
+                        android:layout_width="0.0px"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:button="@drawable/eline_selector"
                         android:gravity="center" />
 
                     <RadioButton
@@ -167,12 +186,13 @@
                         android:gravity="center" />
 
                     <RadioButton
-                        android:id="@+id/rb_e_line"
+                        android:id="@+id/rb_golding_media"
                         android:layout_width="0.0px"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:button="@drawable/eline_selector"
+                        android:button="@drawable/golding_selector"
                         android:gravity="center" />
+
 
                     <RadioButton
                         android:id="@+id/rb_my_app"

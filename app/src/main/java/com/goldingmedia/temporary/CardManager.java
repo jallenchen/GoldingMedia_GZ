@@ -125,6 +125,10 @@ public class CardManager {
 			}
 
 			break;
+			case Contant.CATEGORY_ADS_ID:// 我的应用
+
+
+				break;
 
 		default:
 			break;

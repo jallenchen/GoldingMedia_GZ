@@ -61,8 +61,8 @@ public class MediaCenterService extends Service implements HandlerUtils.OnReceiv
 	private int countMarquee = 300;
 
 	private static final int AD_COUNTER_START = 15;
-	private static final int BASE_COUNTER = 415;
-	private static final int OUT_COUNTER = 450;
+	private static final int BASE_COUNTER = 315;//415;
+	private static final int OUT_COUNTER = 600;//450;
 	private static final int TAKE_PHOTO = 600;
 	private boolean mSendRunning = false;
 	private boolean bEnableTakePhoto = true;

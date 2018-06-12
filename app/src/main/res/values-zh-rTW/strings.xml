@@ -8,6 +8,7 @@
     <string name="def_date">1月1日\n星期一</string>
     <string name="time_colon">:</string>
 
+	<string name="login">會員登錄</string>
 	<string name="updating">正在更新资源 &#8230;</string>
 	<string name="sun">晴</string>
 	<string name="channel_list">节目选择</string>

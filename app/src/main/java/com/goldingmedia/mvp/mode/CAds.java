@@ -25,6 +25,7 @@ public class CAds {
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> extendTypeTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();;
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> windowOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> promptOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
+    private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> homeOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
     public int getCategoryId() {
         return categoryId;
     }
@@ -65,10 +66,16 @@ public class CAds {
                     windowOrientTrucksMap.get(orient).add(truck);
                 }else  if (type.equals(Contant.ADS_EXTEND_TYPE_PROMPT+"")) {
                     String orient = truck.getMediaInfo().getAdsMeta().getTruckWndOrient();
-                    if(!promptOrientTrucksMap.containsKey(orient)){
+                    if (!promptOrientTrucksMap.containsKey(orient)) {
                         promptOrientTrucksMap.put(orient, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
                     }
                     promptOrientTrucksMap.get(orient).add(truck);
+                }else if (type.equals(Contant.ADS_EXTEND_TYPE_HOMECOLUMN+"")) {
+                    String orient = truck.getMediaInfo().getAdsMeta().getTruckWndOrient();
+                    if (!homeOrientTrucksMap.containsKey(orient)) {
+                        homeOrientTrucksMap.put(orient, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
+                    }
+                    homeOrientTrucksMap.get(orient).add(truck);
                 } else {
                     if(!extendTypeTrucksMap.containsKey(type)){
                         extendTypeTrucksMap.put(type, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
@@ -105,6 +112,10 @@ public class CAds {
     }
     public List<TruckMediaProtos.CTruckMediaNode> getPromptOrientTrucksMap(int type){
         return promptOrientTrucksMap.containsKey(type+"")?promptOrientTrucksMap.get(type+""):new ArrayList<TruckMediaProtos.CTruckMediaNode>();
+    }
+
+    public List<TruckMediaProtos.CTruckMediaNode> getHomeOrientTrucksMap(int type){
+        return homeOrientTrucksMap.containsKey(type+"")?homeOrientTrucksMap.get(type+""):new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     }
 
     public List<TruckMediaProtos.CTruckMediaNode> getSubList(int subId){

@@ -98,14 +98,6 @@ public class RecvDataMsg {
         int categorySubId = data[4];
         NLog.d(TAG,"categoryId:"+categoryId+"--categorySubId:"+categorySubId);
 
-        GDApplication.post2UIRunnable(new Runnable() {
-            @Override
-            public void run() {
-                NToast.longToast(GDApplication.getmInstance(),"接收到主机消息："+categoryId);
-            }
-        });
-
-
 
         //TODO arlt32 校验
         if(Utils.intAdler32CheckSum(proto_buff) != Utils.getInt(checkSum)){

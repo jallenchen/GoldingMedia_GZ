@@ -29,7 +29,7 @@ public class Variables {
     public static Boolean tsStopAllowPlay = true;// 判断是否正在退出播放，true正在退出
     public static Boolean serviceStartFrist = false;// 判断安全指南是否已经播放过
     public static String mGpsPlace = "";// 安全指南是否播放，true播放
-
+    public static Boolean mFirstAds = true;// 开机后第一条广告
     public static SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckMediaMovieNodes;
     public static ArrayList<List<TruckMediaProtos.CTruckMediaNode>> mTruckMediaTypeNodes;
 

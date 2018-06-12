@@ -216,6 +216,7 @@ public class ReadBookActivity extends BaseActivity{
                  list.add(imgPath);
                  list.add(imgPath);
                  list.add(imgPath);
+                 NLog.e(TAG,imgPath);
             }
 
         return list;

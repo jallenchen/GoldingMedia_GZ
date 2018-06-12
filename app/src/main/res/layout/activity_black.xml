@@ -3,23 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
+    android:background="#ff000000"
     tools:context="com.goldingmedia.BlackActivity">
+
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:id="@+id/img_cb_full"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
     <com.goldingmedia.mvp.view.ui.Anticlockwise
         android:id="@+id/timer"
-        android:layout_width="100px"
-        android:layout_height="50px"
-        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
         android:gravity="center"
         android:layout_gravity="right"
         android:layout_margin="10px"
         />
- <com.bigkoo.convenientbanner.ConvenientBanner
-     android:id="@+id/img_cb_full"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     />
+
 
 
 </FrameLayout>

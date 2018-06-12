@@ -244,7 +244,7 @@ public class Contant {
     public static final int ADS_EXTEND_TYPE_EVEN = 4;
     public static final int ADS_EXTEND_TYPE_MGR = 5;
     //add for wendi Guangzhou
-    public static final int ADS_EXTEND_TYPE_POWERON = 101;
+    public static final int ADS_EXTEND_TYPE_FIRST = 101;
     public static final int ADS_EXTEND_TYPE_SCREENOFF = 102;
     public static final int ADS_EXTEND_TYPE_PROMPT = 103;
     public static final int ADS_EXTEND_TYPE_FILMON= 104;

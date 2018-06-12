@@ -147,7 +147,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
             String url="";
             List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_GAMEAREA);
             if(truckMediaNodes.size() != 0){
-                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdUrl();
+                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdsUrl();
             }
             Intent intent = new Intent(getActivity(), WebActivity.class);
             intent.putExtra("online",true);

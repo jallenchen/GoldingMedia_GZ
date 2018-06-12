@@ -1,17 +1,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="horizontal">
 
-     <com.bigkoo.convenientbanner.ConvenientBanner
+    <FrameLayout
+        android:layout_width="327px"
+        android:layout_height="440px"
+        android:padding="6px">
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
             android:id="@+id/img_cb1"
             android:layout_width="327px"
-            android:layout_height="432px"
+            android:layout_height="440px"
             android:background="@drawable/hotzone_item1_bg"
-            android:padding="6px"
             />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@mipmap/hotmovies_title"/>
+
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"

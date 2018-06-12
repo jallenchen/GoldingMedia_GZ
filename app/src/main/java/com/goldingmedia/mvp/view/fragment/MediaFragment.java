@@ -155,7 +155,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             String url="";
             List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_MOVICEAREA);
             if(truckMediaNodes.size() != 0){
-                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdUrl();
+                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdsUrl();
             }
 
             Intent intent = new Intent(getActivity(), WebActivity.class);

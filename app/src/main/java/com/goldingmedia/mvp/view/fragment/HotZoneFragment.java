@@ -79,13 +79,25 @@ public class HotZoneFragment extends BaseFragment{
         public void onItemClick(int position) {
             NToast.longToast(getActivity(),nBannerNum+":mBanners点击了条目"+position);
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
-        if (truckMediaNode != null) {
-            CardManager.getInstance().action(nBannerNum, truckMediaNode, getActivity());
-        } else {
-            NToast.shortToast(getActivity(), "暂未开放,敬请期待！");
+
+            switch (nBannerNum){
+                case 0:
+                    if (truckMediaNode != null) {
+                        CardManager.getInstance().action(position, truckMediaNode, getActivity());
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
         }
 
-        }
+
     }
 
     /**
@@ -123,8 +135,10 @@ public class HotZoneFragment extends BaseFragment{
     }
 
     private void initData(){
-        for (int i = 0; i < 5; i++) {
-            mTruckMapNodes.put(i,GDApplication.getmInstance().getTruckMedia().getcHotZone().getIndexNodes(i));
+
+        mTruckMapNodes.put(0,GDApplication.getmInstance().getTruckMedia().getcHotZone().getTruckMediaNodes());
+        for (int i = 1; i < 5; i++) {
+            mTruckMapNodes.put(i,GDApplication.getmInstance().getTruckMedia().getcAds().getHomeOrientTrucksMap(i));
             NLog.e(TAG,"mTruckMapNodes size:"+ mTruckMapNodes.size());
         }
 
@@ -132,12 +146,42 @@ public class HotZoneFragment extends BaseFragment{
 
     private List<String> getImgPath(int dataType){
         List<String> list = new ArrayList<>();
+        TruckMediaProtos.CTruckMediaNode truck;
+        String fileName;
+        String   imgPath;
+        String path;
 
-        for (int i = 0; i < mTruckMapNodes.get(dataType).size(); i++) {
-        String fileName =  mTruckMapNodes.get(dataType).get(i).getMediaInfo().getTruckMeta().getTruckFilename();
-        String   imgPath =  Contant.HOTZONE_PATH + fileName+"/"+fileName+".jpg";
-        list.add(imgPath);
+//        for (int i = 0; i < mTruckMapNodes.get(dataType).size(); i++) {
+//        String fileName =  mTruckMapNodes.get(dataType).get(i).getMediaInfo().getTruckMeta().getTruckFilename();
+//        String   imgPath =  Contant.HOTZONE_PATH + fileName+"/"+fileName+".jpg";
+//        list.add(imgPath);
+//        }
+        switch (dataType){
+            case 0:
+                for (int i = 0; i < mTruckMapNodes.get(0).size(); i++) {
+                    fileName =  mTruckMapNodes.get(0).get(i).getMediaInfo().getTruckMeta().getTruckFilename();
+                    imgPath =  Contant.HOTZONE_PATH + fileName+"/"+fileName+".jpg";
+                    list.add(imgPath);
+                }
+                break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                for (int i = 0; i < mTruckMapNodes.get(dataType).size(); i++) {
+                    truck = mTruckMapNodes.get(dataType).get(i);
+                    fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
+
+                    path  = Contant.getTruckMetaNodePath(Contant.CATEGORY_ADS_ID,truck.getCategorySubId(),fileName,true);
+                    imgPath =  path+"/"+fileName+".jpg";
+                    list.add(imgPath);
+                }
+
+                break;
         }
+
+
+
 
         return list;
     }

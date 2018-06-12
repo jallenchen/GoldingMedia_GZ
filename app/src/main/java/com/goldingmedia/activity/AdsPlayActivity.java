@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,16 +41,19 @@ import java.util.List;
 public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
 
 	private static final String TAG = "AdsPlayActivity";
-	private static final int TIME_MAX_REGULAR = 120;
+	private static final int TIME_MAX_REGULAR = 45;
+	private static final int TIME_MAX_FIRST_REGULAR = 30;
 	private Context mContext;
 	private ImageView mImageView;
 	private SurfaceView mSurfaceView;
 	private int mPos = 0;
 	private int mEvenPos = 0;
+	private int mFirstAdsPos = 0;
 	private TruckMediaProtos.CTruckMediaNode mTruck;
 	private List<TruckMediaProtos.CTruckMediaNode> mDataList;
 	private List<TruckMediaProtos.CTruckMediaNode> mEvenDataList;
 	private List<TruckMediaProtos.CTruckMediaNode> mSecurityDataList;
+	private List<TruckMediaProtos.CTruckMediaNode> mFirstAdsList;
 	private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
 
 	private int mImgTimeCounter = 0;
@@ -155,7 +157,13 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 //			mAdData.detailText = mIntent.getStringExtra("detailText");
 //			mDataList.add(mAdData);
 		} else {
-			mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
+			if(Variables.mFirstAds){
+				//todo 开机第一次广告 15s*2
+				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
+			}else{
+				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
+			}
+
 			initAdInexistence();
 		}
 
@@ -189,6 +197,13 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 					mLimitCounter++;
 				} else if(mLimitCounter >= Variables.mLimitOutCounter){// 时间到退出广告，最大播放时间Variables.mLimitOutCounter = 即时广告时间 + 最大定时广告时间TIME_MAX_REGULAR
 					mContext.sendBroadcast(new Intent("com.golding.exitadplay"));
+				}
+
+				NLog.e(TAG,"mLimitCounter:"+mLimitCounter+" mLimitOutCounter:"+Variables.mLimitOutCounter);
+
+				//每隔15s切换下一条广告
+				if(mRegularAdStart && mLimitCounter%15 == 0){
+					SwitchContent();
 				}
 
 				// 1秒更新点一次播时间
@@ -243,6 +258,16 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 			}
 		}
 
+		//add for first ads play TODO
+//		if(Variables.mFirstAds){
+//			Variables.mFirstAds = false;
+//			mFirstAdsList = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST);
+//			Variables.mLimitOutCounter = 30;//开机后第一条广告30s
+//			PlayContent(mFirstAdsList.get(mFirstAdsPos));
+//			mFirstAdsPos++;
+//			return;
+//		}
+
 		if (Variables.mEvenAdStart) {// 即时广告
 			Variables.mEvenAdStart = false;
 			mEvenAdStart = true;
@@ -256,8 +281,15 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		if (Variables.mRegularAdStart) {// 定时广告
 			Variables.mRegularAdStart = false;
 			mRegularAdStart = true;
-			Variables.mLimitOutCounter = Variables.mLimitOutCounter + TIME_MAX_REGULAR;
+			if(Variables.mFirstAds){
+				Variables.mFirstAds = false;
+				Variables.mLimitOutCounter = Variables.mLimitOutCounter + TIME_MAX_FIRST_REGULAR;
+			}else{
+				Variables.mLimitOutCounter = Variables.mLimitOutCounter + TIME_MAX_REGULAR;
+			}
 		}
+
+		NLog.e(TAG,"mRegularAdStart:"+Variables.mRegularAdStart+" mFirstAds:"+Variables.mFirstAds+" mLimitOutCounter:"+Variables.mLimitOutCounter);
 
 		if (mSVStart) {// 播放安全视频
 			PlayContent(svStruct);
@@ -287,12 +319,12 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 			return;
 		}
 		TruckMediaProtos.CTruckMediaNode mAdData = mDataList.get(mPos);
-		if(mRegularFirst) {
-			mRegularFirst = false;
-		} else if(mAdData.getPlayInfo().getPlayInterval() != 0) {
-			if(isServer) Command.sendCommandString("com.golding.exitadplay");// 广播整个网络，退出广告
-			return;
-		}
+//		if(mRegularFirst) {
+//			mRegularFirst = false;
+//		} else if(mAdData.getPlayInfo().getPlayInterval() != 0) {
+//			if(isServer) Command.sendCommandString("com.golding.exitadplay");// 广播整个网络，退出广告
+//			return;
+//		}
 		PlayContent(mAdData);
 		mPos++;
 	}

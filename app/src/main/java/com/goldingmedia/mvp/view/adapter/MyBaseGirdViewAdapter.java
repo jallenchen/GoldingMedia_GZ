@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
@@ -101,7 +102,8 @@ public class MyBaseGirdViewAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+       // holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
 
         holder.txtView.setText(imgTitleName);
         if(categoryId == Contant.CATEGORY_MYAPP_ID && categorySubId == Contant.PROPERTY_MYAPP_SETTING_ID){

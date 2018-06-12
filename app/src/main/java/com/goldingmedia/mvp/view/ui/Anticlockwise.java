@@ -19,7 +19,7 @@ public class Anticlockwise extends Chronometer
     {
         super(context, attrs);
         // TODO 自动生成的构造函数存根
-        mTimeFormat = new SimpleDateFormat("mm:ss");
+        mTimeFormat = new SimpleDateFormat("ss");
         this.setOnChronometerTickListener(listener);
     }
 
@@ -125,7 +125,7 @@ public class Anticlockwise extends Chronometer
         this.setText(mTimeFormat.format(new Date(mNextTime * 1000)));
     }
 
-    interface OnTimeCompleteListener
+    public interface OnTimeCompleteListener
     {
         void onTimeComplete();
     }

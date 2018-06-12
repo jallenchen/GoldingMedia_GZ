@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import com.goldingmedia.mvp.view.fragment.HotZoneFragment;
 import com.goldingmedia.mvp.view.fragment.MediaFragment;
 import com.goldingmedia.mvp.view.fragment.MoviesShowFragment;
 import com.goldingmedia.mvp.view.fragment.MyAppFragment;
+import com.goldingmedia.mvp.view.fragment.MyLiveFragment;
 import com.goldingmedia.mvp.view.ui.DepthPageTransformer;
 import com.goldingmedia.service.MediaCenterService;
 import com.goldingmedia.service.MsgDisplayService;
@@ -69,6 +71,7 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
     private TextView tv_time, time_colon;
     private TextView gps_place;
     private TextView tv_weather;
+    private TextView tv_login;
     private ImageView iv_net_state;
     private ImageView iv_weather;
     private ImageView iv_4G;
@@ -82,10 +85,11 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
     private MediaFragment mediaf;
     private static final int type_recommend = 0;
     private static final int type_video = 1;
-    private static final int type_golding_media = 2;
-    private static final int type_game_center = 3;
-    private static final int type_e_line = 4;
-    private static final int type_my_app = 5;
+    private static final int type_golding_media = 5;
+    private static final int type_game_center = 4;
+    private static final int type_e_line = 3;
+    private static final int type_my_app = 6;
+    private static final int type_mylive = 2;
     boolean isPushDownload = false;
     boolean isUpgradeDownload = false;
     private HandlerUtils.HandlerHolder handlerHolder;
@@ -133,7 +137,7 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
                 .setPositiveButton(R.string.enter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LcdPowerSwitch.lcdOff();
+                      //  LcdPowerSwitch.lcdOff();
                         Intent intent = new Intent(LauncherActivity.this,BlackActivity.class);
                         startActivity(intent);
                     }
@@ -156,6 +160,8 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
         gps_place = (TextView) findViewById(R.id.GPS_place);
         tv_weather  = (TextView) findViewById(R.id.weather);
         iv_weather = (ImageView) findViewById(R.id.weather_iv);
+        tv_login  = (TextView) findViewById(R.id.login);
+        tv_login.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );//设置下划线
         iv_4G = (ImageView) findViewById(R.id.net_4g);
         fragments = new ArrayList<>();
         initFragment();
@@ -169,32 +175,38 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
         Bundle args = new Bundle();
 
         HotZoneFragment recomf = new HotZoneFragment();
-        args.putInt(Contant.KEY_TOPNUM, 0);
+        args.putInt(Contant.KEY_TOPNUM, type_recommend);
         recomf.setArguments(args);
         fragments.add(recomf);
 
         MoviesShowFragment topicf = new MoviesShowFragment();
-        args.putInt(Contant.KEY_TOPNUM, 1);
+        args.putInt(Contant.KEY_TOPNUM, type_video);
         topicf.setArguments(args);
         fragments.add(topicf);
 
-        GoldingFragment  goldingf = new GoldingFragment();
-        args.putInt(Contant.KEY_TOPNUM, 2);
-        goldingf.setArguments(args);
-        fragments.add(goldingf);
-
-        GameFragment  gamef = new GameFragment();
-        args.putInt(Contant.KEY_TOPNUM, 3);
-        gamef.setArguments(args);
-        fragments.add(gamef);
+        MyLiveFragment mylivef = new MyLiveFragment();
+        args.putInt(Contant.KEY_TOPNUM,type_mylive);
+        mylivef.setArguments(args);
+        fragments.add(mylivef);
 
         ELineFragment elinef = new ELineFragment();
-        args.putInt(Contant.KEY_TOPNUM,4);
+        args.putInt(Contant.KEY_TOPNUM,type_e_line);
         elinef.setArguments(args);
         fragments.add(elinef);
 
+        GameFragment  gamef = new GameFragment();
+        args.putInt(Contant.KEY_TOPNUM, type_game_center);
+        gamef.setArguments(args);
+        fragments.add(gamef);
+
+        GoldingFragment  goldingf = new GoldingFragment();
+        args.putInt(Contant.KEY_TOPNUM, type_golding_media);
+        goldingf.setArguments(args);
+        fragments.add(goldingf);
+
+
         MyAppFragment appf = new MyAppFragment();
-        args.putInt(Contant.KEY_TOPNUM,5);
+        args.putInt(Contant.KEY_TOPNUM,type_my_app);
         appf.setArguments(args);
         fragments.add(appf);
 
@@ -277,6 +289,9 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
                     case type_e_line:
 
                         break;
+                    case type_mylive:
+
+                        break;
                     case type_my_app:
 
                         break;
@@ -293,6 +308,13 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
 
             }
         });
+        tv_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NToast.longToast(LauncherActivity.this,"此功能未开放！");
+            }
+        });
+
 
     }
 

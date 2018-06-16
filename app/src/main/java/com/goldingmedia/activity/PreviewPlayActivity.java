@@ -34,6 +34,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.BaseActivity;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
@@ -247,7 +248,8 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 			String imgPath = Contant.getTruckMetaNodePath(node.getMediaInfo().getCategoryId(),node.getMediaInfo().getCategorySubId(),node.getMediaInfo().getTruckMeta().getTruckFilename(),true);
 			String imgName = node.getMediaInfo().getTruckMeta().getTruckImage();
 
-			holder.icon.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+			//holder.icon.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+			Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.icon);
 			holder.name.setText(node.getMediaInfo().getTruckMeta().getTruckTitle());
 
 			if(position == selectedPosition) {

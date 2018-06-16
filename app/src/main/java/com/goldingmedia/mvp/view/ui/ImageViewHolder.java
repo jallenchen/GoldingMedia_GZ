@@ -31,7 +31,6 @@ public class ImageViewHolder implements Holder<String>{
     @Override
     public void UpdateUI(Context context, int position, String data) {
 
-       // imageView.setImageResource(data);
-        Glide.with(context).load(data).placeholder(R.mipmap.hotzone_bg1_normal).into(imageView);
+        Glide.with(context).load(data).placeholder(R.color.transparent).into(imageView);
     }
 }

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
@@ -67,7 +68,8 @@ public class MoviesShowAdapter extends BaseAdapter {
         }
         holder.moviesSub.setText(mCategories.get(position+1).getCategorySubDesc());
 
-        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        Glide.with(mContext).load(imgPath).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
         return convertView;
     }
 

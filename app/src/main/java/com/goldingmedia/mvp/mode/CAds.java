@@ -48,10 +48,11 @@ public class CAds {
 
     public void setmCategorys(List<Category> mCategorys) {
         this.mCategorys = mCategorys;
-        subTrucksList = new ArrayList<List<TruckMediaProtos.CTruckMediaNode>>();
-        extendTypeTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
-        windowOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
-        promptOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
+        subTrucksList.clear();
+        extendTypeTrucksMap.clear();
+        windowOrientTrucksMap.clear();
+        promptOrientTrucksMap.clear();
+        homeOrientTrucksMap.clear();
         for (int i=0; i<mCategorys.size(); i++) {
             List<TruckMediaProtos.CTruckMediaNode> trucks = GDApplication.getmInstance().getDataInsert().getMediaMetaDataList(Contant.TABLE_NAME_ADS, mCategorys.get(i).getCategorySubId());
             subTrucksList.add(trucks);

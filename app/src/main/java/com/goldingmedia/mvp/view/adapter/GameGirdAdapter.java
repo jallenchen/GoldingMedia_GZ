@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
@@ -78,7 +79,8 @@ public class GameGirdAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.game_m_bg_normal).into( holder.imageView);
 
         return convertView;
     }

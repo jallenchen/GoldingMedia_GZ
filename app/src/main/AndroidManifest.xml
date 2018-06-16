@@ -106,7 +106,7 @@
             android:name=".activity.PhotoViewActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.WebActivity" />
-        <activity android:name=".BlackActivity"/>
+        <activity android:name=".ScreenOffActivity"/>
     </application>
 
 </manifest>

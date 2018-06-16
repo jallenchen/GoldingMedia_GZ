@@ -3,6 +3,9 @@ package com.goldingmedia.temporary;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.bumptech.glide.Glide;
+import com.goldingmedia.R;
+
 public class ImageProcessing {
 
 	public static Bitmap ConvertBitMap(String path){

@@ -58,11 +58,13 @@ import com.goldingmedia.most.GlobalSettings;
 import com.goldingmedia.most.fblock.FBlock;
 import com.goldingmedia.most.ts_renderer.TsReceiver;
 import com.goldingmedia.mvp.view.activity.JmagazineActivity;
+import com.goldingmedia.mvp.view.activity.ReadBookActivity;
 import com.goldingmedia.mvp.view.animations.Animations;
 import com.goldingmedia.mvp.view.lrc.LrcProcess;
 import com.goldingmedia.mvp.view.lrc.LrcView;
 import com.goldingmedia.mvp.view.ui.ImageViewHolder;
 import com.goldingmedia.mvp.view.ui.MTextView;
+import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.temporary.DataHelper;
 import com.goldingmedia.temporary.GetProtocolBuffer;
 import com.goldingmedia.temporary.Modes.Order;
@@ -189,7 +191,7 @@ public class MediaPlayActivity extends BaseActivity implements
 
     private FrameLayout rightLay;
 	private ConvenientBanner[] mBanners = new ConvenientBanner[6];
-	private Button mShrink;
+	private ImageView mShrink;
 	//private ConvenientBanner mBannerAll ;
 	//private ConvenientBanner mBannerB;
 	//private ConvenientBanner mBannerA;
@@ -259,8 +261,8 @@ public class MediaPlayActivity extends BaseActivity implements
 		classId = intent.getIntExtra("classId", 0);
 		classSubId = intent.getIntExtra("classSubId", 0);
 		classMainId = intent.getIntExtra("classMainId", 0);
-		Log.i("","-----onCreate()position=" + position);
-		Log.i("","-----onCreate()classMainId=" + classMainId);
+		Log.i(TAG,"-----onCreate()position=" + position);
+		Log.i(TAG,"-----onCreate()classMainId=" + classMainId);
 
 		setContentView(R.layout.activity_media_play);
 
@@ -352,13 +354,14 @@ public class MediaPlayActivity extends BaseActivity implements
 		relbody = (RelativeLayout) findViewById(R.id.relbody);
 		mMovieView = (SurfaceView)findViewById(surfaceView);
         rightLay = (FrameLayout)findViewById(R.id.rightLay);
-		mShrink = (Button) findViewById(R.id.shrink_btn);
+		mShrink = (ImageView) findViewById(R.id.shrink_btn);
 		mBanners[0] = (ConvenientBanner)findViewById(R.id.img_cb_all);
 		mBanners[1] = (ConvenientBanner)findViewById(R.id.img_cb1);
 		mBanners[2] = (ConvenientBanner)findViewById(R.id.img_cb2);
 		mBanners[3] = (ConvenientBanner)findViewById(R.id.img_cb3);
-		mBanners[4] = (ConvenientBanner)findViewById(R.id.img_cb_bottom);
-		mBanners[5] = (ConvenientBanner)findViewById(R.id.img_cb_top);
+		mBanners[4] = (ConvenientBanner)findViewById(R.id.img_cb_top);
+		mBanners[5] = (ConvenientBanner)findViewById(R.id.img_cb_bottom);
+
 
 		mLinearLayout = (LinearLayout)findViewById(R.id.linearLayout1);
 		switch (classId) {
@@ -413,7 +416,7 @@ public class MediaPlayActivity extends BaseActivity implements
 		mPlayButton.setOnClickListener(this);
 		mEqButton.setOnClickListener(this);
 		playblack.setOnClickListener(this);
-		mShrink.setOnClickListener(this);
+		mShrink.setOnTouchListener(this);
 
 		//mTopVideo.setOnTouchListener(this);
 		//mMidImg.setOnTouchListener(this);
@@ -643,7 +646,7 @@ public class MediaPlayActivity extends BaseActivity implements
 //					Log.i("","-----show music full");
 //                }
 				music_layout.setVisibility(View.VISIBLE);
-				rightLay.setVisibility(View.VISIBLE);
+				//rightLay.setVisibility(View.VISIBLE);
                 mTruckShow = mTruck.getMediaInfo().getTruckMeta().getTruckShow();
             } else {
                 if ( null != mFBlock ) {
@@ -663,19 +666,24 @@ public class MediaPlayActivity extends BaseActivity implements
 							Log.i("","-----!m_TsReceiver.GetIsRunning()");
 							if(mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() != Contant.MEDIA_TYPE_MUSIC) {// 如果是视频，初始化SurfaceView大小和广告
 								ViewGroup.LayoutParams lp = mMovieView.getLayoutParams();
-								if(mTruck.getMediaInfo().getTruckMeta().getTruckShow() == Variables.TRUCK_SHOW_NORMAL) {
-									lp.width = 802;
-									lp.height = 470;
-									mMovieView.getHolder().setFixedSize(802, 470);
-									mMovieView.setLayoutParams(lp);
-									Log.i("","-----show movie normal");
-								} else {
-									lp.width = 1024;
-									lp.height = 600;
-									mMovieView.getHolder().setFixedSize(1024, 600);
-									mMovieView.setLayoutParams(lp);
-									Log.i("","-----show movie full");
-								}
+//								if(mTruck.getMediaInfo().getTruckMeta().getTruckShow() == Variables.TRUCK_SHOW_NORMAL) {
+//									lp.width = 802;
+//									lp.height = 470;
+//									mMovieView.getHolder().setFixedSize(802, 470);
+//									mMovieView.setLayoutParams(lp);
+//									Log.i("","-----show movie normal");
+//								} else {
+//									lp.width = 1024;
+//									lp.height = 600;
+//									mMovieView.getHolder().setFixedSize(1024, 600);
+//									mMovieView.setLayoutParams(lp);
+//									Log.i("","-----show movie full");
+//								}
+								lp.width = 802;
+								lp.height = 470;
+								mMovieView.getHolder().setFixedSize(802, 470);
+								mMovieView.setLayoutParams(lp);
+								Log.i("","-----show movie normal");
 							} else if (mTruckShow != Variables.TRUCK_SHOW_NORMAL) {
 								ViewGroup.LayoutParams lp = mMovieView.getLayoutParams();
 								lp.width = 802;
@@ -696,14 +704,14 @@ public class MediaPlayActivity extends BaseActivity implements
 								}
 							}
 
-                            // 初始化广告窗口
-                            if(mTruck.getMediaInfo().getTruckMeta().getTruckShow() == Variables.TRUCK_SHOW_NORMAL) {
-								//mFlipperLay.setVisibility(View.VISIBLE);
-                                rightLay.setVisibility(View.VISIBLE);
-                            } else {
-								//mFlipperLay.setVisibility(View.GONE);
-                                rightLay.setVisibility(View.GONE);
-                            }
+//                            // 初始化广告窗口
+//                            if(mTruck.getMediaInfo().getTruckMeta().getTruckShow() == Variables.TRUCK_SHOW_NORMAL) {
+//								//mFlipperLay.setVisibility(View.VISIBLE);
+//                                rightLay.setVisibility(View.VISIBLE);
+//                            } else {
+//								//mFlipperLay.setVisibility(View.GONE);
+//                                rightLay.setVisibility(View.GONE);
+//                            }
 
                             // 音乐mostMediaPlayer初始化
                             if(mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() == Contant.MEDIA_TYPE_MUSIC) {
@@ -1839,6 +1847,35 @@ public class MediaPlayActivity extends BaseActivity implements
 //			case R.id.imgbottom:
 //				//startWindowAdActivity(mBottomCount, Contant.ADS_WINDOW_ORIENT_BOTTOM);
 //				break;
+            case R.id.shrink_btn:
+            	NLog.e(TAG,"-----------------touch");
+                ViewGroup.LayoutParams lp = mBanners[5].getLayoutParams();
+                lp.width = 150;
+                mBanners[5].setLayoutParams(lp);
+                mShrink.setVisibility(View.GONE);
+
+				List<String> imgPaths =  new ArrayList<>();
+				TruckMediaProtos.CTruckMediaNode truck;
+				String fileName;
+				String imgPath;
+
+				for (int i = 0; i < mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).size(); i++) {
+					truck = mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).get(i);
+					fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
+					imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
+							fileName+"/"+fileName+"_s.jpg",true);
+
+					imgPaths.add(imgPath);
+				}
+
+				mBanners[5].setPages(new CBViewHolderCreator<ImageViewHolder>() {
+					@Override
+					public ImageViewHolder createHolder() {
+						return new ImageViewHolder();
+					}
+				},imgPaths);
+
+                break;
 
 			case R.id.paid_tips_lay:
 				showQRCode();
@@ -1926,9 +1963,10 @@ public class MediaPlayActivity extends BaseActivity implements
 				ExitActivity();
 				break;
 			case R.id.shrink_btn:
-				ViewGroup.LayoutParams lp = mBanners[4].getLayoutParams();
-				lp.width = 200;
-				mBanners[4].setLayoutParams(lp);
+				ViewGroup.LayoutParams lp = mBanners[5].getLayoutParams();
+				lp.width = 150;
+				lp.height = 74;
+				mBanners[5].setLayoutParams(lp);
 				mShrink.setVisibility(View.GONE);
 				break;
 		}
@@ -2159,7 +2197,7 @@ public class MediaPlayActivity extends BaseActivity implements
 			if(i <= 3){
 				setBannerDatas(Contant.ADS_EXTEND_TYPE_WINDOW,mBanners[i],i);
 			}else if(i>3){
-				setBannerDatas(Contant.ADS_EXTEND_TYPE_PROMPT,mBanners[i],i-4);
+				setBannerDatas(Contant.ADS_EXTEND_TYPE_PROMPT,mBanners[i],i-3);
 			}
 		}
 
@@ -2196,7 +2234,7 @@ public class MediaPlayActivity extends BaseActivity implements
 
 					@Override
 					public void onPageScrollStateChanged(int state) {
-						if(state == 0 && mBanner.getCurrentItem() == 0){
+						if(state == 2 && mBanner.getCurrentItem() == 0){
 							if(dataType == Contant.ADS_WINDOW_ORIENT_All){
 								setBannerVisibility(false,isBannerAll);
 							}else if(dataType == Contant.ADS_WINDOW_ORIENT_TOP){
@@ -2232,8 +2270,6 @@ public class MediaPlayActivity extends BaseActivity implements
 						fileName+"/"+fileName+".jpg",true);
 
 				list.add(imgPath);
-				list.add(imgPath);
-				list.add(imgPath);
 			}
 		}
 		else if(adsType == Contant.ADS_EXTEND_TYPE_PROMPT){
@@ -2243,8 +2279,6 @@ public class MediaPlayActivity extends BaseActivity implements
 				imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
 						fileName+"/"+fileName+".jpg",true);
 
-				list.add(imgPath);
-				list.add(imgPath);
 				list.add(imgPath);
 			}
 		}
@@ -2262,7 +2296,22 @@ public class MediaPlayActivity extends BaseActivity implements
 
 		@Override
 		public void onItemClick(int position) {
-			NToast.longToast(MediaPlayActivity.this,nBannerNum+":mBanners点击了条目"+position);
+			TruckMediaProtos.CTruckMediaNode truckMediaNode = null;
+			switch (nBannerNum){
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+					truckMediaNode =  mTruckWindowMapNodes.get(nBannerNum).get(position);
+					break;
+				case 4:
+				case 5:
+					truckMediaNode =  mTruckPromptMapNodes.get(nBannerNum-3).get(position);
+					break;
+			}
+			if (truckMediaNode != null) {
+				CardManager.getInstance().action(position, truckMediaNode,MediaPlayActivity.this);
+			}
 		}
 	}
 
@@ -2277,15 +2326,18 @@ public class MediaPlayActivity extends BaseActivity implements
 		list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_BOTTOM,list);
 
-		//list = getBannerPromptList(Contant.ADS_PROMPT_TOP);
-		list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
+		list = getBannerPromptList(Contant.ADS_PROMPT_TOP);
+		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckPromptMapNodes.put(Contant.ADS_PROMPT_TOP,list);
-		//list = getBannerPromptList(Contant.ADS_PROMPT_BOTTOM);
-		list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
+		list = getBannerPromptList(Contant.ADS_PROMPT_BOTTOM);
+		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckPromptMapNodes.put(Contant.ADS_PROMPT_BOTTOM,list);
+		if(list.size() == 0){
+			mShrink.setVisibility(View.GONE);
+		}
 
-		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_All);
-		list = getWindowList(Contant.ADS_WINDOW_ORIENT_MIDDLE);
+		list = getWindowList(Contant.ADS_WINDOW_ORIENT_All);
+		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_MIDDLE);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_All,list);
 		if(list.size() != 0){
 			isBannerAll = true;

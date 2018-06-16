@@ -6,9 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,13 +18,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.golding.goldinglauncher.GoldingLauncherActivity;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.GpsNavigatorProtos;
-import com.goldingmedia.jni.LcdPowerSwitch;
 import com.goldingmedia.most.ipc.MostTcpProtoBuf;
 import com.goldingmedia.mvp.mode.EventBusCMD;
 import com.goldingmedia.mvp.mode.ReDownLoadParam;
@@ -47,7 +43,6 @@ import com.goldingmedia.service.PictureGetService;
 import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.HttpDownloader;
-import com.goldingmedia.utils.LruCacheUtils;
 import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
 import com.goldingmedia.utils.Utils;
@@ -138,7 +133,7 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                       //  LcdPowerSwitch.lcdOff();
-                        Intent intent = new Intent(LauncherActivity.this,BlackActivity.class);
+                        Intent intent = new Intent(LauncherActivity.this,ScreenOffActivity.class);
                         startActivity(intent);
                     }
                 })
@@ -273,29 +268,29 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
                 if(position<i){
                     ((RadioButton)title_group.getChildAt(position)).setChecked(true);
                 }
-                switch (position) {
-                    case type_recommend:
-
-                        break;
-                    case type_video:
-
-                        break;
-                    case type_golding_media:
-
-                        break;
-                    case type_game_center:
-
-                        break;
-                    case type_e_line:
-
-                        break;
-                    case type_mylive:
-
-                        break;
-                    case type_my_app:
-
-                        break;
-                }
+//                switch (position) {
+//                    case type_recommend:
+//
+//                        break;
+//                    case type_video:
+//
+//                        break;
+//                    case type_golding_media:
+//
+//                        break;
+//                    case type_game_center:
+//
+//                        break;
+//                    case type_e_line:
+//
+//                        break;
+//                    case type_mylive:
+//
+//                        break;
+//                    case type_my_app:
+//
+//                        break;
+//                }
             }
 
             @Override
@@ -342,10 +337,8 @@ public class LauncherActivity extends BaseActivity implements HandlerUtils.OnRec
                break;
             case R.id.rb_bm_tv_show:
                 mType = Contant.MEDIA_TYPE_TVSHOW;
-               // Utils.testCodeProto2DB();
                 break;
             default:
-              //  pBundle.putInt("CHECKID",checkid);
                 ((RadioButton)rg_video_type_bottom.getChildAt(0)).setChecked(true);
                 break;
         }

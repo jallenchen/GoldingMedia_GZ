@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.R;
 
 public class ImageAdapter extends BaseAdapter {
@@ -63,7 +64,8 @@ public class ImageAdapter extends BaseAdapter {
 		}
 		if (bitmaps.size() > 0) {
             Bitmap item = bitmaps.get(position % bitmaps.size());
-			holder.imageView.setImageBitmap(item);
+			//holder.imageView.setImageBitmap(item);
+			Glide.with(context).load(item).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
 		}
 		return convertView;
 	}

@@ -217,5 +217,5 @@
     <string name="permission_write_external_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_WRITE_EXTERNAL_STORAGE</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">暂时未开放！</string>
+    <string name="hello_blank_fragment">暂未开放！</string>
 </resources>

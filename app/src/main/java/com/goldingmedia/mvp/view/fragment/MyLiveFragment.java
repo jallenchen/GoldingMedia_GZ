@@ -11,7 +11,6 @@ import com.goldingmedia.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MyLiveFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MyLiveFragment#newInstance} factory method to
  * create an instance of this fragment.

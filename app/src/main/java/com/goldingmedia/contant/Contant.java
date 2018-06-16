@@ -262,10 +262,12 @@ public class Contant {
     public static final int ADS_WINDOW_ORIENT_BOTTOM = 3;
 
     ////ADS_WINDOW_ORIENT For prompt
-    public static final int ADS_PROMPT_TOP= 0;
-    public static final int ADS_PROMPT_BOTTOM = 1;
+    public static final int ADS_PROMPT_TOP= 1;
+    public static final int ADS_PROMPT_BOTTOM = 2;
 
-
+    public static final int ADS_ACTION_NULL = 0;
+    public static final int ADS_ACTION_URL = 1;
+    public static final int ADS_ACTION_SUB = 2;
 
     ////DEV_TYPE
     public static final int DEV_TYPE_MASTER = 1;
@@ -305,7 +307,7 @@ public class Contant {
     public final static String TABLE_NAME_ADS = "table_ads";
     public final static String TABLE_NAME_STATISTICS = "table_statistics";
 
-    public final static int VERSION = 13;
+    public final static int VERSION = 15;
    // public final static String DATABASE_NAME= "goldingmedia_sc.db";  //四川版本
     public final static String DATABASE_NAME= "goldingmedia_yg.db"; //粤港版本
    // public final static String DATABASE_NAME= "goldingmedia_hlj.db"; //黑龙江版本
@@ -343,10 +345,16 @@ public class Contant {
     public final static String TRUCK_EXTEND_TYPE= "truck_extend_type";
     public final static String TRUCK_WND_STYLE= "truck_wnd_style";
     public final static String TRUCK_WND_ORIENT = "truck_wnd_orient";
-    public final static String TRUCK_ADS_URL = "truck_ads_url";
-    public final static String TRUCK_PLAY_ORDER = "truck_play_order";
     public final static String TRUCK_PLAY_AREA= "truck_play_area";
     public final static String TRUCK_PLAY_PLAN= "truck_play_plan";
+
+    //for update ads action
+    public final static String TRUCK_ADS_ACTION = "truck_ads_action";
+    public final static String TRUCK_ADS_URL = "truck_ads_url";
+    public final static String TRUCK_PLAY_ORDER = "truck_play_order";
+    public final static String TRUCK_ADS_ACTION_CATEGORY_ID = "truck_action_cate_id";
+    public final static String TRUCK_ADS_ACTION_CATEGORY_SUB_ID = "truck_action_cate_subid";
+    public final static String TRUCK_ADS_ACTION_CATEGORY_FILENAME = "truck_action_filename";
 
     public final static String TABLE_NAME_PAYMETA= "table_paymeta";
     public final static String PAY_TYPE = "pay_type";

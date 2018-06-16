@@ -48,12 +48,12 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 	private SurfaceView mSurfaceView;
 	private int mPos = 0;
 	private int mEvenPos = 0;
-	private int mFirstAdsPos = 0;
+	private boolean mFirstAds = false;
+	private int mPlayCnt = 0;
 	private TruckMediaProtos.CTruckMediaNode mTruck;
 	private List<TruckMediaProtos.CTruckMediaNode> mDataList;
 	private List<TruckMediaProtos.CTruckMediaNode> mEvenDataList;
 	private List<TruckMediaProtos.CTruckMediaNode> mSecurityDataList;
-	private List<TruckMediaProtos.CTruckMediaNode> mFirstAdsList;
 	private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
 
 	private int mImgTimeCounter = 0;
@@ -82,10 +82,13 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		mFBlock = FBlock.GetInstance();
 		setContentView(R.layout.activity_ads_play);
 		mRet = IP.GetLocalIpData(payloadMac);
-		String mStr = SharedPreference.getParamentString(mContext, "adPos");
-		if( !TextUtils.isEmpty(mStr) ){
-			mPos = Integer.valueOf(mStr);
+		if(Variables.mFirstAds == false){
+			String mStr = SharedPreference.getParamentString(mContext, "adPos");
+			if( !TextUtils.isEmpty(mStr) ){
+				mPos = Integer.valueOf(mStr);
+			}
 		}
+
 		Variables.mLimitOutCounter = 0;
 
 		audioManager=(AudioManager)getSystemService(Service.AUDIO_SERVICE);
@@ -159,7 +162,8 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		} else {
 			if(Variables.mFirstAds){
 				//todo 开机第一次广告 15s*2
-				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
+				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST);
+				mFirstAds = true;
 			}else{
 				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
 			}
@@ -201,10 +205,10 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 
 				NLog.e(TAG,"mLimitCounter:"+mLimitCounter+" mLimitOutCounter:"+Variables.mLimitOutCounter);
 
-				//每隔15s切换下一条广告
-				if(mRegularAdStart && mLimitCounter%15 == 0){
-					SwitchContent();
-				}
+//				//每隔15s切换下一条广告
+//				if(mRegularAdStart && mLimitCounter%15 == 0){
+//					SwitchContent();
+//				}
 
 				// 1秒更新点一次播时间
 				if(mTruck != null) DataHelper.updateStatistics(mContext, 1000, mTruck, Contant.PROPERTY_STATISTICS_ADS_ID);
@@ -237,6 +241,22 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 
 	private void SwitchContent(){// 广告处理器，管理 安全广告 即时广告 定时广告
 		if (isExitActivity) return;
+		if(mFirstAds){
+			//开机第一次广告最多播放2个
+			if(mPlayCnt < 2){
+				mPlayCnt ++;
+			}else{
+				return;
+			}
+		}else{
+			//定时广告最多播放3个
+			if(mPlayCnt < 3){
+				mPlayCnt ++;
+			}else{
+				return;
+			}
+		}
+
 		TruckMediaProtos.CTruckMediaNode svStruct = null;
 		if (Variables.mSVStart) {// 安全广告
 			Variables.mSVStart = false;
@@ -391,7 +411,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 			String action = intent.getAction();
 			if(Contant.Actions.PLAY_STATUS_REPORT.equals(action)){
 				int status = intent.getIntExtra("status", -1);
-				Log.i("","BroadcastReceiver status = " + status);
+				Log.i(TAG,"BroadcastReceiver status = " + status);
 				switch(status){
 					case Contant.StatusCode.PLAY_STATUS_SUCCESS:
 						break;
@@ -408,7 +428,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 						break;
 				}
 			} else if(Contant.Actions.ADS_SWITCH.equals(action)){
-				String status = intent.getStringExtra("status");
+		    	String status = intent.getStringExtra("status");
 				if(status == null || "".equals(status)) {
 					SwitchContent();
 				} else if("noFile".equals(status)) {
@@ -430,7 +450,10 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 					SwitchContent();
 				}
 			} else if("com.golding.exitadplay".equals(action)){
-				SharedPreference.setParamentString(mContext, "adPos", String.valueOf(mPos));
+				if(mFirstAds == false ){
+					SharedPreference.setParamentString(mContext, "adPos", String.valueOf(mPos));
+				}
+
 				exitActivity();
 			}
 		}

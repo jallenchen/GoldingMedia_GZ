@@ -21,6 +21,7 @@ import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.view.adapter.BookAdapter;
 import com.goldingmedia.mvp.view.ui.BookLayout;
 import com.goldingmedia.mvp.view.ui.ImageViewHolder;
+import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
@@ -179,7 +180,7 @@ public class ReadBookActivity extends BaseActivity{
 
                     @Override
                     public void onPageScrollStateChanged(int state) {
-                        if(state == 0 && mBanner.getCurrentItem() == 0){
+                        if(state == 2 && mBanner.getCurrentItem() == 0){
                                if(dataType == Contant.ADS_WINDOW_ORIENT_All){
                                     setBannerVisibility(false,isBannerAll);
                                }else if(dataType == Contant.ADS_WINDOW_ORIENT_TOP){
@@ -214,9 +215,6 @@ public class ReadBookActivity extends BaseActivity{
                         fileName+"/"+fileName+".jpg",true);
 
                  list.add(imgPath);
-                 list.add(imgPath);
-                 list.add(imgPath);
-                 NLog.e(TAG,imgPath);
             }
 
         return list;
@@ -231,7 +229,11 @@ public class ReadBookActivity extends BaseActivity{
 
         @Override
         public void onItemClick(int position) {
-            NToast.longToast(ReadBookActivity.this,nBannerNum+":mBanners点击了条目"+position);
+            TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
+
+            if (truckMediaNode != null) {
+                CardManager.getInstance().action(position, truckMediaNode,ReadBookActivity.this);
+            }
         }
     }
 

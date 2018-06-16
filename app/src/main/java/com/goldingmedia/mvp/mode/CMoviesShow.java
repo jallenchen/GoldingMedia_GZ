@@ -1,5 +1,7 @@
 package com.goldingmedia.mvp.mode;
 
+import android.util.SparseArray;
+
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 
@@ -20,6 +22,8 @@ public class CMoviesShow {
     private List<TruckMediaProtos.CTruckMediaNode> mSDLMediaNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     private List<HashMap<Integer,List<TruckMediaProtos.CTruckMediaNode>> > mTruckMediaNodes = new ArrayList<HashMap<Integer,List<TruckMediaProtos.CTruckMediaNode>> >();
     private List<Category> mCategorys = new ArrayList<Category>();
+    private SparseArray<List<TruckMediaProtos.CTruckMediaNode>> TrucksMap = new SparseArray<>();
+
     public int getCategoryId() {
         return categoryId;
     }
@@ -98,6 +102,19 @@ public class CMoviesShow {
             default:
                 return null;
         }
+    }
+
+    public List<TruckMediaProtos.CTruckMediaNode> getGoldingMoviesByType(int type){
+        List<TruckMediaProtos.CTruckMediaNode> list = new ArrayList<>();
+        for(int i = 0;i < mGOLDINGtruckMediaNodes.size();i++){
+            if(mGOLDINGtruckMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckMediaType() == type){
+                list.add(mGOLDINGtruckMediaNodes.get(i));
+            }
+        }
+        TrucksMap.put(type,list);
+
+
+        return list;
     }
 
 }

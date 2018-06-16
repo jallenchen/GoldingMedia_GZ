@@ -2439,36 +2439,18 @@ public final class MediaMetaProtos {
      * 20180528新增：同一位置多个广告播放的顺序
      * </pre>
      *
-     * <code>string truck_play_order = 6;</code>
+     * <code>int32 truck_play_order = 6;</code>
      */
-    java.lang.String getTruckPlayOrder();
-    /**
-     * <pre>
-     * 20180528新增：同一位置多个广告播放的顺序
-     * </pre>
-     *
-     * <code>string truck_play_order = 6;</code>
-     */
-    com.google.protobuf.ByteString
-        getTruckPlayOrderBytes();
+    int getTruckPlayOrder();
 
     /**
      * <pre>
      *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
      * </pre>
      *
-     * <code>string truck_ads_action = 7;</code>
+     * <code>int32 truck_ads_action = 7;</code>
      */
-    java.lang.String getTruckAdsAction();
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
-     * </pre>
-     *
-     * <code>string truck_ads_action = 7;</code>
-     */
-    com.google.protobuf.ByteString
-        getTruckAdsActionBytes();
+    int getTruckAdsAction();
 
     /**
      * <pre>
@@ -2493,36 +2475,18 @@ public final class MediaMetaProtos {
      *20180608新增：广告超链接类型为2时 大类
      * </pre>
      *
-     * <code>string truck_category_id = 9;</code>
+     * <code>int32 truck_category_id = 9;</code>
      */
-    java.lang.String getTruckCategoryId();
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型为2时 大类
-     * </pre>
-     *
-     * <code>string truck_category_id = 9;</code>
-     */
-    com.google.protobuf.ByteString
-        getTruckCategoryIdBytes();
+    int getTruckCategoryId();
 
     /**
      * <pre>
      *20180608新增：广告超链接类型为2时 子类
      * </pre>
      *
-     * <code>string truck_category_sub_id = 10;</code>
+     * <code>int32 truck_category_sub_id = 10;</code>
      */
-    java.lang.String getTruckCategorySubId();
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型为2时 子类
-     * </pre>
-     *
-     * <code>string truck_category_sub_id = 10;</code>
-     */
-    com.google.protobuf.ByteString
-        getTruckCategorySubIdBytes();
+    int getTruckCategorySubId();
 
     /**
      * <pre>
@@ -2559,11 +2523,11 @@ public final class MediaMetaProtos {
       truckWndOrient_ = "";
       truckPlayArea_ = "";
       truckPlayPlan_ = "";
-      truckPlayOrder_ = "";
-      truckAdsAction_ = "";
+      truckPlayOrder_ = 0;
+      truckAdsAction_ = 0;
       truckAdsUrl_ = "";
-      truckCategoryId_ = "";
-      truckCategorySubId_ = "";
+      truckCategoryId_ = 0;
+      truckCategorySubId_ = 0;
       truckFileName_ = "";
     }
 
@@ -2622,16 +2586,14 @@ public final class MediaMetaProtos {
               truckPlayPlan_ = s;
               break;
             }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 48: {
 
-              truckPlayOrder_ = s;
+              truckPlayOrder_ = input.readInt32();
               break;
             }
-            case 58: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 56: {
 
-              truckAdsAction_ = s;
+              truckAdsAction_ = input.readInt32();
               break;
             }
             case 66: {
@@ -2640,16 +2602,14 @@ public final class MediaMetaProtos {
               truckAdsUrl_ = s;
               break;
             }
-            case 74: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 72: {
 
-              truckCategoryId_ = s;
+              truckCategoryId_ = input.readInt32();
               break;
             }
-            case 82: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 80: {
 
-              truckCategorySubId_ = s;
+              truckCategorySubId_ = input.readInt32();
               break;
             }
             case 90: {
@@ -2868,87 +2828,29 @@ public final class MediaMetaProtos {
     }
 
     public static final int TRUCK_PLAY_ORDER_FIELD_NUMBER = 6;
-    private volatile java.lang.Object truckPlayOrder_;
+    private int truckPlayOrder_;
     /**
      * <pre>
      * 20180528新增：同一位置多个广告播放的顺序
      * </pre>
      *
-     * <code>string truck_play_order = 6;</code>
+     * <code>int32 truck_play_order = 6;</code>
      */
-    public java.lang.String getTruckPlayOrder() {
-      java.lang.Object ref = truckPlayOrder_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        truckPlayOrder_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 20180528新增：同一位置多个广告播放的顺序
-     * </pre>
-     *
-     * <code>string truck_play_order = 6;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTruckPlayOrderBytes() {
-      java.lang.Object ref = truckPlayOrder_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        truckPlayOrder_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getTruckPlayOrder() {
+      return truckPlayOrder_;
     }
 
     public static final int TRUCK_ADS_ACTION_FIELD_NUMBER = 7;
-    private volatile java.lang.Object truckAdsAction_;
+    private int truckAdsAction_;
     /**
      * <pre>
      *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
      * </pre>
      *
-     * <code>string truck_ads_action = 7;</code>
+     * <code>int32 truck_ads_action = 7;</code>
      */
-    public java.lang.String getTruckAdsAction() {
-      java.lang.Object ref = truckAdsAction_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        truckAdsAction_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
-     * </pre>
-     *
-     * <code>string truck_ads_action = 7;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTruckAdsActionBytes() {
-      java.lang.Object ref = truckAdsAction_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        truckAdsAction_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getTruckAdsAction() {
+      return truckAdsAction_;
     }
 
     public static final int TRUCK_ADS_URL_FIELD_NUMBER = 8;
@@ -2994,87 +2896,29 @@ public final class MediaMetaProtos {
     }
 
     public static final int TRUCK_CATEGORY_ID_FIELD_NUMBER = 9;
-    private volatile java.lang.Object truckCategoryId_;
+    private int truckCategoryId_;
     /**
      * <pre>
      *20180608新增：广告超链接类型为2时 大类
      * </pre>
      *
-     * <code>string truck_category_id = 9;</code>
+     * <code>int32 truck_category_id = 9;</code>
      */
-    public java.lang.String getTruckCategoryId() {
-      java.lang.Object ref = truckCategoryId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        truckCategoryId_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型为2时 大类
-     * </pre>
-     *
-     * <code>string truck_category_id = 9;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTruckCategoryIdBytes() {
-      java.lang.Object ref = truckCategoryId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        truckCategoryId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getTruckCategoryId() {
+      return truckCategoryId_;
     }
 
     public static final int TRUCK_CATEGORY_SUB_ID_FIELD_NUMBER = 10;
-    private volatile java.lang.Object truckCategorySubId_;
+    private int truckCategorySubId_;
     /**
      * <pre>
      *20180608新增：广告超链接类型为2时 子类
      * </pre>
      *
-     * <code>string truck_category_sub_id = 10;</code>
+     * <code>int32 truck_category_sub_id = 10;</code>
      */
-    public java.lang.String getTruckCategorySubId() {
-      java.lang.Object ref = truckCategorySubId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        truckCategorySubId_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     *20180608新增：广告超链接类型为2时 子类
-     * </pre>
-     *
-     * <code>string truck_category_sub_id = 10;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTruckCategorySubIdBytes() {
-      java.lang.Object ref = truckCategorySubId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        truckCategorySubId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getTruckCategorySubId() {
+      return truckCategorySubId_;
     }
 
     public static final int TRUCK_FILE_NAME_FIELD_NUMBER = 11;
@@ -3146,20 +2990,20 @@ public final class MediaMetaProtos {
       if (!getTruckPlayPlanBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, truckPlayPlan_);
       }
-      if (!getTruckPlayOrderBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, truckPlayOrder_);
+      if (truckPlayOrder_ != 0) {
+        output.writeInt32(6, truckPlayOrder_);
       }
-      if (!getTruckAdsActionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, truckAdsAction_);
+      if (truckAdsAction_ != 0) {
+        output.writeInt32(7, truckAdsAction_);
       }
       if (!getTruckAdsUrlBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, truckAdsUrl_);
       }
-      if (!getTruckCategoryIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, truckCategoryId_);
+      if (truckCategoryId_ != 0) {
+        output.writeInt32(9, truckCategoryId_);
       }
-      if (!getTruckCategorySubIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, truckCategorySubId_);
+      if (truckCategorySubId_ != 0) {
+        output.writeInt32(10, truckCategorySubId_);
       }
       if (!getTruckFileNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, truckFileName_);
@@ -3186,20 +3030,24 @@ public final class MediaMetaProtos {
       if (!getTruckPlayPlanBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, truckPlayPlan_);
       }
-      if (!getTruckPlayOrderBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, truckPlayOrder_);
+      if (truckPlayOrder_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, truckPlayOrder_);
       }
-      if (!getTruckAdsActionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, truckAdsAction_);
+      if (truckAdsAction_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, truckAdsAction_);
       }
       if (!getTruckAdsUrlBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, truckAdsUrl_);
       }
-      if (!getTruckCategoryIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, truckCategoryId_);
+      if (truckCategoryId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(9, truckCategoryId_);
       }
-      if (!getTruckCategorySubIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, truckCategorySubId_);
+      if (truckCategorySubId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(10, truckCategorySubId_);
       }
       if (!getTruckFileNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, truckFileName_);
@@ -3230,16 +3078,16 @@ public final class MediaMetaProtos {
           .equals(other.getTruckPlayArea());
       result = result && getTruckPlayPlan()
           .equals(other.getTruckPlayPlan());
-      result = result && getTruckPlayOrder()
-          .equals(other.getTruckPlayOrder());
-      result = result && getTruckAdsAction()
-          .equals(other.getTruckAdsAction());
+      result = result && (getTruckPlayOrder()
+          == other.getTruckPlayOrder());
+      result = result && (getTruckAdsAction()
+          == other.getTruckAdsAction());
       result = result && getTruckAdsUrl()
           .equals(other.getTruckAdsUrl());
-      result = result && getTruckCategoryId()
-          .equals(other.getTruckCategoryId());
-      result = result && getTruckCategorySubId()
-          .equals(other.getTruckCategorySubId());
+      result = result && (getTruckCategoryId()
+          == other.getTruckCategoryId());
+      result = result && (getTruckCategorySubId()
+          == other.getTruckCategorySubId());
       result = result && getTruckFileName()
           .equals(other.getTruckFileName());
       return result;
@@ -3263,15 +3111,15 @@ public final class MediaMetaProtos {
       hash = (37 * hash) + TRUCK_PLAY_PLAN_FIELD_NUMBER;
       hash = (53 * hash) + getTruckPlayPlan().hashCode();
       hash = (37 * hash) + TRUCK_PLAY_ORDER_FIELD_NUMBER;
-      hash = (53 * hash) + getTruckPlayOrder().hashCode();
+      hash = (53 * hash) + getTruckPlayOrder();
       hash = (37 * hash) + TRUCK_ADS_ACTION_FIELD_NUMBER;
-      hash = (53 * hash) + getTruckAdsAction().hashCode();
+      hash = (53 * hash) + getTruckAdsAction();
       hash = (37 * hash) + TRUCK_ADS_URL_FIELD_NUMBER;
       hash = (53 * hash) + getTruckAdsUrl().hashCode();
       hash = (37 * hash) + TRUCK_CATEGORY_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getTruckCategoryId().hashCode();
+      hash = (53 * hash) + getTruckCategoryId();
       hash = (37 * hash) + TRUCK_CATEGORY_SUB_ID_FIELD_NUMBER;
-      hash = (53 * hash) + getTruckCategorySubId().hashCode();
+      hash = (53 * hash) + getTruckCategorySubId();
       hash = (37 * hash) + TRUCK_FILE_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getTruckFileName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -3413,15 +3261,15 @@ public final class MediaMetaProtos {
 
         truckPlayPlan_ = "";
 
-        truckPlayOrder_ = "";
+        truckPlayOrder_ = 0;
 
-        truckAdsAction_ = "";
+        truckAdsAction_ = 0;
 
         truckAdsUrl_ = "";
 
-        truckCategoryId_ = "";
+        truckCategoryId_ = 0;
 
-        truckCategorySubId_ = "";
+        truckCategorySubId_ = 0;
 
         truckFileName_ = "";
 
@@ -3519,25 +3367,21 @@ public final class MediaMetaProtos {
           truckPlayPlan_ = other.truckPlayPlan_;
           onChanged();
         }
-        if (!other.getTruckPlayOrder().isEmpty()) {
-          truckPlayOrder_ = other.truckPlayOrder_;
-          onChanged();
+        if (other.getTruckPlayOrder() != 0) {
+          setTruckPlayOrder(other.getTruckPlayOrder());
         }
-        if (!other.getTruckAdsAction().isEmpty()) {
-          truckAdsAction_ = other.truckAdsAction_;
-          onChanged();
+        if (other.getTruckAdsAction() != 0) {
+          setTruckAdsAction(other.getTruckAdsAction());
         }
         if (!other.getTruckAdsUrl().isEmpty()) {
           truckAdsUrl_ = other.truckAdsUrl_;
           onChanged();
         }
-        if (!other.getTruckCategoryId().isEmpty()) {
-          truckCategoryId_ = other.truckCategoryId_;
-          onChanged();
+        if (other.getTruckCategoryId() != 0) {
+          setTruckCategoryId(other.getTruckCategoryId());
         }
-        if (!other.getTruckCategorySubId().isEmpty()) {
-          truckCategorySubId_ = other.truckCategorySubId_;
-          onChanged();
+        if (other.getTruckCategorySubId() != 0) {
+          setTruckCategorySubId(other.getTruckCategorySubId());
         }
         if (!other.getTruckFileName().isEmpty()) {
           truckFileName_ = other.truckFileName_;
@@ -3954,59 +3798,26 @@ public final class MediaMetaProtos {
         return this;
       }
 
-      private java.lang.Object truckPlayOrder_ = "";
+      private int truckPlayOrder_ ;
       /**
        * <pre>
        * 20180528新增：同一位置多个广告播放的顺序
        * </pre>
        *
-       * <code>string truck_play_order = 6;</code>
+       * <code>int32 truck_play_order = 6;</code>
        */
-      public java.lang.String getTruckPlayOrder() {
-        java.lang.Object ref = truckPlayOrder_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          truckPlayOrder_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getTruckPlayOrder() {
+        return truckPlayOrder_;
       }
       /**
        * <pre>
        * 20180528新增：同一位置多个广告播放的顺序
        * </pre>
        *
-       * <code>string truck_play_order = 6;</code>
+       * <code>int32 truck_play_order = 6;</code>
        */
-      public com.google.protobuf.ByteString
-          getTruckPlayOrderBytes() {
-        java.lang.Object ref = truckPlayOrder_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          truckPlayOrder_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 20180528新增：同一位置多个广告播放的顺序
-       * </pre>
-       *
-       * <code>string truck_play_order = 6;</code>
-       */
-      public Builder setTruckPlayOrder(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setTruckPlayOrder(int value) {
+        
         truckPlayOrder_ = value;
         onChanged();
         return this;
@@ -4016,86 +3827,35 @@ public final class MediaMetaProtos {
        * 20180528新增：同一位置多个广告播放的顺序
        * </pre>
        *
-       * <code>string truck_play_order = 6;</code>
+       * <code>int32 truck_play_order = 6;</code>
        */
       public Builder clearTruckPlayOrder() {
         
-        truckPlayOrder_ = getDefaultInstance().getTruckPlayOrder();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 20180528新增：同一位置多个广告播放的顺序
-       * </pre>
-       *
-       * <code>string truck_play_order = 6;</code>
-       */
-      public Builder setTruckPlayOrderBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        truckPlayOrder_ = value;
+        truckPlayOrder_ = 0;
         onChanged();
         return this;
       }
 
-      private java.lang.Object truckAdsAction_ = "";
+      private int truckAdsAction_ ;
       /**
        * <pre>
        *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
        * </pre>
        *
-       * <code>string truck_ads_action = 7;</code>
+       * <code>int32 truck_ads_action = 7;</code>
        */
-      public java.lang.String getTruckAdsAction() {
-        java.lang.Object ref = truckAdsAction_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          truckAdsAction_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getTruckAdsAction() {
+        return truckAdsAction_;
       }
       /**
        * <pre>
        *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
        * </pre>
        *
-       * <code>string truck_ads_action = 7;</code>
+       * <code>int32 truck_ads_action = 7;</code>
        */
-      public com.google.protobuf.ByteString
-          getTruckAdsActionBytes() {
-        java.lang.Object ref = truckAdsAction_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          truckAdsAction_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
-       * </pre>
-       *
-       * <code>string truck_ads_action = 7;</code>
-       */
-      public Builder setTruckAdsAction(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setTruckAdsAction(int value) {
+        
         truckAdsAction_ = value;
         onChanged();
         return this;
@@ -4105,29 +3865,11 @@ public final class MediaMetaProtos {
        *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
        * </pre>
        *
-       * <code>string truck_ads_action = 7;</code>
+       * <code>int32 truck_ads_action = 7;</code>
        */
       public Builder clearTruckAdsAction() {
         
-        truckAdsAction_ = getDefaultInstance().getTruckAdsAction();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型 0:广告无超链接（默认）1：超链接类型为url 2：超链接类型通过大类、子类、文件名跳转
-       * </pre>
-       *
-       * <code>string truck_ads_action = 7;</code>
-       */
-      public Builder setTruckAdsActionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        truckAdsAction_ = value;
+        truckAdsAction_ = 0;
         onChanged();
         return this;
       }
@@ -4221,59 +3963,26 @@ public final class MediaMetaProtos {
         return this;
       }
 
-      private java.lang.Object truckCategoryId_ = "";
+      private int truckCategoryId_ ;
       /**
        * <pre>
        *20180608新增：广告超链接类型为2时 大类
        * </pre>
        *
-       * <code>string truck_category_id = 9;</code>
+       * <code>int32 truck_category_id = 9;</code>
        */
-      public java.lang.String getTruckCategoryId() {
-        java.lang.Object ref = truckCategoryId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          truckCategoryId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getTruckCategoryId() {
+        return truckCategoryId_;
       }
       /**
        * <pre>
        *20180608新增：广告超链接类型为2时 大类
        * </pre>
        *
-       * <code>string truck_category_id = 9;</code>
+       * <code>int32 truck_category_id = 9;</code>
        */
-      public com.google.protobuf.ByteString
-          getTruckCategoryIdBytes() {
-        java.lang.Object ref = truckCategoryId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          truckCategoryId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型为2时 大类
-       * </pre>
-       *
-       * <code>string truck_category_id = 9;</code>
-       */
-      public Builder setTruckCategoryId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setTruckCategoryId(int value) {
+        
         truckCategoryId_ = value;
         onChanged();
         return this;
@@ -4283,86 +3992,35 @@ public final class MediaMetaProtos {
        *20180608新增：广告超链接类型为2时 大类
        * </pre>
        *
-       * <code>string truck_category_id = 9;</code>
+       * <code>int32 truck_category_id = 9;</code>
        */
       public Builder clearTruckCategoryId() {
         
-        truckCategoryId_ = getDefaultInstance().getTruckCategoryId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型为2时 大类
-       * </pre>
-       *
-       * <code>string truck_category_id = 9;</code>
-       */
-      public Builder setTruckCategoryIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        truckCategoryId_ = value;
+        truckCategoryId_ = 0;
         onChanged();
         return this;
       }
 
-      private java.lang.Object truckCategorySubId_ = "";
+      private int truckCategorySubId_ ;
       /**
        * <pre>
        *20180608新增：广告超链接类型为2时 子类
        * </pre>
        *
-       * <code>string truck_category_sub_id = 10;</code>
+       * <code>int32 truck_category_sub_id = 10;</code>
        */
-      public java.lang.String getTruckCategorySubId() {
-        java.lang.Object ref = truckCategorySubId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          truckCategorySubId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getTruckCategorySubId() {
+        return truckCategorySubId_;
       }
       /**
        * <pre>
        *20180608新增：广告超链接类型为2时 子类
        * </pre>
        *
-       * <code>string truck_category_sub_id = 10;</code>
+       * <code>int32 truck_category_sub_id = 10;</code>
        */
-      public com.google.protobuf.ByteString
-          getTruckCategorySubIdBytes() {
-        java.lang.Object ref = truckCategorySubId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          truckCategorySubId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型为2时 子类
-       * </pre>
-       *
-       * <code>string truck_category_sub_id = 10;</code>
-       */
-      public Builder setTruckCategorySubId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setTruckCategorySubId(int value) {
+        
         truckCategorySubId_ = value;
         onChanged();
         return this;
@@ -4372,29 +4030,11 @@ public final class MediaMetaProtos {
        *20180608新增：广告超链接类型为2时 子类
        * </pre>
        *
-       * <code>string truck_category_sub_id = 10;</code>
+       * <code>int32 truck_category_sub_id = 10;</code>
        */
       public Builder clearTruckCategorySubId() {
         
-        truckCategorySubId_ = getDefaultInstance().getTruckCategorySubId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       *20180608新增：广告超链接类型为2时 子类
-       * </pre>
-       *
-       * <code>string truck_category_sub_id = 10;</code>
-       */
-      public Builder setTruckCategorySubIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        truckCategorySubId_ = value;
+        truckCategorySubId_ = 0;
         onChanged();
         return this;
       }
@@ -5880,10 +5520,10 @@ public final class MediaMetaProtos {
       "d\022\031\n\021truck_extend_type\030\001 \001(\t\022\027\n\017truck_wn" +
       "d_style\030\002 \001(\t\022\030\n\020truck_wnd_orient\030\003 \001(\t\022" +
       "\027\n\017truck_play_area\030\004 \001(\t\022\027\n\017truck_play_p" +
-      "lan\030\005 \001(\t\022\030\n\020truck_play_order\030\006 \001(\t\022\030\n\020t" +
-      "ruck_ads_action\030\007 \001(\t\022\025\n\rtruck_ads_url\030\010" +
-      " \001(\t\022\031\n\021truck_category_id\030\t \001(\t\022\035\n\025truck" +
-      "_category_sub_id\030\n \001(\t\022\027\n\017truck_file_nam" +
+      "lan\030\005 \001(\t\022\030\n\020truck_play_order\030\006 \001(\005\022\030\n\020t" +
+      "ruck_ads_action\030\007 \001(\005\022\025\n\rtruck_ads_url\030\010" +
+      " \001(\t\022\031\n\021truck_category_id\030\t \001(\005\022\035\n\025truck" +
+      "_category_sub_id\030\n \001(\005\022\027\n\017truck_file_nam" +
       "e\030\013 \001(\t\"\313\001\n\nCMediaMeta\022\023\n\013category_id\030\001 " +
       "\001(\005\022\027\n\017category_sub_id\030\002 \001(\005\022\027\n\017truck_su" +
       "b_index\030\003 \001(\005\022\026\n\016truck_sub_desc\030\004 \001(\t\022,\n",

@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.sql.Types.DECIMAL;
+
 /**
  * Created by Jallen on 2017/8/21 0021 08:57.
  */
@@ -82,6 +84,19 @@ public class DataSQLHelper {
         cv.put(Contant.TRUCK_WND_ORIENT, mediaMeta.getAdsMeta().getTruckWndOrient());
         cv.put(Contant.TRUCK_PLAY_AREA, mediaMeta.getAdsMeta().getTruckPlayArea());
         cv.put(Contant.TRUCK_PLAY_PLAN, mediaMeta.getAdsMeta().getTruckPlayPlan());
+
+        //added for update ads action
+        if(tabName.equals(Contant.TABLE_NAME_ADS)){
+            cv.put(Contant.TRUCK_ADS_ACTION, mediaMeta.getAdsMeta().getTruckAdsAction());
+            cv.put(Contant.TRUCK_ADS_URL,mediaMeta.getAdsMeta().getTruckAdsUrl());
+            cv.put(Contant.TRUCK_PLAY_ORDER, mediaMeta.getAdsMeta().getTruckPlayOrder());
+            cv.put(Contant.TRUCK_ADS_ACTION_CATEGORY_ID, mediaMeta.getAdsMeta().getTruckCategoryId());
+            cv.put(Contant.TRUCK_ADS_ACTION_CATEGORY_SUB_ID, mediaMeta.getAdsMeta().getTruckCategorySubId());
+            cv.put(Contant.TRUCK_ADS_ACTION_CATEGORY_FILENAME, mediaMeta.getAdsMeta().getTruckFileName());
+        }
+
+
+
         cv.put(Contant.TOTAL_TIME, playerMeta.getTotalTime());
         cv.put(Contant.CURRENT_TIME, playerMeta.getTotalTime());
         cv.put(Contant.PLAY_COUNT, playerMeta.getCurrentTime());
@@ -145,8 +160,8 @@ public class DataSQLHelper {
                     + Contant.PUSH_GZURI + ","
                     + Contant.PUSH_TSURI + ","
                     + Contant.PUSH_MD5 + ","
-                    + Contant.PUSH_UPMODE + " varchar(20),"
-                    + Contant.PUSH_TIMESTAMP + " varchar(20),"
+                    + Contant.PUSH_UPMODE + ","
+                    + Contant.PUSH_TIMESTAMP + ","
                     + Contant.PUSH_DONE
                     + ") " + "values(?,?,?,?,?,?,?,?,?)";
 
@@ -260,7 +275,8 @@ public class DataSQLHelper {
 
     public List<Category> getCategoryData(int categoryId){
         List<Category> categories = new ArrayList<>();
-        String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ "order by " + Contant.TRUCK_SUB_INDEX + " asc";
+       // String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ "order by " + Contant.TRUCK_SUB_INDEX + " asc";
+        String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ "order by "+"cast "+"(truck_sub_index as int)";
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
         try{
             while (cursor!=null &&  cursor.moveToNext()){
@@ -283,182 +299,225 @@ public class DataSQLHelper {
         return categories;
     }
 
-    public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(String tabName,int subId){
-        List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
-        String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+    private void getDataFromDB(Cursor cursor,String tabName,List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes){
         String md5 ="";
-        try{
-            while (cursor!=null &&  cursor.moveToNext()){
-                TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
-                MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();
 
-                 mediaMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
+        TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
+        MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();
+
+        mediaMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
                 .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
                 .setTruckSubIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_INDEX ))))
                 .setTruckSubDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_DESC ))).build();
 
-                MediaMetaProtos.CTruckMeta.Builder truckMeta = MediaMetaProtos.CTruckMeta.newBuilder();
-                truckMeta.setTruckUuid(cursor.getString(cursor.getColumnIndex(Contant.UUID )));
-                truckMeta.setTruckTitle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_TITLE )));
-                truckMeta.setTruckImage(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_IMAGE )));
-                truckMeta.setTruckFilename(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
-                truckMeta.setTruckDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_DESC )));
-                truckMeta.setTruckProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
-                truckMeta.setTruckExtra(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTRA )));
-                truckMeta.setTruckPeriod(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PERIOD ))));
-                truckMeta.setTruckFavor(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FAVOR ))));
-                truckMeta.setTruckIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_INDEX ))));
-                truckMeta.setTruckShow(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SHOW ))));
-                truckMeta.setTruckValid(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_VALID ))));
-                truckMeta.setTruckMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))));
-                truckMeta.setTruckMediaTheme(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_THEME ))));
-                mediaMeta.setTruckMeta(truckMeta).build();
+        MediaMetaProtos.CTruckMeta.Builder truckMeta = MediaMetaProtos.CTruckMeta.newBuilder();
+        truckMeta.setTruckUuid(cursor.getString(cursor.getColumnIndex(Contant.UUID )));
+        truckMeta.setTruckTitle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_TITLE )));
+        truckMeta.setTruckImage(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_IMAGE )));
+        truckMeta.setTruckFilename(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
+        truckMeta.setTruckDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_DESC )));
+        truckMeta.setTruckProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+        truckMeta.setTruckExtra(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTRA )));
+        truckMeta.setTruckPeriod(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PERIOD ))));
+        truckMeta.setTruckFavor(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FAVOR ))));
+        truckMeta.setTruckIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_INDEX ))));
+        truckMeta.setTruckShow(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SHOW ))));
+        truckMeta.setTruckValid(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_VALID ))));
+        truckMeta.setTruckMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))));
+        truckMeta.setTruckMediaTheme(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_THEME ))));
+        mediaMeta.setTruckMeta(truckMeta).build();
 
-                MediaMetaProtos.CTruckMetaExpand.Builder  truckMetaExpand = MediaMetaProtos.CTruckMetaExpand.newBuilder();
-                truckMetaExpand.setTruckExtendType(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTEND_TYPE )));
-                truckMetaExpand.setTruckWndStyle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_STYLE )));
-                truckMetaExpand.setTruckWndOrient(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_ORIENT )));
-                truckMetaExpand.setTruckPlayArea(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_AREA )));
-                truckMetaExpand.setTruckPlayPlan(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_PLAN )));
-                mediaMeta.setAdsMeta(truckMetaExpand).build();
+        MediaMetaProtos.CTruckMetaExpand.Builder  truckMetaExpand = MediaMetaProtos.CTruckMetaExpand.newBuilder();
+        truckMetaExpand.setTruckExtendType(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTEND_TYPE )));
+        truckMetaExpand.setTruckWndStyle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_STYLE )));
+        truckMetaExpand.setTruckWndOrient(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_ORIENT )));
+        truckMetaExpand.setTruckPlayArea(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_AREA )));
+        truckMetaExpand.setTruckPlayPlan(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_PLAN )));
 
-                truckMediaNode.setMediaInfo(mediaMeta);
-
-                PlayerMetaProtos.CPlayerMeta.Builder playerMeta = PlayerMetaProtos.CPlayerMeta.newBuilder();
-                playerMeta.setTotalTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TOTAL_TIME ))))
-                        .setCurrentTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CURRENT_TIME ))))
-                        .setPlayCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_COUNT ))))
-                        .setPlayDelay(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_DELAY ))))
-                        .setPlayInterval(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_INTERVAL ))))
-                        .setPlayPriority(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_PRIOTITY ))))
-                        .setPlayStateValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_STATE ))));
-                truckMediaNode.setPlayInfo(playerMeta);
-
-                PayMetaProtos.CPayMeta.Builder payMeta = PayMetaProtos.CPayMeta.newBuilder();
-                payMeta.setPayType(cursor.getString(cursor.getColumnIndex(Contant.PAY_TYPE )).equals("1"))
-                        .setPayResult(cursor.getString(cursor.getColumnIndex(Contant.PAY_RESULT )).equals("1"))
-                        .setPayState(cursor.getString(cursor.getColumnIndex(Contant.PAY_STATE )).equals("1"))
-                        .setPayFreeTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_FREE_TIME ))))
-                        .setPayValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_VALUE ))))
-                        .setPayUnit(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_UNIT ))))
-                        .setPayInterface(cursor.getString(cursor.getColumnIndex(Contant.PAY_INTERFACE )))
-                        .setPayMode(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_MODE ))))
-                        .setPayTime(cursor.getString(cursor.getColumnIndex(Contant.PAY_TIME )));
-                truckMediaNode.setPayInfo(payMeta);
-
-                md5 = cursor.getString(cursor.getColumnIndex(Contant.PUSH_MD5 ));
-
-                truckMediaNode.setCategoryId(mediaMeta.getCategoryId());
-                truckMediaNode.setCategorySubId(mediaMeta.getCategorySubId());
-                truckMediaNodes.add(truckMediaNode.build());
-
-                if(truckMeta.getTruckValid() == 2){
-                    ReDownLoadParam downLoadParam = new ReDownLoadParam();
-                    downLoadParam.setCategoryId(mediaMeta.getCategoryId());
-                    downLoadParam.setCategorySubId(mediaMeta.getCategorySubId());
-                    downLoadParam.setFileName(truckMeta.getTruckFilename());
-                    downLoadParam.setTabName(tabName);
-                    downLoadParam.setVail(2);
-                    downLoadParam.setMd5(md5);
-                    downLoadParamMap.put(truckMeta.getTruckFilename(),downLoadParam);
-                }else{
-                    if(downLoadParamMap.containsKey(truckMeta.getTruckFilename())){
-                        downLoadParamMap.remove(truckMeta.getTruckFilename());
-                    }
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        if(tabName.equals(Contant.TABLE_NAME_ADS)){
+            //add by jallen for update ads action
+            truckMetaExpand.setTruckAdsAction(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION )));
+            truckMetaExpand.setTruckAdsUrl(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_ADS_URL ))+"");
+            truckMetaExpand.setTruckPlayOrder(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_PLAY_ORDER )));
+            truckMetaExpand.setTruckCategoryId(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_ID )));
+            truckMetaExpand.setTruckCategorySubId(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_SUB_ID )));
+            truckMetaExpand.setTruckFileName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_FILENAME ))+"");
         }
-        finally {
-            if(cursor!=null)
-            {
-                cursor.close();
-            }
-        }
-        return truckMediaNodes;
-    }
 
-    public MediaResourceInfoProtos.CMediaResourceInfo getMediaResourceInfos(int categoryId, int subId){
-        String tabName = Contant.getTabNameByCategoryId(categoryId);
-        String sql = "";
-        MediaResourceInfoProtos.CMediaResourceInfo.Builder MediaResourceInfo = MediaResourceInfoProtos.CMediaResourceInfo.newBuilder();
 
-        if(categoryId != Contant.CATEGORY_ALL_ID ){
-            if(subId != Contant.CATEGORY_ALL_ID ) {
-                sql = "select * from " + tabName + " where " + Contant.CATEGORY_SUB_ID + " ='" + subId + "'" + "order by " + Contant.TRUCK_INDEX + " asc";
-            }else{
-                sql = "select * from " + tabName;
-            }
-            Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
-            try{
-                while (cursor!=null &&  cursor.moveToNext()){
-                    MediaResourceInfoProtos.CMediaSourceMeta.Builder cMediaSourceMeta = MediaResourceInfoProtos.CMediaSourceMeta.newBuilder();
-                    cMediaSourceMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
-                            .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
-                            .setDevId(Utils.getSerialID())
-                            .setMasterId(Contant.MasterId)
-                            .setDevType(2)
-                            .setMediaName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )))
-                            .setMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))))
-                            .setMediaProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+        mediaMeta.setAdsMeta(truckMetaExpand).build();
 
-                    MediaResourceInfo.addSourceList(cMediaSourceMeta);
+        truckMediaNode.setMediaInfo(mediaMeta);
 
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            finally {
-                if(cursor!=null)
-                {
-                    cursor.close();
-                }
-            }
-            return MediaResourceInfo.build();
+        PlayerMetaProtos.CPlayerMeta.Builder playerMeta = PlayerMetaProtos.CPlayerMeta.newBuilder();
+        playerMeta.setTotalTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TOTAL_TIME ))))
+                .setCurrentTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CURRENT_TIME ))))
+                .setPlayCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_COUNT ))))
+                .setPlayDelay(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_DELAY ))))
+                .setPlayInterval(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_INTERVAL ))))
+                .setPlayPriority(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_PRIOTITY ))))
+                .setPlayStateValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_STATE ))));
+        truckMediaNode.setPlayInfo(playerMeta);
 
+        PayMetaProtos.CPayMeta.Builder payMeta = PayMetaProtos.CPayMeta.newBuilder();
+        payMeta.setPayType(cursor.getString(cursor.getColumnIndex(Contant.PAY_TYPE )).equals("1"))
+                .setPayResult(cursor.getString(cursor.getColumnIndex(Contant.PAY_RESULT )).equals("1"))
+                .setPayState(cursor.getString(cursor.getColumnIndex(Contant.PAY_STATE )).equals("1"))
+                .setPayFreeTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_FREE_TIME ))))
+                .setPayValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_VALUE ))))
+                .setPayUnit(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_UNIT ))))
+                .setPayInterface(cursor.getString(cursor.getColumnIndex(Contant.PAY_INTERFACE )))
+                .setPayMode(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_MODE ))))
+                .setPayTime(cursor.getString(cursor.getColumnIndex(Contant.PAY_TIME )));
+        truckMediaNode.setPayInfo(payMeta);
+
+        md5 = cursor.getString(cursor.getColumnIndex(Contant.PUSH_MD5 ));
+
+        truckMediaNode.setCategoryId(mediaMeta.getCategoryId());
+        truckMediaNode.setCategorySubId(mediaMeta.getCategorySubId());
+        truckMediaNodes.add(truckMediaNode.build());
+
+        if(truckMeta.getTruckValid() == 2){
+            ReDownLoadParam downLoadParam = new ReDownLoadParam();
+            downLoadParam.setCategoryId(mediaMeta.getCategoryId());
+            downLoadParam.setCategorySubId(mediaMeta.getCategorySubId());
+            downLoadParam.setFileName(truckMeta.getTruckFilename());
+            downLoadParam.setTabName(tabName);
+            downLoadParam.setVail(2);
+            downLoadParam.setMd5(md5);
+            downLoadParamMap.put(truckMeta.getTruckFilename(),downLoadParam);
         }else{
-            for(int i=1;i<8;i++){
-                tabName = Contant.getTabNameByCategoryId(i);
-                sql = "select * from " + tabName;
-                Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
-                try{
-                    while (cursor!=null &&  cursor.moveToNext()){
-                        MediaResourceInfoProtos.CMediaSourceMeta.Builder cMediaSourceMeta = MediaResourceInfoProtos.CMediaSourceMeta.newBuilder();
-                        cMediaSourceMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
-                                .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
-                                .setDevId(Utils.getSerialID())
-                                .setMasterId(Contant.MasterId)
-                                .setDevType(2)
-                                .setMediaName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )))
-                                .setMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))))
-                                .setMediaProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
-
-                        MediaResourceInfo.addSourceList(cMediaSourceMeta);
-
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                finally {
-                    if(cursor!=null)
-                    {
-                        cursor.close();
-                    }
-                }
+            if(downLoadParamMap.containsKey(truckMeta.getTruckFilename())){
+                downLoadParamMap.remove(truckMeta.getTruckFilename());
             }
-            return MediaResourceInfo.build();
         }
     }
+    public List<TruckMediaProtos.CTruckMediaNode>  getMediaMetaDataTrucks(String tabName,int subId,String filename){
+        List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
+       // String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  +  "'"+" and "+Contant.TRUCK_FILENAME + " ='" + filename + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
+         String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  +  "'"+" and "+Contant.TRUCK_FILENAME + " ='" + filename + "'"+ "order by "+"cast "+"(truck_index as int)";
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+        try{
+        while (cursor!=null &&  cursor.moveToNext()){
+            getDataFromDB(cursor,tabName,truckMediaNodes);
+        }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            if(cursor!=null)
+            {
+                cursor.close();
+            }
+        }
 
-    public List<String> getMediaMetaDataNames(String tabName,int subId){
-        List<String> truckMediaNodeNames = new ArrayList<>();
-        String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
+        return truckMediaNodes;
+    }
+
+
+    public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(String tabName,int subId){
+        List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
+        String sql;
+      //  String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
+        if(tabName.equals(Contant.TABLE_NAME_ADS)){
+            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by "+"cast "+"(truck_play_order as int)";
+        }else{
+            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by "+"cast "+"(truck_index as int)";
+        }
+
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
         try{
             while (cursor!=null &&  cursor.moveToNext()){
-                truckMediaNodeNames.add(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
+                getDataFromDB(cursor,tabName,truckMediaNodes);
+//                TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
+//                MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();
+//
+//                 mediaMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
+//                .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
+//                .setTruckSubIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_INDEX ))))
+//                .setTruckSubDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_DESC ))).build();
+//
+//                MediaMetaProtos.CTruckMeta.Builder truckMeta = MediaMetaProtos.CTruckMeta.newBuilder();
+//                truckMeta.setTruckUuid(cursor.getString(cursor.getColumnIndex(Contant.UUID )));
+//                truckMeta.setTruckTitle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_TITLE )));
+//                truckMeta.setTruckImage(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_IMAGE )));
+//                truckMeta.setTruckFilename(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
+//                truckMeta.setTruckDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_DESC )));
+//                truckMeta.setTruckProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+//                truckMeta.setTruckExtra(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTRA )));
+//                truckMeta.setTruckPeriod(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PERIOD ))));
+//                truckMeta.setTruckFavor(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FAVOR ))));
+//                truckMeta.setTruckIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_INDEX ))));
+//                truckMeta.setTruckShow(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SHOW ))));
+//                truckMeta.setTruckValid(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_VALID ))));
+//                truckMeta.setTruckMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))));
+//                truckMeta.setTruckMediaTheme(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_THEME ))));
+//                mediaMeta.setTruckMeta(truckMeta).build();
+//
+//                MediaMetaProtos.CTruckMetaExpand.Builder  truckMetaExpand = MediaMetaProtos.CTruckMetaExpand.newBuilder();
+//                truckMetaExpand.setTruckExtendType(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTEND_TYPE )));
+//                truckMetaExpand.setTruckWndStyle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_STYLE )));
+//                truckMetaExpand.setTruckWndOrient(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_ORIENT )));
+//                truckMetaExpand.setTruckPlayArea(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_AREA )));
+//                truckMetaExpand.setTruckPlayPlan(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_PLAN )));
+//
+//                if(tabName.equals(Contant.TABLE_NAME_ADS)){
+//                    //add by jallen for update ads action
+//                    truckMetaExpand.setTruckAdsAction(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION )));
+//                    truckMetaExpand.setTruckAdsUrl(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_ADS_URL ))+"");
+//                    truckMetaExpand.setTruckPlayOrder(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_PLAY_ORDER )));
+//                    truckMetaExpand.setTruckCategoryId(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_ID )));
+//                    truckMetaExpand.setTruckCategorySubId(cursor.getInt(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_SUB_ID )));
+//                    truckMetaExpand.setTruckFileName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_ADS_ACTION_CATEGORY_FILENAME ))+"");
+//                }
+//
+//
+//                mediaMeta.setAdsMeta(truckMetaExpand).build();
+//
+//                truckMediaNode.setMediaInfo(mediaMeta);
+//
+//                PlayerMetaProtos.CPlayerMeta.Builder playerMeta = PlayerMetaProtos.CPlayerMeta.newBuilder();
+//                playerMeta.setTotalTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TOTAL_TIME ))))
+//                        .setCurrentTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CURRENT_TIME ))))
+//                        .setPlayCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_COUNT ))))
+//                        .setPlayDelay(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_DELAY ))))
+//                        .setPlayInterval(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_INTERVAL ))))
+//                        .setPlayPriority(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_PRIOTITY ))))
+//                        .setPlayStateValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_STATE ))));
+//                truckMediaNode.setPlayInfo(playerMeta);
+//
+//                PayMetaProtos.CPayMeta.Builder payMeta = PayMetaProtos.CPayMeta.newBuilder();
+//                payMeta.setPayType(cursor.getString(cursor.getColumnIndex(Contant.PAY_TYPE )).equals("1"))
+//                        .setPayResult(cursor.getString(cursor.getColumnIndex(Contant.PAY_RESULT )).equals("1"))
+//                        .setPayState(cursor.getString(cursor.getColumnIndex(Contant.PAY_STATE )).equals("1"))
+//                        .setPayFreeTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_FREE_TIME ))))
+//                        .setPayValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_VALUE ))))
+//                        .setPayUnit(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_UNIT ))))
+//                        .setPayInterface(cursor.getString(cursor.getColumnIndex(Contant.PAY_INTERFACE )))
+//                        .setPayMode(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_MODE ))))
+//                        .setPayTime(cursor.getString(cursor.getColumnIndex(Contant.PAY_TIME )));
+//                truckMediaNode.setPayInfo(payMeta);
+//
+//                md5 = cursor.getString(cursor.getColumnIndex(Contant.PUSH_MD5 ));
+//
+//                truckMediaNode.setCategoryId(mediaMeta.getCategoryId());
+//                truckMediaNode.setCategorySubId(mediaMeta.getCategorySubId());
+//                truckMediaNodes.add(truckMediaNode.build());
+//
+//                if(truckMeta.getTruckValid() == 2){
+//                    ReDownLoadParam downLoadParam = new ReDownLoadParam();
+//                    downLoadParam.setCategoryId(mediaMeta.getCategoryId());
+//                    downLoadParam.setCategorySubId(mediaMeta.getCategorySubId());
+//                    downLoadParam.setFileName(truckMeta.getTruckFilename());
+//                    downLoadParam.setTabName(tabName);
+//                    downLoadParam.setVail(2);
+//                    downLoadParam.setMd5(md5);
+//                    downLoadParamMap.put(truckMeta.getTruckFilename(),downLoadParam);
+//                }else{
+//                    if(downLoadParamMap.containsKey(truckMeta.getTruckFilename())){
+//                        downLoadParamMap.remove(truckMeta.getTruckFilename());
+//                    }
+//                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -469,87 +528,179 @@ public class DataSQLHelper {
                 cursor.close();
             }
         }
-        return truckMediaNodeNames;
-    }
-
-    public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(int subId,int mediaTypeId){
-        List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
-        String sql = "select * from " + Contant.TABLE_NAME_MOVIESSHOW+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId + "'"+" and "+Contant.TRUCK_MEDIA_TYPE_ID + " ='" + mediaTypeId + "'";
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
-        try{
-            while (cursor!=null &&  cursor.moveToNext()){
-                TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
-                MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();
-
-                mediaMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
-                        .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
-                        .setTruckSubIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_INDEX ))))
-                        .setTruckSubDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_DESC ))).build();
-
-                MediaMetaProtos.CTruckMeta.Builder truckMeta = MediaMetaProtos.CTruckMeta.newBuilder();
-                truckMeta.setTruckUuid(cursor.getString(cursor.getColumnIndex(Contant.UUID )));
-                truckMeta.setTruckTitle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_TITLE )));
-                truckMeta.setTruckImage(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_IMAGE )));
-                truckMeta.setTruckFilename(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
-                truckMeta.setTruckDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_DESC )));
-                truckMeta.setTruckProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
-                truckMeta.setTruckExtra(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTRA )));
-                truckMeta.setTruckPeriod(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PERIOD ))));
-                truckMeta.setTruckFavor(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FAVOR ))));
-                truckMeta.setTruckIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_INDEX ))));
-                truckMeta.setTruckShow(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SHOW ))));
-                truckMeta.setTruckValid(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_VALID ))));
-                truckMeta.setTruckMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))));
-                truckMeta.setTruckMediaTheme(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_THEME ))));
-                mediaMeta.setTruckMeta(truckMeta).build();
-
-                MediaMetaProtos.CTruckMetaExpand.Builder  truckMetaExpand = MediaMetaProtos.CTruckMetaExpand.newBuilder();
-                truckMetaExpand.setTruckExtendType(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTEND_TYPE )));
-                truckMetaExpand.setTruckWndStyle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_STYLE )));
-                truckMetaExpand.setTruckWndOrient(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_ORIENT )));
-                truckMetaExpand.setTruckPlayArea(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_AREA )));
-                truckMetaExpand.setTruckPlayPlan(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_PLAN )));
-                mediaMeta.setAdsMeta(truckMetaExpand).build();
-
-                truckMediaNode.setMediaInfo(mediaMeta);
-
-                PlayerMetaProtos.CPlayerMeta.Builder playerMeta = PlayerMetaProtos.CPlayerMeta.newBuilder();
-                playerMeta.setTotalTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TOTAL_TIME ))))
-                        .setCurrentTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CURRENT_TIME ))))
-                        .setPlayCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_COUNT ))))
-                        .setPlayDelay(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_DELAY ))))
-                        .setPlayInterval(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_INTERVAL ))))
-                        .setPlayPriority(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_PRIOTITY ))))
-                        .setPlayStateValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_STATE ))));
-                truckMediaNode.setPlayInfo(playerMeta);
-
-                PayMetaProtos.CPayMeta.Builder payMeta = PayMetaProtos.CPayMeta.newBuilder();
-                payMeta.setPayType(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_TYPE ))))
-                        .setPayResult(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_RESULT ))))
-                        .setPayState(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_STATE ))))
-                        .setPayFreeTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_FREE_TIME ))))
-                        .setPayValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_VALUE ))))
-                        .setPayUnit(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_UNIT ))))
-                        .setPayInterface(cursor.getString(cursor.getColumnIndex(Contant.PAY_INTERFACE )))
-                        .setPayMode(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_MODE ))))
-                        .setPayTime(cursor.getString(cursor.getColumnIndex(Contant.PAY_TIME )));
-                truckMediaNode.setPayInfo(payMeta);
-
-                truckMediaNode.setCategoryId(mediaMeta.getCategoryId());
-                truckMediaNode.setCategorySubId(mediaMeta.getCategorySubId());
-
-
-                truckMediaNodes.add(truckMediaNode.build());
-            }
-        }
-        finally {
-            if(cursor!=null)
-            {
-                cursor.close();
-            }
-        }
         return truckMediaNodes;
     }
+
+//    public MediaResourceInfoProtos.CMediaResourceInfo getMediaResourceInfos(int categoryId, int subId){
+//        String tabName = Contant.getTabNameByCategoryId(categoryId);
+//        String sql = "";
+//        MediaResourceInfoProtos.CMediaResourceInfo.Builder MediaResourceInfo = MediaResourceInfoProtos.CMediaResourceInfo.newBuilder();
+//
+//        if(categoryId != Contant.CATEGORY_ALL_ID ){
+//            if(subId != Contant.CATEGORY_ALL_ID ) {
+//                sql = "select * from " + tabName + " where " + Contant.CATEGORY_SUB_ID + " ='" + subId + "'" + "order by " + Contant.TRUCK_INDEX + " asc";
+//            }else{
+//                sql = "select * from " + tabName;
+//            }
+//            Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+//            try{
+//                while (cursor!=null &&  cursor.moveToNext()){
+//                    MediaResourceInfoProtos.CMediaSourceMeta.Builder cMediaSourceMeta = MediaResourceInfoProtos.CMediaSourceMeta.newBuilder();
+//                    cMediaSourceMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
+//                            .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
+//                            .setDevId(Utils.getSerialID())
+//                            .setMasterId(Contant.MasterId)
+//                            .setDevType(2)
+//                            .setMediaName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )))
+//                            .setMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))))
+//                            .setMediaProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+//
+//                    MediaResourceInfo.addSourceList(cMediaSourceMeta);
+//
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//            finally {
+//                if(cursor!=null)
+//                {
+//                    cursor.close();
+//                }
+//            }
+//            return MediaResourceInfo.build();
+//
+//        }else{
+//            for(int i=1;i<8;i++){
+//                tabName = Contant.getTabNameByCategoryId(i);
+//                sql = "select * from " + tabName;
+//                Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+//                try{
+//                    while (cursor!=null &&  cursor.moveToNext()){
+//                        MediaResourceInfoProtos.CMediaSourceMeta.Builder cMediaSourceMeta = MediaResourceInfoProtos.CMediaSourceMeta.newBuilder();
+//                        cMediaSourceMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
+//                                .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
+//                                .setDevId(Utils.getSerialID())
+//                                .setMasterId(Contant.MasterId)
+//                                .setDevType(2)
+//                                .setMediaName(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )))
+//                                .setMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))))
+//                                .setMediaProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+//
+//                        MediaResourceInfo.addSourceList(cMediaSourceMeta);
+//
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//                finally {
+//                    if(cursor!=null)
+//                    {
+//                        cursor.close();
+//                    }
+//                }
+//            }
+//            return MediaResourceInfo.build();
+//        }
+//    }
+
+//    public List<String> getMediaMetaDataNames(String tabName,int subId){
+//        List<String> truckMediaNodeNames = new ArrayList<>();
+//        String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
+//        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+//        try{
+//            while (cursor!=null &&  cursor.moveToNext()){
+//                truckMediaNodeNames.add(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        finally {
+//            if(cursor!=null)
+//            {
+//                cursor.close();
+//            }
+//        }
+//        return truckMediaNodeNames;
+//    }
+
+//    public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(int subId,int mediaTypeId){
+//        List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
+//        String sql = "select * from " + Contant.TABLE_NAME_MOVIESSHOW+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId + "'"+" and "+Contant.TRUCK_MEDIA_TYPE_ID + " ='" + mediaTypeId + "'";
+//        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
+//        try{
+//            while (cursor!=null &&  cursor.moveToNext()){
+//                TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
+//                MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();
+//
+//                mediaMeta.setCategoryId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_ID ))))
+//                        .setCategorySubId(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CATEGORY_SUB_ID ))))
+//                        .setTruckSubIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_INDEX ))))
+//                        .setTruckSubDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SUB_DESC ))).build();
+//
+//                MediaMetaProtos.CTruckMeta.Builder truckMeta = MediaMetaProtos.CTruckMeta.newBuilder();
+//                truckMeta.setTruckUuid(cursor.getString(cursor.getColumnIndex(Contant.UUID )));
+//                truckMeta.setTruckTitle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_TITLE )));
+//                truckMeta.setTruckImage(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_IMAGE )));
+//                truckMeta.setTruckFilename(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FILENAME )));
+//                truckMeta.setTruckDesc(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_DESC )));
+//                truckMeta.setTruckProvider(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PROVIDER )));
+//                truckMeta.setTruckExtra(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTRA )));
+//                truckMeta.setTruckPeriod(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PERIOD ))));
+//                truckMeta.setTruckFavor(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_FAVOR ))));
+//                truckMeta.setTruckIndex(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_INDEX ))));
+//                truckMeta.setTruckShow(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_SHOW ))));
+//                truckMeta.setTruckValid(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_VALID ))));
+//                truckMeta.setTruckMediaType(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_ID))));
+//                truckMeta.setTruckMediaTheme(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_MEDIA_TYPE_THEME ))));
+//                mediaMeta.setTruckMeta(truckMeta).build();
+//
+//                MediaMetaProtos.CTruckMetaExpand.Builder  truckMetaExpand = MediaMetaProtos.CTruckMetaExpand.newBuilder();
+//                truckMetaExpand.setTruckExtendType(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_EXTEND_TYPE )));
+//                truckMetaExpand.setTruckWndStyle(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_STYLE )));
+//                truckMetaExpand.setTruckWndOrient(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_WND_ORIENT )));
+//                truckMetaExpand.setTruckPlayArea(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_AREA )));
+//                truckMetaExpand.setTruckPlayPlan(cursor.getString(cursor.getColumnIndex(Contant.TRUCK_PLAY_PLAN )));
+//                mediaMeta.setAdsMeta(truckMetaExpand).build();
+//
+//                truckMediaNode.setMediaInfo(mediaMeta);
+//
+//                PlayerMetaProtos.CPlayerMeta.Builder playerMeta = PlayerMetaProtos.CPlayerMeta.newBuilder();
+//                playerMeta.setTotalTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.TOTAL_TIME ))))
+//                        .setCurrentTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.CURRENT_TIME ))))
+//                        .setPlayCount(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_COUNT ))))
+//                        .setPlayDelay(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_DELAY ))))
+//                        .setPlayInterval(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_INTERVAL ))))
+//                        .setPlayPriority(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_PRIOTITY ))))
+//                        .setPlayStateValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PLAY_STATE ))));
+//                truckMediaNode.setPlayInfo(playerMeta);
+//
+//                PayMetaProtos.CPayMeta.Builder payMeta = PayMetaProtos.CPayMeta.newBuilder();
+//                payMeta.setPayType(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_TYPE ))))
+//                        .setPayResult(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_RESULT ))))
+//                        .setPayState(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_STATE ))))
+//                        .setPayFreeTime(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_FREE_TIME ))))
+//                        .setPayValue(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_VALUE ))))
+//                        .setPayUnit(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_UNIT ))))
+//                        .setPayInterface(cursor.getString(cursor.getColumnIndex(Contant.PAY_INTERFACE )))
+//                        .setPayMode(Integer.valueOf(cursor.getString(cursor.getColumnIndex(Contant.PAY_MODE ))))
+//                        .setPayTime(cursor.getString(cursor.getColumnIndex(Contant.PAY_TIME )));
+//                truckMediaNode.setPayInfo(payMeta);
+//
+//                truckMediaNode.setCategoryId(mediaMeta.getCategoryId());
+//                truckMediaNode.setCategorySubId(mediaMeta.getCategorySubId());
+//
+//
+//                truckMediaNodes.add(truckMediaNode.build());
+//            }
+//        }
+//        finally {
+//            if(cursor!=null)
+//            {
+//                cursor.close();
+//            }
+//        }
+//        return truckMediaNodes;
+//    }
 
     public String getAppPkgName(String tabname,String filename){
         String pkgName ="";

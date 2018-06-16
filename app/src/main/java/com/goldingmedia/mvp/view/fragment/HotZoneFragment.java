@@ -77,27 +77,12 @@ public class HotZoneFragment extends BaseFragment{
 
         @Override
         public void onItemClick(int position) {
-            NToast.longToast(getActivity(),nBannerNum+":mBanners点击了条目"+position);
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
 
-            switch (nBannerNum){
-                case 0:
-                    if (truckMediaNode != null) {
-                        CardManager.getInstance().action(position, truckMediaNode, getActivity());
-                    }
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
+            if (truckMediaNode != null) {
+                CardManager.getInstance().action(position, truckMediaNode, getActivity());
             }
         }
-
-
     }
 
     /**
@@ -135,11 +120,10 @@ public class HotZoneFragment extends BaseFragment{
     }
 
     private void initData(){
-
+        mTruckMapNodes.clear();
         mTruckMapNodes.put(0,GDApplication.getmInstance().getTruckMedia().getcHotZone().getTruckMediaNodes());
         for (int i = 1; i < 5; i++) {
             mTruckMapNodes.put(i,GDApplication.getmInstance().getTruckMedia().getcAds().getHomeOrientTrucksMap(i));
-            NLog.e(TAG,"mTruckMapNodes size:"+ mTruckMapNodes.size());
         }
 
     }
@@ -179,9 +163,6 @@ public class HotZoneFragment extends BaseFragment{
 
                 break;
         }
-
-
-
 
         return list;
     }

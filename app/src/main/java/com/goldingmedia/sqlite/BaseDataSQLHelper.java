@@ -74,6 +74,12 @@ public class BaseDataSQLHelper extends SQLiteOpenHelper {
                 + Contant.TRUCK_WND_ORIENT + " varchar(20),"
                 + Contant.TRUCK_PLAY_AREA + " varchar(10),"
                 + Contant.TRUCK_PLAY_PLAN + " varchar(10),"
+                + Contant.TRUCK_ADS_ACTION+ " varchar(10),"
+                + Contant.TRUCK_ADS_URL + " varchar(100),"
+                + Contant.TRUCK_PLAY_ORDER + " varchar(5),"
+                + Contant.TRUCK_ADS_ACTION_CATEGORY_ID + " varchar(10),"
+                + Contant.TRUCK_ADS_ACTION_CATEGORY_SUB_ID + " varchar(10),"
+                + Contant.TRUCK_ADS_ACTION_CATEGORY_FILENAME + " varchar(100),"
                 + Contant.TOTAL_TIME + " varchar(20),"
                 + Contant.CURRENT_TIME + " varchar(20),"
                 + Contant.PLAY_COUNT + " varchar(20),"
@@ -186,14 +192,9 @@ public class BaseDataSQLHelper extends SQLiteOpenHelper {
             return;
         }
         try {
-            db.execSQL("alter table table_pushservice add filename varchar(50)");
-            db.execSQL("alter table table_hotzone add md5 varchar(35)");
-            db.execSQL("alter table table_moviesshow add md5 varchar(35)");
-            db.execSQL("alter table table_golding add md5 varchar(35)");
-            db.execSQL("alter table table_game add md5 varchar(35)");
-            db.execSQL("alter table table_elive add md5 varchar(35)");
-            db.execSQL("alter table table_myapp add md5 varchar(35)");
-            db.execSQL("alter table table_ads add md5 varchar(35)");
+            db.execSQL("alter table table_ads add truck_action_cate_id varchar(10)");
+            db.execSQL("alter table table_ads add truck_action_cate_subid varchar(10)");
+            db.execSQL("alter table table_ads add truck_action_filename varchar(100)");
         } catch (SQLException e) {
             e.printStackTrace();
         }

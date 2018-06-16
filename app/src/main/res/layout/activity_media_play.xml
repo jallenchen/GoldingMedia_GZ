@@ -31,18 +31,17 @@
     android:layout_height="70.0px"
     android:layout_alignParentBottom="true">
 
-    <Button
-        android:id="@+id/shrink_btn"
-        android:layout_width="102px"
-        android:layout_height="match_parent"
-
-        android:text="点击收起"/>
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/img_cb_bottom"
-        android:layout_width="700.0px"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         />
+    <ImageView
+        android:id="@+id/shrink_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@mipmap/shrink"/>
 
 </FrameLayout>
 
@@ -160,15 +159,16 @@
         android:id="@+id/paid_tips_lay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="24.0px"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="250.0px"
+        android:layout_centerVertical="true"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="1"
             android:text="@string/paid_tips1"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
@@ -184,6 +184,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="1"
             android:text="@string/paid_tips2"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
@@ -191,6 +192,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="1"
             android:text="@string/paid_tips3"
             android:textColor="#45E101"
             android:textSize="22sp" />

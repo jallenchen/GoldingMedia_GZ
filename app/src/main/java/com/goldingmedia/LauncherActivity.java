@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.golding.goldinglauncher.GoldingLauncherActivity;
+import com.goldingmedia.activity.AdsFilmStartActivity;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.GpsNavigatorProtos;
 import com.goldingmedia.most.ipc.MostTcpProtoBuf;

@@ -48,6 +48,7 @@ import com.goldingmedia.mvp.view.ui.HListView;
 import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.temporary.Variables.StatusItem;
 import com.goldingmedia.utils.HandlerUtils;
+import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PreviewPlayActivity extends BaseActivity implements OnClickListener,HandlerUtils.OnReceiveMessageListener {
+	private static final String TAG = "PreviewPlayActivity";
 	private static final int HANDLER_TIMER = 1;
 	private static final int HANDLER_MEDIA_PLAY = 2;
 	private static final int HANDLER_ADAPTER_VIEW = 5;
@@ -288,13 +290,13 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 
 			case R.id.playBtn:
 				PauseActivity();
-				Intent intent = new Intent(mContext, MediaPlayActivity.class);
+				Intent intent = new Intent(PreviewPlayActivity.this,MediaPlayActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra(StatusItem.position, mAdapter.getSelectedPosition());
 				intent.putExtra(StatusItem.classId, mTruck.getCategoryId());
 				intent.putExtra(StatusItem.classSubId, mTruck.getCategorySubId());
 				intent.putExtra(StatusItem.classMainId, mTruck.getMediaInfo().getTruckMeta().getTruckMediaType());
-				mContext.startActivity(intent);
+				startActivity(intent);
 				break;
 		}
 	}

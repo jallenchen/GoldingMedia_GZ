@@ -147,7 +147,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	private TruckMediaProtos.CTruckMediaNode mTruck = null;
 	private SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckWindowMapNodes = new SparseArray<>();
 	private SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckPromptMapNodes = new SparseArray<>();
-	private static final int WINDOW_LOOP_TIME = 15000;
+	private static final int WINDOW_LOOP_TIME = 30000;
 	private static final int PROMPT_LOOP_TIME = 60000;
 	private boolean[] isBannerLoopEnd = {false,false,false};
 	private boolean isBannerAll = false;
@@ -178,6 +178,8 @@ public class MediaPlayActivity extends BaseActivity implements
 	private boolean isSurfaceChanged = false;
 	private boolean isSurfaceMediaPlayer = false;
 	private boolean isInitMediaPlayer = false;
+	private boolean isPlayFilmAds = true;
+
 
 	private TextView mPaidPrice;
 	private LinearLayout mPaidTipsLay;
@@ -459,6 +461,8 @@ public class MediaPlayActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
+                isPlayFilmAds = true;
+				Log.e(TAG, "-----isPlayFilmAds2 = "+isPlayFilmAds);
 				mGroupAdapter.setPlayGroup();
 				mMediaAdapter.setTrucksToPlsyTrucks();
 				mMediaAdapter.setSelectPosition(position);
@@ -569,6 +573,8 @@ public class MediaPlayActivity extends BaseActivity implements
 	}
 
 	private void PlayPreviousFile(){// 上一集
+		Log.e(TAG, "-----isPlayFilmAds3 = "+isPlayFilmAds);
+
 		hideMovieList();
 		mMediaAdapter.setSelectPosition(mMediaAdapter.getSelectPosition() - 1);
 		mTruck = (TruckMediaProtos.CTruckMediaNode)mMediaAdapter.getItem(mMediaAdapter.getSelectPosition());
@@ -577,6 +583,8 @@ public class MediaPlayActivity extends BaseActivity implements
 	}
 
 	private void PlayNextFile() {// 下一集
+		Log.e(TAG, "-----isPlayFilmAds4 = "+isPlayFilmAds);
+
 		mPlayDuration = 0;
 		hideMovieList();
 		mMediaAdapter.setSelectPosition(mMediaAdapter.getSelectPosition() + 1);
@@ -586,12 +594,14 @@ public class MediaPlayActivity extends BaseActivity implements
 	}
 
 	private synchronized void InitMediaPlayer() {
+        Log.e(TAG, "-----InitMediaPlayer");
 		isInitMediaPlayer = true;
 		InitMediaPlayer(true);
 	}
 
 	private int mTruckShow = -1;
 	private synchronized void InitMediaPlayer(boolean restart) {// 初始化mostMediaPlayer
+		Log.e(TAG, "++++++InitMediaPlayer:"+restart);
 		if (isPauseActivity) return;
 		mMediaAdapter.notifyDataSetChanged();
 		mMediaListView.setSelection(mMediaAdapter.getSelectPosition());
@@ -603,10 +613,10 @@ public class MediaPlayActivity extends BaseActivity implements
 			isOnResumeRestart = true;
 		}
 
-		Log.i("", "-----classMainId = "+classMainId);
-		Log.i("", "-----getTruckMediaType = "+mTruck.getMediaInfo().getTruckMeta().getTruckMediaType());
-		Log.i("", "-----mTruckShow = "+mTruckShow);
-		Log.i("", "-----getTruckShow = "+mTruck.getMediaInfo().getTruckMeta().getTruckShow());
+		Log.i(TAG, "-----classMainId = "+classMainId);
+		Log.i(TAG, "-----getTruckMediaType = "+mTruck.getMediaInfo().getTruckMeta().getTruckMediaType());
+		Log.i(TAG, "-----mTruckShow = "+mTruckShow);
+		Log.i(TAG, "-----getTruckShow = "+mTruck.getMediaInfo().getTruckMeta().getTruckShow());
 		//播放窗口有四种模式 音乐全屏 音乐广告 电影全屏 电影广告，四种模式切换 或者 第一次show出Activity 都重新初始化MediaPlayer
 		if (mTruckShow != mTruck.getMediaInfo().getTruckMeta().getTruckShow() ||
                 (classMainId != mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() &&
@@ -1451,12 +1461,12 @@ public class MediaPlayActivity extends BaseActivity implements
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			Log.e("","-----MediaPlayActivity action = "+action);
+			Log.e(TAG,"-----MediaPlayActivity action = "+action);
 			if("com.golding.nullTsExit".equals(action)){
 				nullTsExitActivity();
 			} else if(Contant.Actions.PLAY_STATUS_REPORT.equals(action)){
 				int status = intent.getIntExtra("status", -2);
-				Log.e("","===== play status = "+status);
+				Log.e(TAG,"===== play status = "+status);
 				switch(status){
 					case Contant.StatusCode.PLAY_STATUS_FAILURE_NO_SDCARD:
 						ExitActivity();
@@ -1470,7 +1480,7 @@ public class MediaPlayActivity extends BaseActivity implements
 					case Contant.StatusCode.PLAY_STATUS_FAILURE:
 					case Contant.StatusCode.PLAY_STATUS_FILEEND:
 						if (!fileEnd) {
-							Log.i("", "--FILEEND--PlayNextFile");
+							Log.i(TAG, "--FILEEND--PlayNextFile");
 							PlayNextFile();
 						}
 						break;
@@ -1541,8 +1551,9 @@ public class MediaPlayActivity extends BaseActivity implements
 						mSeekBar.setProgress(mPlayDuration*100/mTotalTime);
 					} else if(mTotalTime != 0){
 						mPlayDuration = 0;
-						Log.i("", "-----mMsgHandler PlayNextFile");
+						Log.i(TAG, "-----mMsgHandler PlayNextFile");
 						fileEnd = true;
+						isPlayFilmAds = true;
 						PlayNextFile();
 
 						new Thread(new Runnable() {
@@ -1595,6 +1606,14 @@ public class MediaPlayActivity extends BaseActivity implements
 				break;
 
 			case HANDLER_MEDIA_PLAY:
+				if(isPlayFilmAds && mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() != Contant.MEDIA_TYPE_MUSIC ){
+					isPlayFilmAds = false;
+					Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
+                   // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+					Log.e(TAG, "-----isPlayFilmAds1 = "+isPlayFilmAds);
+					//return;
+				}
 				if (m_TsReceiver != null && mFBlock != null && !isPauseActivity)
 					if(mTruck != null) Play();
 				break;
@@ -1631,7 +1650,7 @@ public class MediaPlayActivity extends BaseActivity implements
 
 			case HANDLER_MEDIA_LIST_SELECT:
 				int position = (int)msg.obj;
-				Log.i("", "-----mMsgHandler 9 position = "+position);
+				Log.i(TAG, "-----mMsgHandler 9 position = "+position);
 				mMediaListView.setSelection(position);
 				break;
 
@@ -1917,11 +1936,13 @@ public class MediaPlayActivity extends BaseActivity implements
 				break;
 
 			case R.id.btnprevious:
+				 isPlayFilmAds = true;
 				PlayPreviousFile();
 				hideBar();
 				break;
 
 			case R.id.btnnext:
+				 isPlayFilmAds = true;
 				PlayNextFile();
 				hideBar();
 				break;

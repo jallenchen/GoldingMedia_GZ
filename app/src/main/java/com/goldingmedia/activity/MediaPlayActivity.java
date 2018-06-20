@@ -77,6 +77,7 @@ import com.goldingmedia.utils.NToast;
 import com.goldingmedia.utils.Utils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1608,11 +1609,12 @@ public class MediaPlayActivity extends BaseActivity implements
 			case HANDLER_MEDIA_PLAY:
 				if(isPlayFilmAds && mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() != Contant.MEDIA_TYPE_MUSIC ){
 					isPlayFilmAds = false;
-					Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
-                   // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(intent);
-					Log.e(TAG, "-----isPlayFilmAds1 = "+isPlayFilmAds);
-					//return;
+					List<TruckMediaProtos.CTruckMediaNode> filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FILMON);
+					if(filmsAds.size() != 0){
+						Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
+						intent.putExtra("filmAds", (Serializable) filmsAds);
+						startActivity(intent);
+					}
 				}
 				if (m_TsReceiver != null && mFBlock != null && !isPauseActivity)
 					if(mTruck != null) Play();

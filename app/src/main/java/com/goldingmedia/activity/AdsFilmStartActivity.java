@@ -36,7 +36,7 @@ import java.util.TimerTask;
  */
 public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
     private static final String TAG = "AdsFilmStartActivity";
-    private static final int ADS_TIME_MAX = 17;
+    private static final int ADS_TIME_MAX = 120;
     private List<TruckMediaProtos.CTruckMediaNode> mFileStartList;
     private SurfaceView mSurfaceView;
     private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
@@ -183,7 +183,8 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
     }
 
     private void initAdsdata(){
-        mFileStartList = getAdsFilmStartList();
+       // mFileStartList = getAdsFilmStartList();
+        mFileStartList = (List<TruckMediaProtos.CTruckMediaNode>) getIntent().getSerializableExtra("filmAds");
         NLog.d(TAG,"---mFileStartList size:"+mFileStartList.size());
     }
 
@@ -205,10 +206,10 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
 
 
 
-    private List<TruckMediaProtos.CTruckMediaNode> getAdsFilmStartList() {
-        return GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
-      //  return GDApplication.getmInstance().getTruckMedia().getcAds().getWindowOrientTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST);
-    }
+//    private List<TruckMediaProtos.CTruckMediaNode> getAdsFilmStartList() {
+//        return GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FILMON);
+//      //  return GDApplication.getmInstance().getTruckMedia().getcAds().getWindowOrientTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST);
+//    }
 
     private void switchAds(){
         if(mFileStartList.size() == 0){

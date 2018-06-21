@@ -6,11 +6,13 @@ package com.goldingmedia.mvp.view.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.goldingmedia.R;
 
 /**
@@ -30,7 +32,7 @@ public class ImageViewHolder implements Holder<String>{
 
     @Override
     public void UpdateUI(Context context, int position, String data) {
-
-        Glide.with(context).load(data).placeholder(R.color.transparent).into(imageView);
+       // Glide.with(context).load(data).placeholder(R.color.transparent).into(imageView);
+        imageView.setImageBitmap( BitmapFactory.decodeFile(data));
     }
 }

@@ -40,12 +40,12 @@ public class MyBaseGirdViewAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        if(mTrucks.size() == 0){
-            return mTrucks.size();
-        }else if(mTrucks.get(0).getCategoryId() == Contant.CATEGORY_MEDIA_ID && mTrucks.get(0).getCategorySubId() == Contant.PROPERTY_MEDIA_GOLDING_ID
-                && mTrucks.get(0).getMediaInfo().getTruckMeta().getTruckMediaType() ==  Contant.MEDIA_TYPE_MOVIE){
-            return mTrucks.size()+1;
-        }
+//        if(mTrucks.size() == 0){
+//            return mTrucks.size();
+//        }else if(mTrucks.get(0).getCategoryId() == Contant.CATEGORY_MEDIA_ID && mTrucks.get(0).getCategorySubId() == Contant.PROPERTY_MEDIA_GOLDING_ID
+//                && mTrucks.get(0).getMediaInfo().getTruckMeta().getTruckMediaType() ==  Contant.MEDIA_TYPE_MOVIE){
+//            return mTrucks.size()+1;
+//        }
         return mTrucks.size();
     }
 
@@ -102,8 +102,8 @@ public class MyBaseGirdViewAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-       // holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
-        Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
+        holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        //Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
 
         holder.txtView.setText(imgTitleName);
         if(categoryId == Contant.CATEGORY_MYAPP_ID && categorySubId == Contant.PROPERTY_MYAPP_SETTING_ID){

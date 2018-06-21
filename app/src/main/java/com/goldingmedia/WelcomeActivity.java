@@ -13,6 +13,7 @@ import com.goldingmedia.contant.Contant;
 import com.goldingmedia.jni.LcdPowerSwitch;
 import com.goldingmedia.mvp.view.fragment.INICBurningFragment;
 import com.goldingmedia.sqlite.DataSharePreference;
+import com.goldingmedia.utils.AssetsCopyer;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.Utils;
@@ -59,6 +60,7 @@ public class WelcomeActivity extends BaseActivity implements HandlerUtils.OnRece
                 e.printStackTrace();
             }
 
+           // AssetsCopyer.releaseAssets(this,"hotzone/","/mnt/shell/emulated/0/goldingmedia/");
 
             startAnimi();
             getDBData();

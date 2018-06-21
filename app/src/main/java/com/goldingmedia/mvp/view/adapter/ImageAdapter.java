@@ -64,8 +64,8 @@ public class ImageAdapter extends BaseAdapter {
 		}
 		if (bitmaps.size() > 0) {
             Bitmap item = bitmaps.get(position % bitmaps.size());
-			//holder.imageView.setImageBitmap(item);
-			Glide.with(context).load(item).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
+			holder.imageView.setImageBitmap(item);
+			//Glide.with(context).load(item).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
 		}
 		return convertView;
 	}

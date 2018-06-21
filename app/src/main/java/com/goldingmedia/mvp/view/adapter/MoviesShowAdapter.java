@@ -68,8 +68,8 @@ public class MoviesShowAdapter extends BaseAdapter {
         }
         holder.moviesSub.setText(mCategories.get(position+1).getCategorySubDesc());
 
-        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
-        Glide.with(mContext).load(imgPath).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
+        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        //Glide.with(mContext).load(imgPath).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
         return convertView;
     }
 

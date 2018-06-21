@@ -37,7 +37,7 @@ public class GameGirdAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return mTrucks.size()+1;
+        return mTrucks.size();
     }
 
     @Override
@@ -79,8 +79,8 @@ public class GameGirdAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
-        Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.game_m_bg_normal).into( holder.imageView);
+        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        //Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.game_m_bg_normal).into( holder.imageView);
 
         return convertView;
     }

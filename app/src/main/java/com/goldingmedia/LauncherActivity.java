@@ -42,6 +42,7 @@ import com.goldingmedia.service.MediaCenterService;
 import com.goldingmedia.service.MsgDisplayService;
 import com.goldingmedia.service.PictureGetService;
 import com.goldingmedia.temporary.Variables;
+import com.goldingmedia.utils.GlideCacheUtil;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.HttpDownloader;
 import com.goldingmedia.utils.NLog;

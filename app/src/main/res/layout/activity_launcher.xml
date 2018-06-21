@@ -41,23 +41,20 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:textSize="18px"
-                    android:layout_marginLeft="10px"
-                    android:text="@string/sun"/>
+                    android:layout_marginLeft="10px"/>
 
                 <ImageView
                     android:id="@+id/weather_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8px"
-                    android:src="@mipmap/sun"/>
+                    android:layout_marginLeft="8px"/>
 
                 <TextView
                     android:id="@+id/GPS_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="17px"
-                    android:textSize="18px"
-                    android:text="@string/huizhou"/>
+                    android:textSize="18px"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

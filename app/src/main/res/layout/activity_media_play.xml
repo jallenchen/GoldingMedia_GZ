@@ -26,6 +26,15 @@
         layout="@layout/music_layout"
         android:visibility="gone" />
 
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:id="@+id/img_cb_mid"
+        android:layout_width="500.0px"
+        android:layout_height="300.0px"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="151px"
+        />
+
 <FrameLayout
     android:layout_width="802.0px"
     android:layout_height="70.0px"

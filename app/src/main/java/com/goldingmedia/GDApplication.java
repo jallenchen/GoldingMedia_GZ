@@ -35,7 +35,7 @@ public class GDApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-       // CrashHandler.getInstance().init(mInstance);
+        CrashHandler.getInstance().init(mInstance);
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
     }
 

@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/sm_76"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="510px"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|right"
                 android:orientation="horizontal" >
 
                 <TextView

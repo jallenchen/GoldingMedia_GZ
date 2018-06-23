@@ -65,5 +65,19 @@ public class DataSharePreference {
         return share.getString("DBCode","0");
     }
 
+    public static  void savePushTime(Context context,String code) {
+        SharedPreferences sh = context.getSharedPreferences(
+                PREF_NAME, Context.MODE_WORLD_WRITEABLE | Context.MODE_WORLD_READABLE);
+        SharedPreferences.Editor ed = sh.edit();
+        ed.putString("PushTime", code);
+        ed.apply();
+    }
+    public static String getPushTime(Context context) {
+        SharedPreferences share = context.getSharedPreferences(
+                PREF_NAME, Context.MODE_WORLD_READABLE
+                        | Context.MODE_WORLD_WRITEABLE);
+        return share.getString("PushTime","0");
+    }
+
 
 }

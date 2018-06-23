@@ -1,7 +1,6 @@
 package com.goldingmedia.mvp.view.adapter;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.mvp.mode.Category;
@@ -68,7 +66,10 @@ public class MoviesShowAdapter extends BaseAdapter {
         }
         holder.moviesSub.setText(mCategories.get(position+1).getCategorySubDesc());
 
-        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        Glide.with(mContext).load(imgPath)
+                .placeholder(R.color.transparent)
+                .into(holder.imageView);
         //Glide.with(mContext).load(imgPath).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
         return convertView;
     }

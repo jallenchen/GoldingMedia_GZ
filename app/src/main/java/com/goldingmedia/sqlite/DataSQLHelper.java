@@ -276,7 +276,7 @@ public class DataSQLHelper {
     public List<Category> getCategoryData(int categoryId){
         List<Category> categories = new ArrayList<>();
        // String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ "order by " + Contant.TRUCK_SUB_INDEX + " asc";
-        String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ "order by "+"cast "+"(truck_sub_index as int)";
+        String sql = "select * from " + Contant.TABLE_NAME_CATEGORY + " where " + Contant.CATEGORY_ID + " ='" + categoryId  + "'"+ " order by "+"cast "+"(truck_sub_index as int)";
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
         try{
             while (cursor!=null &&  cursor.moveToNext()){
@@ -395,7 +395,7 @@ public class DataSQLHelper {
     public List<TruckMediaProtos.CTruckMediaNode>  getMediaMetaDataTrucks(String tabName,int subId,String filename){
         List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
        // String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  +  "'"+" and "+Contant.TRUCK_FILENAME + " ='" + filename + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
-         String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  +  "'"+" and "+Contant.TRUCK_FILENAME + " ='" + filename + "'"+ "order by "+"cast "+"(truck_index as int)";
+         String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  +  "'"+" and "+Contant.TRUCK_FILENAME + " ='" + filename + "'"+ " order by "+"cast "+"(truck_index as int)";
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
         try{
         while (cursor!=null &&  cursor.moveToNext()){
@@ -418,16 +418,15 @@ public class DataSQLHelper {
     public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(String tabName,int subId){
         List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
         String sql;
-      //  String sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by " + Contant.TRUCK_INDEX + " asc";
         if(tabName.equals(Contant.TABLE_NAME_ADS)){
-            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by "+"cast "+"(truck_play_order as int)";
+            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ " order by "+"cast "+"(truck_play_order as int)";
         }else{
-            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ "order by "+"cast "+"(truck_index as int)";
+            sql = "select * from " + tabName+ " where " + Contant.CATEGORY_SUB_ID + " ='" + subId  + "'"+ " order by "+"cast "+"(truck_index as int)";
         }
 
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql, null);
         try{
-            while (cursor!=null &&  cursor.moveToNext()){
+            while (cursor != null &&  cursor.moveToNext()){
                 getDataFromDB(cursor,tabName,truckMediaNodes);
 //                TruckMediaProtos.CTruckMediaNode.Builder truckMediaNode = TruckMediaProtos.CTruckMediaNode.newBuilder();
 //                MediaMetaProtos.CMediaMeta.Builder mediaMeta = MediaMetaProtos.CMediaMeta.newBuilder();

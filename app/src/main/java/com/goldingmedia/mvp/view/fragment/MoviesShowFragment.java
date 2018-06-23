@@ -1,10 +1,7 @@
 package com.goldingmedia.mvp.view.fragment;
 
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +12,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.LauncherActivity;
 import com.goldingmedia.R;
@@ -22,7 +20,6 @@ import com.goldingmedia.contant.Contant;
 import com.goldingmedia.mvp.mode.Category;
 import com.goldingmedia.mvp.mode.EventBusCMD;
 import com.goldingmedia.mvp.view.adapter.MoviesShowAdapter;
-import com.goldingmedia.utils.NLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +70,10 @@ public class MoviesShowFragment extends BaseFragment implements View.OnClickList
     private void initView(){
         String imgPath = Contant.MOVIESSHOW_PATH+Contant.MEDIA_GOLDING+"/1.jpg";
         mTxt.setText(categories.get(0).getCategorySubDesc());
-        mImg.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+       // mImg.setImageBitmap( BitmapFactory.decodeFile(imgPath));
+        Glide.with(getActivity()).load(imgPath)
+                .placeholder(R.color.transparent)
+                .into(mImg);
     }
 
     @Override

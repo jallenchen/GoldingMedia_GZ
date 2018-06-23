@@ -175,7 +175,8 @@ public class MediaCenterService extends Service implements HandlerUtils.OnReceiv
 					//Log.i("", "-----mEnableADPlay|mAdsCounter = "+mEnableADPlay+"|"+mAdsCounter);
 					if (mEnableADPlay && !mDownLoading) {
 						if (mAdsCounter >= OUT_COUNTER) {
-							if (mAdsCounter % OUT_COUNTER == 0 && GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS).size() > 0) { //450// 10 minutes is one cycle
+							if (mAdsCounter % OUT_COUNTER == 0 && (GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS).size() > 0
+									|| GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST).size() > 0)) { //450// 10 minutes is one cycle
 								mRegularAdStart = true;
 							}
 							//Log.i("", "-----mRegularAdStart = "+mRegularAdStart);

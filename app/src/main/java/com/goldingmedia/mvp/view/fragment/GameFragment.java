@@ -2,8 +2,6 @@ package com.goldingmedia.mvp.view.fragment;
 
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.activity.WebActivity;
@@ -93,13 +92,19 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
                 imgPath = Contant.getTruckMetaNodePath(Contant.CATEGORY_GAME_ID,1,truckLMediaNodes.get(0).getMediaInfo().getTruckMeta().getTruckFilename(),true);
                 String imgLName = truckLMediaNodes.get(0).getMediaInfo().getTruckMeta().getTruckImage();
 
-                mGameIms[0].setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgLName));
+              //  mGameIms[0].setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgLName));
+                Glide.with(getActivity()).load(imgPath+"/"+imgLName)
+                        .placeholder(R.color.transparent)
+                        .into(mGameIms[0]);
             }
 
             for(int i = 0;i<truckSMediaNodes.size();i++){
                 imgPath = Contant.getTruckMetaNodePath(Contant.CATEGORY_GAME_ID,3,truckSMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckFilename(),true);
                 String imgSName = truckSMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckImage();
-                mGameIms[i+1].setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgSName));
+                //mGameIms[i+1].setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgSName));
+                Glide.with(getActivity()).load(imgPath+"/"+imgSName)
+                        .placeholder(R.color.transparent)
+                        .into(mGameIms[i+1]);
             }
             //TODO
             mAdapter.refresh(truckMMediaNodes);

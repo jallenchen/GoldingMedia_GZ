@@ -946,7 +946,10 @@ public class MediaPlayActivity extends BaseActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		CancelDialog();
+		task.cancel();
 		timer.cancel();
+		timer = null;
+		task = null;
 		Variables.isPaid = false;
 		onDemandRecording(false, Contant.PROPERTY_STATISTICS_MEDIA_ID, mTruck, mContext);
 	}

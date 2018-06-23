@@ -79,7 +79,10 @@ public class GameGirdAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        //holder.imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        Glide.with(mContext).load(imgPath+"/"+imgName)
+                .placeholder(R.color.transparent)
+                .into(holder.imageView);
         //Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.game_m_bg_normal).into( holder.imageView);
 
         return convertView;

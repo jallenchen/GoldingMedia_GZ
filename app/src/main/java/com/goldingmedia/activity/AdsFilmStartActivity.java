@@ -4,17 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.goldingmedia.BaseActivity;
-import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.ethernet.IP;
@@ -25,7 +22,6 @@ import com.goldingmedia.most.ts_renderer.TsReceiver;
 import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
-import com.goldingmedia.utils.Utils;
 
 import java.util.List;
 import java.util.Timer;
@@ -194,7 +190,10 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
         super.onDestroy();
         NLog.d(TAG,"---onDestroy");
         unregisterReceiver(receiver);
+        task.cancel();
         timer.cancel();
+        timer = null;
+        task = null;
     }
 
     @Override

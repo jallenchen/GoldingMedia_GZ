@@ -1,18 +1,23 @@
 package com.goldingmedia;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 
+import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.LauncherUiProtos;
 import com.goldingmedia.mvp.mode.TruckMedia;
 import com.goldingmedia.sqlite.DataSQLHelper;
+import com.goldingmedia.sqlite.DataSharePreference;
 import com.goldingmedia.utils.BitmapCache;
 import com.goldingmedia.utils.CrashHandler;
 import com.goldingmedia.utils.DataUtils;
 import com.goldingmedia.most.ipc.MostTcpProtoBuf;
 import com.goldingmedia.utils.ProtoDataParse;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.net.SocketException;
 
@@ -29,6 +34,7 @@ public class GDApplication extends Application{
     private DataSQLHelper dataInsert;
     private MostTcpProtoBuf mMostTcp;
    // private BitmapCache bitmapCache;
+   private RefWatcher refWatcher;
 
 
     @Override
@@ -37,6 +43,22 @@ public class GDApplication extends Application{
         mInstance = this;
         CrashHandler.getInstance().init(mInstance);
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
+
+        Contant.PushTime = DataSharePreference.getPushTime(mInstance);//for Glide signature key
+
+       // refWatcher= setupLeakCanary();
+    }
+
+    private RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        GDApplication gdApplication = (GDApplication) context.getApplicationContext();
+        return gdApplication.refWatcher;
     }
 
     public static GDApplication getmInstance(){

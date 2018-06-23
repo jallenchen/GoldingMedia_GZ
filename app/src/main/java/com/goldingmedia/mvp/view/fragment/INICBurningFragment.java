@@ -147,7 +147,14 @@ public class INICBurningFragment extends Fragment implements HandlerUtils.OnRece
         }
     }
 
-
+    @Override
+    public void onDestroy() {
+        task.cancel();
+        timer.cancel();
+        timer = null;
+        task = null;
+        super.onDestroy();
+    }
 
     public void start() {
         ShowDialog();

@@ -5,15 +5,14 @@ package com.goldingmedia.mvp.view.ui;
  */
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.goldingmedia.R;
+import com.goldingmedia.contant.Contant;
 
 /**
  * Created by zlc on 2016/10/10.
@@ -33,6 +32,10 @@ public class ImageViewHolder implements Holder<String>{
     @Override
     public void UpdateUI(Context context, int position, String data) {
        // Glide.with(context).load(data).placeholder(R.color.transparent).into(imageView);
-        imageView.setImageBitmap( BitmapFactory.decodeFile(data));
+        //imageView.setImageBitmap( BitmapFactory.decodeFile(data));
+        Glide.with(context).load(data)
+                .signature(new StringSignature(Contant.PushTime))
+                .placeholder(R.color.transparent)
+                .into(imageView);
     }
 }

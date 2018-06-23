@@ -561,7 +561,10 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		task.cancel();
 		timer.cancel();
+		timer = null;
+		task = null;
 
 		unregisterReceiver(receiver);
 	}

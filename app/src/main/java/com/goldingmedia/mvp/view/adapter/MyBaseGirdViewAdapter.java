@@ -1,7 +1,6 @@
 package com.goldingmedia.mvp.view.adapter;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +101,10 @@ public class MyBaseGirdViewAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+       // holder.imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+        Glide.with(mContext).load(imgPath+"/"+imgName)
+                .placeholder(R.color.transparent)
+                .into(holder.imageView);
         //Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.imageView);
 
         holder.txtView.setText(imgTitleName);

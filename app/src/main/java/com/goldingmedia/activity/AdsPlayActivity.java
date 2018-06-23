@@ -78,6 +78,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		mContext = this;
 		mFBlock = FBlock.GetInstance();
 		setContentView(R.layout.activity_ads_play);
@@ -237,6 +238,8 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		super.onDestroy();
 		Log.i("TAG","Destroy()");
 		unregisterReceiver(receiver);
+		handlerHolder.removeMessages(1);
+
 	}
 
 	private void SwitchContent(){// 广告处理器，管理 安全广告 即时广告 定时广告

@@ -84,6 +84,8 @@ public class Contant {
     public static final String Push = "push";
     public final static String SeatNum = "";
 
+    public static String PushTime = "0";
+
     public final static int TCP_PORT_NUMBER = 6666;
     public final static int TCP_PORT_NUMBER_SEND = 6668;
 

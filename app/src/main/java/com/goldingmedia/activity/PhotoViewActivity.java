@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.goldingmedia.BaseActivity;
-import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.mvp.view.animations.Animations;
 import com.goldingmedia.utils.Utils;
@@ -95,6 +94,7 @@ public class PhotoViewActivity extends BaseActivity {
 			PhotoView photo = new PhotoView(container.getContext());
 			Bitmap bitmap = BitmapFactory.decodeFile(list.get(position));
 			photo.setImageBitmap(bitmap);
+
 			photo.setOnTouchListener(touchListener);
 			container.addView(photo, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			return photo;

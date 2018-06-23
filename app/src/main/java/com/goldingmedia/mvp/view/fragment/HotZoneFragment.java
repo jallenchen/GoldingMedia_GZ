@@ -132,7 +132,7 @@ public class HotZoneFragment extends BaseFragment{
         List<String> list = new ArrayList<>();
         TruckMediaProtos.CTruckMediaNode truck;
         String fileName;
-        String   imgPath;
+        String imgPath;
         String path;
 
 //        for (int i = 0; i < mTruckMapNodes.get(dataType).size(); i++) {
@@ -168,8 +168,7 @@ public class HotZoneFragment extends BaseFragment{
     }
 
     private void setBannerDatas(ConvenientBanner mBanner,int dataType) {
-        List<String> imgPaths =  new ArrayList<>();
-        imgPaths = getImgPath(dataType);
+        List<String> imgPaths =  getImgPath(dataType);
         if(imgPaths.size() < 2){
             mBanner.setCanLoop(false);//当只有一个时，不自动轮播
         }else {

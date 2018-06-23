@@ -293,7 +293,9 @@ public class ProtoDataParse {
                          classifyPushTruckMeta(mSop,mediaMeta,payMeta,playerMeta,true,ftpMeta.getGzMd5());
                      }
                 }
-                //GlideCacheUtil.getInstance().clearImageAllCache(GDApplication.getmInstance());//清除Glide 所有缓存
+                DataSharePreference.savePushTime(mContext,startTime+"");
+                Contant.PushTime =startTime+"";
+               // GlideCacheUtil.getInstance().clearImageAllCache(GDApplication.getmInstance());//清除Glide 所有缓存
                 // 关闭资源更新提示
                 EventBus.getDefault().post(new EventBusCMD(Contant.MsgID.DOWNLOAD_MSG_G));
                 EventBus.getDefault().post(new EventBusCMD(Contant.MsgID.REFLESH_DATA));

@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.goldingmedia.BaseActivity;
-import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
@@ -48,7 +48,10 @@ public class ReadyBookActivity extends BaseActivity {
 
         String imgPath = Contant.getTruckMetaNodePath(truckMediaNode.getMediaInfo().getCategoryId(), truckMediaNode.getMediaInfo().
                 getCategorySubId(), foldername,true);
-        imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+foldername+".jpg"));
+       // imageView.setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+foldername+".jpg"));
+        Glide.with(context).load(imgPath+"/"+foldername+".jpg")
+                .placeholder(R.color.transparent)
+                .into(imageView);
 
         textView.setText(truckMediaNode.getMediaInfo().getTruckMeta().getTruckDesc());
     }

@@ -29,8 +29,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +46,6 @@ import com.goldingmedia.mvp.view.ui.HListView;
 import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.temporary.Variables.StatusItem;
 import com.goldingmedia.utils.HandlerUtils;
-import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
 
 import java.util.ArrayList;
@@ -250,8 +247,11 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 			String imgPath = Contant.getTruckMetaNodePath(node.getMediaInfo().getCategoryId(),node.getMediaInfo().getCategorySubId(),node.getMediaInfo().getTruckMeta().getTruckFilename(),true);
 			String imgName = node.getMediaInfo().getTruckMeta().getTruckImage();
 
-			holder.icon.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
-			//Glide.with(mContext).load(imgPath+"/"+imgName).placeholder(R.mipmap.base_grid_normal).into( holder.icon);
+			//holder.icon.setImageBitmap(BitmapFactory.decodeFile(imgPath+"/"+imgName));
+
+			Glide.with(context).load(imgPath+"/"+imgName)
+					.placeholder(R.color.transparent)
+					.into(holder.icon);
 			holder.name.setText(node.getMediaInfo().getTruckMeta().getTruckTitle());
 
 			if(position == selectedPosition) {
@@ -501,6 +501,10 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		CancelDialog();
+		task.cancel();
+		timer.cancel();
+		timer = null;
+		task = null;
 	}
 
 	private void initializeData() {

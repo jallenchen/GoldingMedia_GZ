@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -111,6 +109,11 @@ public class ELineActivity extends BaseActivity implements OnClickListener {
 				return image;
 			}
 		});
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 	}
 
 	private class ImageAdapter extends BaseAdapter {

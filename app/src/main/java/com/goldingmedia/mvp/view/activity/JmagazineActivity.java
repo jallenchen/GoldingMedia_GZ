@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goldingmedia.BaseActivity;
-import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
@@ -82,7 +81,6 @@ public class JmagazineActivity extends BaseActivity {
 			PhotoView photo = new PhotoView(container.getContext());
 			Bitmap fBitmap = BitmapFactory.decodeFile(list.get(position));
 			photo.setImageBitmap(fBitmap);
-
 			container.addView(photo, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 			return photo;
 		}

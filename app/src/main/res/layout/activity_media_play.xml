@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
+    <com.youth.banner.Banner
         android:id="@+id/img_cb_top"
         android:layout_width="802.0px"
         android:layout_height="70.0px"
@@ -26,7 +26,7 @@
         layout="@layout/music_layout"
         android:visibility="gone" />
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
+    <com.youth.banner.Banner
         android:id="@+id/img_cb_mid"
         android:layout_width="500.0px"
         android:layout_height="300.0px"
@@ -40,7 +40,7 @@
     android:layout_height="70.0px"
     android:layout_alignParentBottom="true">
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
+    <com.youth.banner.Banner
         android:id="@+id/img_cb_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,6 +52,14 @@
         android:layout_height="match_parent"
         android:background="@mipmap/shrink"/>
 
+    <ImageView
+        android:id="@+id/img_small"
+        android:layout_width="150px"
+        android:layout_height="74px"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:layout_gravity="right"/>
+
 </FrameLayout>
 
 
@@ -61,7 +69,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true" >
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb_all"
             android:layout_width="222px"
             android:layout_height="match_parent"
@@ -76,18 +84,18 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb1"
                 android:layout_width="222px"
                 android:layout_height="200px"
                 />
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb2"
                 android:layout_width="222px"
                 android:layout_height="200px"
                 />
 
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb3"
                 android:layout_width="222px"
                 android:layout_height="200px"

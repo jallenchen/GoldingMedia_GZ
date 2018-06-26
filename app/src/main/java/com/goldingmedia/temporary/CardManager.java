@@ -29,6 +29,7 @@ public class CardManager {
 	
 	public void action(int position, TruckMediaProtos.CTruckMediaNode truck, Context context) {
 		Intent intent;
+		NLog.d("Cardmanager","---action:"+context.toString());
 		try {
 			switch (truck.getCategoryId()) {
             case Contant.CATEGORY_HOTZONE_ID:// 热门推荐类

@@ -87,22 +87,14 @@
 
             </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/game_fl4"
-                android:layout_width="129px"
-                android:layout_height="94px"
-                android:background="@drawable/game_s_bg"
-                android:gravity="center"
-                android:padding="4px">
-
-                <ImageView
-                    android:id="@+id/game_iv_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+            <com.youth.banner.Banner
+                    android:id="@+id/img_cb_small"
+                    android:layout_width="129px"
+                    android:layout_height="94px"
                     android:background="@drawable/game_s_bg"
-                    android:scaleType="fitXY" />
-
-            </FrameLayout>
+                    android:gravity="center"
+                    android:padding="4px"
+                    />
 
         </LinearLayout>
     </RelativeLayout>

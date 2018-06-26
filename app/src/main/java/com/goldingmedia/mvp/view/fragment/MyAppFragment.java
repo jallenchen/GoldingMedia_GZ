@@ -67,7 +67,7 @@ public class MyAppFragment extends BaseFragment implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MyAppFragment extends BaseFragment implements AdapterView.OnItemCli
         }else  if(group.getChildAt(2).getId() == checkedId){
             mNodes = GDApplication.getmInstance().getTruckMedia().getcMyApp().getSubList(mCategorys.get(2).getCategorySubId());
         }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
     @Override

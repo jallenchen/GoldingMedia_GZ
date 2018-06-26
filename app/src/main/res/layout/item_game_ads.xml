@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="185px"
+    android:layout_height="143px"
+    android:background="@drawable/game_m_bg"
+    android:padding="4px"
+    android:gravity="center" >
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/game_m_bg_normal"/>
+
+
+</FrameLayout>

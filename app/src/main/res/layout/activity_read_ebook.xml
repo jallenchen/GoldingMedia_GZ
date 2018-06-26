@@ -35,7 +35,8 @@
     <com.goldingmedia.mvp.view.ui.BookLayout
         android:id="@+id/booklayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
     </com.goldingmedia.mvp.view.ui.BookLayout>
     </LinearLayout>
@@ -46,7 +47,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true" >
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb_all"
             android:layout_width="222px"
             android:layout_height="match_parent"
@@ -61,24 +62,22 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb1"
                 android:layout_width="222px"
                 android:layout_height="200px"
                 />
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb2"
                 android:layout_width="222px"
                 android:layout_height="200px"
                 />
 
-            <com.bigkoo.convenientbanner.ConvenientBanner
+            <com.youth.banner.Banner
                 android:id="@+id/img_cb3"
                 android:layout_width="222px"
                 android:layout_height="200px"
                 />
-
-
         </LinearLayout>
     </FrameLayout>
 

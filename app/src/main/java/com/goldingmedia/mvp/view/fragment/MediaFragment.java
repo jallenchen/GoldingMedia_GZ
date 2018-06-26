@@ -26,6 +26,7 @@ import com.goldingmedia.mvp.view.adapter.MyBaseGirdViewAdapter;
 import com.goldingmedia.mvp.view.ui.MyRadioGroupView;
 import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.utils.NLog;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ import static com.goldingmedia.temporary.Variables.mTruckMediaTypeNodes;
 public class MediaFragment extends BaseFragment implements AdapterView.OnItemClickListener,RadioGroup.OnCheckedChangeListener{
     private static String TAG ="MediaFragment";
     private List<TruckMediaProtos.CTruckMediaNode> mNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
-    private List<TruckMediaProtos.CTruckMediaNode> mTypeNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
+    private List<TruckMediaProtos.CTruckMediaNode> mAdsNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     private MyBaseGirdViewAdapter mGirdAdapter;
     private RadioGroup mRadioGroup;
     private ScrollView mRadioGroupLayout;
@@ -92,7 +93,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 break;
         }
         mType = type;
-        mGirdAdapter.refresh(truckMediaNodes);
+        if(mType == Contant.MEDIA_TYPE_MOVIE){
+            mGirdAdapter.refresh(truckMediaNodes,getAdsImgPath());
+        }else{
+            mGirdAdapter.refresh(truckMediaNodes,null);
+        }
+
         return true;
     }
 
@@ -110,6 +116,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         mGirdView.setAdapter(mGirdAdapter);
         mGirdView.setOnItemClickListener(this);
         mRadioGroup.setOnCheckedChangeListener(this);
+        mGirdAdapter.setBannerListener(new myBannerLisenter());
         initData();
         return view;
     }
@@ -126,7 +133,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mGirdAdapter.refresh(getMediaType(mNodes,mType));
+        mAdsNodes = getBannerMovicesList();
+        mGirdAdapter.refresh(getMediaType(mNodes,mType),getAdsImgPath());
 
         mTruckMediaMovieNodes = new SparseArray<List<TruckMediaProtos.CTruckMediaNode>>();
         mTruckMediaTypeNodes = new ArrayList<List<TruckMediaProtos.CTruckMediaNode>>();
@@ -186,7 +194,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             mNodes = GDApplication.getmInstance().getTruckMedia().getcMoviesShow().getSubList(mCategorys.get(3).getCategorySubId());
         }
 
-        mGirdAdapter.refresh(getMediaType(mNodes,mType));
+        mGirdAdapter.refresh(getMediaType(mNodes,mType),getAdsImgPath());
     }
 
     private  List<TruckMediaProtos.CTruckMediaNode> getMediaType(List<TruckMediaProtos.CTruckMediaNode> list,int typeid){
@@ -221,6 +229,35 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             case Contant.MsgID.REFLESH_UI:
                 initData();
                 break;
+        }
+    }
+
+    private List<TruckMediaProtos.CTruckMediaNode> getBannerMovicesList() {
+        return GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_MOVICEAREA);
+    }
+    private List<String> getAdsImgPath(){
+        List<String> list = new ArrayList<>();
+        TruckMediaProtos.CTruckMediaNode truck = null ;
+        String fileName;
+        String imgPath;
+            for (int i = 0; i < mAdsNodes.size(); i++) {
+                truck = mAdsNodes.get(i);
+                fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
+                imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
+                        fileName+"/"+fileName+".jpg",true);
+
+                list.add(imgPath);
+            }
+        return list;
+    }
+    private class myBannerLisenter implements OnBannerListener{
+        @Override
+        public void OnBannerClick(int position) {
+            TruckMediaProtos.CTruckMediaNode truckMediaNode = mAdsNodes.get(position);
+            NLog.d(TAG,"myBannerLisenter:"+position);
+            if (truckMediaNode != null) {
+                CardManager.getInstance().action(position, truckMediaNode,getActivity());
+            }
         }
     }
 }

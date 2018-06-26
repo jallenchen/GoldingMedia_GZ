@@ -9,7 +9,7 @@
         android:layout_height="440px"
         android:padding="6px">
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb1"
             android:layout_width="327px"
             android:layout_height="440px"
@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb2"
             android:layout_width="296px"
             android:layout_height="215px"
@@ -37,7 +37,7 @@
             android:padding="6px"
             />
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb3"
             android:layout_width="296px"
             android:layout_height="215px"
@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb4"
             android:layout_width="296px"
             android:layout_height="215px"
@@ -61,7 +61,7 @@
             android:padding="6px"
             />
 
-        <com.bigkoo.convenientbanner.ConvenientBanner
+        <com.youth.banner.Banner
             android:id="@+id/img_cb5"
             android:layout_width="296px"
             android:layout_height="215px"

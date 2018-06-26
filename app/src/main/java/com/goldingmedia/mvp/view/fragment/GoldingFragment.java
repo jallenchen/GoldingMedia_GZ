@@ -71,7 +71,7 @@ public class GoldingFragment extends BaseFragment implements AdapterView.OnItemC
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
 
@@ -90,7 +90,7 @@ public class GoldingFragment extends BaseFragment implements AdapterView.OnItemC
        }else  if(group.getChildAt(2).getId() == checkedId){
            mNodes = GDApplication.getmInstance().getTruckMedia().getcGoldingMedia().getSubList(mCategorys.get(2).getCategorySubId());
        }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
     @Override

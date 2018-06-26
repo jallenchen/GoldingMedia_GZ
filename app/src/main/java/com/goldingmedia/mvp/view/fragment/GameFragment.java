@@ -1,9 +1,9 @@
 package com.goldingmedia.mvp.view.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,16 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
-import com.goldingmedia.activity.WebActivity;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.mode.EventBusCMD;
 import com.goldingmedia.mvp.view.adapter.GameGirdAdapter;
+import com.goldingmedia.mvp.view.ui.GlideImageLoader;
+import com.goldingmedia.temporary.CardManager;
+import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.Utils;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +36,16 @@ import java.util.List;
 public class GameFragment extends BaseFragment implements View.OnClickListener,AdapterView.OnItemClickListener{
     private static String TAG ="GameFragment";
     public ImageView[] game_typeLogs;
+    public static  final int GAME_LOOP_TIME = 5000;
     private List<TruckMediaProtos.CTruckMediaNode> truckMMediaNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     private List<TruckMediaProtos.CTruckMediaNode> truckSMediaNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     private List<TruckMediaProtos.CTruckMediaNode> truckLMediaNodes = new ArrayList<TruckMediaProtos.CTruckMediaNode>();
+    private SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckGameMapAds = new SparseArray<>();
     private GridView mGridView;
     private GameGirdAdapter mAdapter;
-    private ImageView[] mGameIms = new ImageView[5];
-    private FrameLayout[] mFraIms = new FrameLayout[5];
+    private Banner mBannerS;
+    private ImageView[] mGameIms = new ImageView[4];
+    private FrameLayout[] mFraIms = new FrameLayout[4];
 
 
     public GameFragment() {
@@ -56,18 +63,21 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
         mGameIms[1] =(ImageView) view.findViewById(R.id.game_iv_1);
         mGameIms[2] =(ImageView) view.findViewById(R.id.game_iv_2);
         mGameIms[3] =(ImageView) view.findViewById(R.id.game_iv_3);
-        mGameIms[4] =(ImageView) view.findViewById(R.id.game_iv_4);
+        mBannerS =(Banner) view.findViewById(R.id.img_cb_small);
         mFraIms[0] =(FrameLayout) view.findViewById(R.id.game_fl0);
         mFraIms[1] =(FrameLayout) view.findViewById(R.id.game_fl1);
         mFraIms[2] =(FrameLayout) view.findViewById(R.id.game_fl2);
         mFraIms[3] =(FrameLayout) view.findViewById(R.id.game_fl3);
-        mFraIms[4] =(FrameLayout) view.findViewById(R.id.game_fl4);
+       // mFraIms[4] =(FrameLayout) view.findViewById(R.id.game_fl4);
 
         mAdapter = new GameGirdAdapter(getActivity());
         mGridView.setAdapter(mAdapter);
 
+        initWindowAds();
         setLisenter();
         initData();
+        setBannerConfig();
+
         return view;
     }
 
@@ -98,7 +108,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
                         .into(mGameIms[0]);
             }
 
-            for(int i = 0;i<truckSMediaNodes.size();i++){
+            for(int i = 0;i < 3;i++){
                 imgPath = Contant.getTruckMetaNodePath(Contant.CATEGORY_GAME_ID,3,truckSMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckFilename(),true);
                 String imgSName = truckSMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckImage();
                 //mGameIms[i+1].setImageBitmap( BitmapFactory.decodeFile(imgPath+"/"+imgSName));
@@ -106,8 +116,16 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
                         .placeholder(R.color.transparent)
                         .into(mGameIms[i+1]);
             }
+
+            List<String> mGameMidImgPath = new ArrayList<>();
+            for(int i = 0;i < 5;i++){
+                imgPath = Contant.getTruckMetaNodePath(Contant.CATEGORY_GAME_ID,2,truckMMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckFilename(),true);
+                String imgSName = truckMMediaNodes.get(i).getMediaInfo().getTruckMeta().getTruckImage();
+                mGameMidImgPath.add(imgPath+"/"+imgSName);
+            }
+
             //TODO
-            mAdapter.refresh(truckMMediaNodes);
+            mAdapter.refresh(mGameMidImgPath,getImgPath(Contant.ADS_GAME_MIDDLE));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,9 +148,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
                 case R.id.game_fl3:
                     smallGameIndex = 2;
                     break;
-                case R.id.game_fl4:
-                    smallGameIndex = 3;
-                    break;
             }
             if(smallGameIndex == -1){
                 Utils.openApp(getActivity(),truckLMediaNodes.get(0).getMediaInfo().getTruckMeta().getTruckDesc());
@@ -147,24 +162,120 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(position == truckMMediaNodes.size()){
-            String url="";
-            List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_GAMEAREA);
-            if(truckMediaNodes.size() != 0){
-                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdsUrl();
-            }
-            Intent intent = new Intent(getActivity(), WebActivity.class);
-            intent.putExtra("online",true);
-            intent.putExtra("url","http://www.cnblogs.com");
-           // intent.putExtra("url",url);
-            startActivity(intent);
+    public void onResume() {
+        super.onResume();
+        mBannerS.setDelayTime(GAME_LOOP_TIME);
+        mBannerS.startAutoPlay();
+    }
 
-        }else{
-            Utils.openApp(getActivity(),truckMMediaNodes.get(position).getMediaInfo().getTruckMeta().getTruckDesc());
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBannerS.stopAutoPlay();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        NLog.e(TAG,"-----MyOnItemListener:"+position);
+        Utils.openApp(getActivity(),truckMMediaNodes.get(position).getMediaInfo().getTruckMeta().getTruckDesc());
+    }
+
+
+
+
+    private void setBannerConfig(){
+            mBannerS.setOnBannerListener(new MyOnItemListener(1));
+            mAdapter.setBannerListener(new MyOnItemListener(2));
+            setBannerDatas();
+    }
+
+
+
+    private void setBannerDatas() {
+        List<String> imgPaths =  getImgPath(Contant.ADS_GAME_SMALL);
+//        if(imgPaths.size() < 2){
+//            mBanner.setCanLoop(false);//当只有一个时，不自动轮播
+//        }else {
+//            mBanner.setCanLoop(true);//自动轮播
+//        }
+        mBannerS.isAutoPlay(true);//自动轮播
+        mBannerS.setViewPagerIsScroll(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
+        mBannerS.setImages(imgPaths);
+        mBannerS.setImageLoader(new GlideImageLoader());
+        if(imgPaths.size() != 0){
+            mBannerS.start();
+        }else {
+            mBannerS.setOnClickListener(null);
+        }
+    }
+
+    private List<String> getImgPath(int type){
+        List<String> list = new ArrayList<>();
+        TruckMediaProtos.CTruckMediaNode truck = null ;
+        String fileName;
+        String imgPath;
+        if(type == Contant.ADS_GAME_SMALL){
+            for (int i = 0; i < mTruckGameMapAds.get(Contant.ADS_GAME_SMALL).size(); i++) {
+                truck = mTruckGameMapAds.get(Contant.ADS_GAME_SMALL).get(i);
+                fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
+                imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
+                        fileName+"/"+fileName+".jpg",true);
+
+                list.add(imgPath);
+            }
+        }else  if(type == Contant.ADS_GAME_MIDDLE){
+            for (int i = 0; i < mTruckGameMapAds.get(Contant.ADS_GAME_MIDDLE).size(); i++) {
+                truck = mTruckGameMapAds.get(Contant.ADS_GAME_MIDDLE).get(i);
+                fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
+                imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
+                        fileName+"/"+fileName+".jpg",true);
+
+                list.add(imgPath);
+            }
         }
 
 
+        return list;
+    }
+
+    private class MyOnItemListener implements OnBannerListener{
+        int nBannerNum;
+
+        public MyOnItemListener(int bannerNum){
+            nBannerNum= bannerNum;
+        }
+
+        @Override
+        public void OnBannerClick(int position) {
+            NLog.e(TAG,nBannerNum+"-----onItemClick:"+position);
+            TruckMediaProtos.CTruckMediaNode truckMediaNode = null;
+            switch (nBannerNum){
+                case Contant.ADS_GAME_SMALL:
+                    truckMediaNode =  mTruckGameMapAds.get(Contant.ADS_GAME_SMALL).get(position);
+                    break;
+                case Contant.ADS_GAME_MIDDLE:
+                    truckMediaNode =  mTruckGameMapAds.get(Contant.ADS_GAME_MIDDLE).get(position);
+                    break;
+            }
+
+            if (truckMediaNode != null) {
+                CardManager.getInstance().action(position, truckMediaNode,getActivity());
+            }
+        }
+
+    }
+
+    private void  initWindowAds() {
+        List<TruckMediaProtos.CTruckMediaNode> list;
+        list = getBannerSGameList(Contant.ADS_GAME_SMALL);
+        mTruckGameMapAds.put(Contant.ADS_GAME_SMALL,list);
+        list = getBannerSGameList(Contant.ADS_GAME_MIDDLE);
+        mTruckGameMapAds.put(Contant.ADS_GAME_MIDDLE,list);
+
+    }
+
+    private List<TruckMediaProtos.CTruckMediaNode> getBannerSGameList(int type) {
+        return GDApplication.getmInstance().getTruckMedia().getcAds().getGameOrientTrucksMap(type);
     }
 
     @Override

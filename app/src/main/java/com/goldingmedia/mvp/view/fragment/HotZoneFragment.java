@@ -8,17 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.mode.EventBusCMD;
-import com.goldingmedia.mvp.view.ui.ImageViewHolder;
+import com.goldingmedia.mvp.view.ui.GlideImageLoader;
 import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.utils.NLog;
-import com.goldingmedia.utils.NToast;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
 public class HotZoneFragment extends BaseFragment{
     private static String TAG = "HotZoneFragment";
     private  SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckMapNodes = new SparseArray<>();
-    private ConvenientBanner[] mBanners = new ConvenientBanner[5];
+    private Banner[] mBanners = new Banner[5];
 
     public HotZoneFragment() {
         // Required empty public constructor
@@ -49,11 +48,11 @@ public class HotZoneFragment extends BaseFragment{
     }
 
     private void initView(View view ){
-        mBanners[0] = (ConvenientBanner) view.findViewById(R.id.img_cb1);
-        mBanners[1] = (ConvenientBanner) view.findViewById(R.id.img_cb2);
-        mBanners[2] = (ConvenientBanner) view.findViewById(R.id.img_cb3);
-        mBanners[3] = (ConvenientBanner) view.findViewById(R.id.img_cb4);
-        mBanners[4] = (ConvenientBanner) view.findViewById(R.id.img_cb5);
+        mBanners[0] = (Banner) view.findViewById(R.id.img_cb1);
+        mBanners[1] = (Banner) view.findViewById(R.id.img_cb2);
+        mBanners[2] = (Banner) view.findViewById(R.id.img_cb3);
+        mBanners[3] = (Banner) view.findViewById(R.id.img_cb4);
+        mBanners[4] = (Banner) view.findViewById(R.id.img_cb5);
     }
 
     /**
@@ -61,13 +60,14 @@ public class HotZoneFragment extends BaseFragment{
      */
     private void setBannerConfig(){
         for(int i = 0 ;i < mBanners.length;i++){
-            mBanners[i].setOnItemClickListener(new MyListener(i));
+            mBanners[i].setOnBannerListener(new MyListener(i));
             setBannerDatas(mBanners[i],i);
         }
-
     }
 
-    private class MyListener implements com.bigkoo.convenientbanner.listener.OnItemClickListener{
+
+
+    private class MyListener implements OnBannerListener{
         int nBannerNum;
 
         public MyListener(int bannerNum){
@@ -76,7 +76,8 @@ public class HotZoneFragment extends BaseFragment{
         }
 
         @Override
-        public void onItemClick(int position) {
+        public void OnBannerClick(int position) {
+            NLog.e(TAG,nBannerNum+":MyListener banner num :"+position);
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
 
             if (truckMediaNode != null) {
@@ -89,9 +90,10 @@ public class HotZoneFragment extends BaseFragment{
      * 设置开始轮播以及轮播时间
      * @param banners
      */
-    private void startBannersTurning(ConvenientBanner[] banners){
-        for(ConvenientBanner bn : banners){
-            bn.startTurning(2500);
+    private void startBannersTurning(Banner[] banners){
+        for(Banner bn : banners){
+            bn.setDelayTime(2500);
+            bn.startAutoPlay();
         }
     }
 
@@ -99,10 +101,10 @@ public class HotZoneFragment extends BaseFragment{
      * 停止轮播
      * @param banners
      */
-    private void stopBannersTurning(ConvenientBanner[] banners){
-        for(ConvenientBanner bn : banners){
+    private void stopBannersTurning(Banner[] banners){
+        for(Banner bn : banners){
             if(bn!=null){
-                bn.stopTurning();   //停止轮播
+                bn.stopAutoPlay();
             }
         }
     }
@@ -135,11 +137,6 @@ public class HotZoneFragment extends BaseFragment{
         String imgPath;
         String path;
 
-//        for (int i = 0; i < mTruckMapNodes.get(dataType).size(); i++) {
-//        String fileName =  mTruckMapNodes.get(dataType).get(i).getMediaInfo().getTruckMeta().getTruckFilename();
-//        String   imgPath =  Contant.HOTZONE_PATH + fileName+"/"+fileName+".jpg";
-//        list.add(imgPath);
-//        }
         switch (dataType){
             case 0:
                 for (int i = 0; i < mTruckMapNodes.get(0).size(); i++) {
@@ -167,23 +164,18 @@ public class HotZoneFragment extends BaseFragment{
         return list;
     }
 
-    private void setBannerDatas(ConvenientBanner mBanner,int dataType) {
+    private void setBannerDatas(Banner mBanner,int dataType) {
         List<String> imgPaths =  getImgPath(dataType);
-        if(imgPaths.size() < 2){
-            mBanner.setCanLoop(false);//当只有一个时，不自动轮播
-        }else {
-            mBanner.setCanLoop(true);//自动轮播
-        }
 
-        mBanner.setManualPageable(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
-        mBanner.setPages(new CBViewHolderCreator<ImageViewHolder>() {
-            @Override
-            public ImageViewHolder createHolder() {
-                return new ImageViewHolder();
-            }
-        },imgPaths)
-                .setPageIndicator(new int[]{R.mipmap.ponit_normal,R.mipmap.point_select}) //设置两个点作为指示器
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL); //设置指示器的方向水平居中
+        mBanner.isAutoPlay(true);//自动轮播
+        mBanner.setViewPagerIsScroll(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
+        mBanner.setImages(imgPaths);
+        mBanner.setImageLoader(new GlideImageLoader());
+        if(imgPaths.size() != 0){
+            mBanner.start();
+        }else {
+            mBanner.setOnClickListener(null);
+        }
     }
 
 
@@ -196,4 +188,5 @@ public class HotZoneFragment extends BaseFragment{
                 break;
         }
     }
+
 }

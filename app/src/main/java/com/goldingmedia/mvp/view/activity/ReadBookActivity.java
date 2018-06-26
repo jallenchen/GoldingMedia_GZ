@@ -5,14 +5,13 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.goldingmedia.BaseActivity;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
@@ -20,15 +19,18 @@ import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.view.adapter.BookAdapter;
 import com.goldingmedia.mvp.view.ui.BookLayout;
-import com.goldingmedia.mvp.view.ui.ImageViewHolder;
+import com.goldingmedia.mvp.view.ui.GlideImageLoader;
 import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
 import com.goldingmedia.utils.StreamTool;
+import com.goldingmedia.utils.Utils;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 
-public class ReadBookActivity extends BaseActivity{
+public class ReadBookActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
     /** Called when the activity is first created. */
     private static final String TAG = "ReadBookActivity";
     private BookLayout bk;
@@ -36,12 +38,13 @@ public class ReadBookActivity extends BaseActivity{
     private String ebookName;
     private int mTopCount;
     private int mTimerCounter = 0;
-    private static final int LOOP_TIME = 15000;
+    private static final int LOOP_TIME = 30000;
     private boolean[] isBannerLoopEnd = {false,false,false};
     private boolean isBannerAll = false;
     private HandlerUtils.HandlerHolder handlerHolder;
-    private ConvenientBanner[] mBanners = new ConvenientBanner[3];
-    private ConvenientBanner mBannerAll ;
+    private Banner[] mBanners = new Banner[3];
+    private int[] winSize = new int[3];
+    private Banner mBannerAll ;
     private SparseArray<List<TruckMediaProtos.CTruckMediaNode>> mTruckMapNodes = new SparseArray<>();
 
     @Override
@@ -57,64 +60,93 @@ public class ReadBookActivity extends BaseActivity{
         ebookName = getIntent().getStringExtra("ebookName");
     	 bk = (BookLayout) findViewById(R.id.booklayout);
         textView = (TextView) findViewById(R.id.ebook_name);
-        mBannerAll = (ConvenientBanner)findViewById(R.id.img_cb_all);
-        mBanners[0] = (ConvenientBanner)findViewById(R.id.img_cb1);
-        mBanners[1] = (ConvenientBanner)findViewById(R.id.img_cb2);
-        mBanners[2] = (ConvenientBanner)findViewById(R.id.img_cb3);
+        mBannerAll = (Banner)findViewById(R.id.img_cb_all);
+        mBanners[0] = (Banner)findViewById(R.id.img_cb1);
+        mBanners[1] = (Banner)findViewById(R.id.img_cb2);
+        mBanners[2] = (Banner)findViewById(R.id.img_cb3);
 
          ArrayList<String> str = StreamTool.getEbookData();
          BookAdapter ba = new BookAdapter(this);
          ba.addItem(str);
          bk.setPageAdapter(ba);
         textView.setText(ebookName);
+        handlerHolder = new HandlerUtils.HandlerHolder(this);
         initWindowAds();
         setBannerConfig();
+    }
+
+    @Override
+    public void handlerMessage(Message msg) {
+        switch (msg.what){
+            case Contant.BANNER_WINALL:
+                setBannerVisibilityType(Contant.BANNER_WINALL);
+                break;
+            case Contant.BANNER_WINSUB:
+                setBannerVisibilityType(Contant.BANNER_WINSUB);
+                break;
+        }
     }
 
     /**
      * 设置开始轮播以及轮播时间
      * @param banners
      */
-    private void startBannersTurning(ConvenientBanner[] banners){
-        for(ConvenientBanner bn : banners){
-            bn.startTurning(LOOP_TIME);
+    private void startBannersTurning(Banner[] banners){
+        for(Banner bn : banners){
+            if(bn.getVisibility() == View.VISIBLE){
+                bn.startAutoPlay();
+            }
         }
-        if(mBannerAll!=null && isBannerAll){
-            mBannerAll.startTurning(LOOP_TIME);
+        if(mBannerAll.getVisibility() == View.VISIBLE){
+            mBannerAll.startAutoPlay();
+            if(mTruckMapNodes.get(Contant.ADS_WINDOW_ORIENT_All).size() == 1){
+                handlerHolder.sendEmptyMessageDelayed(Contant.BANNER_WINSUB,LOOP_TIME);
+            }
         }
+
     }
 
     /**
      * 停止轮播
      * @param banners
      */
-    private void stopBannersTurning(ConvenientBanner[] banners){
-        for(ConvenientBanner bn : banners){
+    private void stopBannersTurning(Banner[] banners){
+        for(Banner bn : banners){
             if(bn!=null){
-                bn.stopTurning();   //停止轮播
+                bn.stopAutoPlay();   //停止轮播
             }
         }
-        if(mBannerAll!=null && isBannerAll){
-            mBannerAll.stopTurning();   //停止轮播
+        if(isBannerAll){
+            mBannerAll.stopAutoPlay();   //停止轮播
         }
     }
 
-    private void setBannerVisibility(boolean isCbAllDis,boolean isBannerAll){
-        NLog.d(TAG,"AllBanner display:"+isCbAllDis);
-        if(!isBannerAll) return;
-        if(isCbAllDis){
-            mBannerAll.startTurning(LOOP_TIME);
-            mBannerAll.setVisibility(View.VISIBLE);
-            for(ConvenientBanner cb : mBanners){
+    private void setBannerVisibilityType(int bannerType){
+          if(bannerType == Contant.BANNER_WINALL){
+              mBannerAll.setVisibility(View.VISIBLE);
+              mBannerAll.start();
+              if(mTruckMapNodes.get(Contant.ADS_WINDOW_ORIENT_All).size() == 1){
+                  handlerHolder.sendEmptyMessageDelayed(Contant.BANNER_WINSUB,LOOP_TIME);
+              }
+
+            for(Banner cb : mBanners){
                 cb.setVisibility(View.GONE);
-                cb.stopTurning();
+                cb.stopAutoPlay();
             }
-        }else{
-            mBannerAll.stopTurning();
+        }else  if(bannerType == Contant.BANNER_WINSUB){
+
+            if(winSize[0] == 0 &&winSize[1] == 0 && winSize[2] == 0){
+                return;
+            }
+            mBannerAll.stopAutoPlay();
             mBannerAll.setVisibility(View.GONE);
-            for(ConvenientBanner cb : mBanners){
+            for(Banner cb : mBanners){
                 cb.setVisibility(View.VISIBLE);
-                cb.startTurning(LOOP_TIME);
+                cb.start();
+            }
+
+            if(Utils.getMax(winSize) == 1){
+                handlerHolder.sendEmptyMessageDelayed(Contant.BANNER_WINALL,LOOP_TIME);
             }
         }
     }
@@ -135,71 +167,81 @@ public class ReadBookActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handlerHolder.removeMessages(Contant.BANNER_WINALL);
+        handlerHolder.removeMessages(Contant.BANNER_WINSUB);
+        handlerHolder = null;
     }
 
     private void setBannerConfig(){
-        if(isBannerAll){
-            mBannerAll.setOnItemClickListener(new MyOnItemListener( Contant.ADS_WINDOW_ORIENT_All));
-            setBannerDatas(mBannerAll, Contant.ADS_WINDOW_ORIENT_All);
-        }
+        mBannerAll.setOnBannerListener(new MyOnItemListener( Contant.ADS_WINDOW_ORIENT_All));
+        setBannerDatas(mBannerAll, Contant.ADS_WINDOW_ORIENT_All);
 
         for(int i = 0 ;i < mBanners.length;i++){
-            mBanners[i].setOnItemClickListener(new MyOnItemListener(i+1));
+            mBanners[i].setOnBannerListener(new MyOnItemListener(i+1));
             setBannerDatas(mBanners[i],i+1);
         }
 
     }
 
-    private void setBannerDatas(ConvenientBanner mBanner,int dataType) {
-        List<String> imgPaths =  new ArrayList<>();
-        imgPaths = getImgPath(dataType);
+    private void setBannerDatas(Banner mBanner,int dataType) {
+        List<String> imgPaths =  imgPaths = getImgPath(dataType);
+
 //        if(imgPaths.size() < 2){
 //            mBanner.setCanLoop(false);//当只有一个时，不自动轮播
 //        }else {
 //            mBanner.setCanLoop(true);//自动轮播
 //        }
-        mBanner.setCanLoop(true);//自动轮播
-        mBanner.setManualPageable(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
-        mBanner.setPages(new CBViewHolderCreator<ImageViewHolder>() {
+        mBanner.setDelayTime(LOOP_TIME);
+        mBanner.isAutoPlay(true);//自动轮播
+        mBanner.setViewPagerIsScroll(false);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
+        mBanner.setImages(imgPaths);
+        mBanner.setImageLoader(new GlideImageLoader());
+        mBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int pos = -1;
+
             @Override
-            public ImageViewHolder createHolder() {
-                return new ImageViewHolder();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
-        },imgPaths)
-                .setPageIndicator(new int[]{R.mipmap.ponit_normal,R.mipmap.point_select}) //设置两个点作为指示器
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL) //设置指示器的方向水平居中
-                .setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            @Override
+            public void onPageSelected(int position) {
+                pos = position+1;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                int size = mTruckMapNodes.get(dataType).size();
+                if(state == 2 && size == pos){
+                    if(dataType == Contant.ADS_WINDOW_ORIENT_All){
+                        setBannerVisibilityType(Contant.BANNER_WINSUB);
+                    }else if(dataType == Contant.ADS_WINDOW_ORIENT_TOP){
+                        isBannerLoopEnd[0] = true;
+                    }else if(dataType == Contant.ADS_WINDOW_ORIENT_MIDDLE){
+                        isBannerLoopEnd[1] = true;
+                    }else if(dataType == Contant.ADS_WINDOW_ORIENT_BOTTOM){
+                        isBannerLoopEnd[2] = true;
                     }
 
-                    @Override
-                    public void onPageSelected(int position) {
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-                        if(state == 2 && mBanner.getCurrentItem() == 0){
-                               if(dataType == Contant.ADS_WINDOW_ORIENT_All){
-                                    setBannerVisibility(false,isBannerAll);
-                               }else if(dataType == Contant.ADS_WINDOW_ORIENT_TOP){
-                                   isBannerLoopEnd[0] = true;
-                               }else if(dataType == Contant.ADS_WINDOW_ORIENT_MIDDLE){
-                                   isBannerLoopEnd[1] = true;
-                               }else if(dataType == Contant.ADS_WINDOW_ORIENT_BOTTOM){
-                                   isBannerLoopEnd[2] = true;
-                               }
-
-                               if(isBannerLoopEnd[0] && isBannerLoopEnd[1] && isBannerLoopEnd[2]){
-                                   setBannerVisibility(true,isBannerAll);
-                                   isBannerLoopEnd[0] = false;
-                                   isBannerLoopEnd[1] = false;
-                                   isBannerLoopEnd[2] = false;
-                               }
+                    if(isBannerLoopEnd[0] && isBannerLoopEnd[1] && isBannerLoopEnd[2]){
+                        setBannerVisibilityType(Contant.BANNER_WINALL);
+                        for(int i=0;i<3;i++){
+                            if(mTruckMapNodes.get(i+1).size() <= 1){
+                                isBannerLoopEnd[i] = true;
+                            }else{
+                                isBannerLoopEnd[i] = false;
+                            }
                         }
                     }
-                });
+                }
+            }
+        });
+        if(imgPaths.size() != 0){
+            mBanner.start();
+        }else {
+            mBanner.setOnClickListener(null);
+        }
+
     }
 
     private List<String> getImgPath(int dataType){
@@ -220,7 +262,7 @@ public class ReadBookActivity extends BaseActivity{
         return list;
     }
 
-    private class MyOnItemListener implements com.bigkoo.convenientbanner.listener.OnItemClickListener{
+    private class MyOnItemListener implements OnBannerListener{
         int nBannerNum;
 
         public MyOnItemListener(int bannerNum){
@@ -228,7 +270,8 @@ public class ReadBookActivity extends BaseActivity{
         }
 
         @Override
-        public void onItemClick(int position) {
+        public void OnBannerClick(int position) {
+            NLog.d(TAG,nBannerNum+":onItemClick:"+position);
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
 
             if (truckMediaNode != null) {
@@ -246,18 +289,49 @@ public class ReadBookActivity extends BaseActivity{
         mTruckMapNodes.put(Contant.ADS_WINDOW_ORIENT_All,list);
         if(list.size() != 0){
             isBannerAll = true;
-            setBannerVisibility(true,isBannerAll);
         }else{
             isBannerAll = false;
-            setBannerVisibility(false,isBannerAll);
+            //setBannerVisibility(false,isBannerAll);
         }
 
         list = getWindowList(Contant.ADS_WINDOW_ORIENT_TOP);
         mTruckMapNodes.put(Contant.ADS_WINDOW_ORIENT_TOP,list);
+        if(list.size() > 1){
+            isBannerLoopEnd[0] = false;
+        }else{
+            isBannerLoopEnd[0] = true;
+        }
+        winSize[0] = list.size();
+
         list = getWindowList(Contant.ADS_WINDOW_ORIENT_MIDDLE);
         mTruckMapNodes.put(Contant.ADS_WINDOW_ORIENT_MIDDLE,list);
+        if(list.size() > 1){
+            isBannerLoopEnd[1] = false;
+        }else{
+            isBannerLoopEnd[1] = true;
+        }
+        winSize[1] = list.size();
+
         list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
         mTruckMapNodes.put(Contant.ADS_WINDOW_ORIENT_BOTTOM,list);
+        if(list.size() > 1){
+            isBannerLoopEnd[2] = false;
+        }else{
+            isBannerLoopEnd[2] = true;
+        }
+        winSize[2] = list.size();
+
+        if(isBannerAll){
+            mBannerAll.setVisibility(View.VISIBLE);
+            for(Banner cb : mBanners){
+                cb.setVisibility(View.GONE);
+            }
+        }else{
+            mBannerAll.setVisibility(View.GONE);
+            for(Banner cb : mBanners){
+                cb.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private List<TruckMediaProtos.CTruckMediaNode> getWindowList(int orient) {

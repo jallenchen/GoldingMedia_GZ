@@ -267,6 +267,10 @@ public class Contant {
     public static final int ADS_PROMPT_TOP= 1;
     public static final int ADS_PROMPT_BOTTOM = 2;
 
+    ////ADS_GAME_ORIENT For prompt
+    public static final int ADS_GAME_SMALL= 1;
+    public static final int ADS_GAME_MIDDLE = 2;
+
     public static final int ADS_ACTION_NULL = 0;
     public static final int ADS_ACTION_URL = 1;
     public static final int ADS_ACTION_SUB = 2;
@@ -432,6 +436,9 @@ public class Contant {
     public static final String REBOOT = "/system/bin/sh  /system/etc/reboot.sh";
     public static final String SWITCH_SPEAK = "/system/bin/sh /system/etc/switchspeak.sh";
     public static final String SWITCH_HEADPHONE = "/system/bin/sh /system/etc/switchheadphone.sh";
+
+    public final static int BANNER_WINALL= 100 ;
+    public final static int BANNER_WINSUB= 101 ;
 
     /**
      * 获取大类，子类的路径

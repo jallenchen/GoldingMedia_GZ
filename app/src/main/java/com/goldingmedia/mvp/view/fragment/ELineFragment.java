@@ -69,7 +69,7 @@ public class ELineFragment extends BaseFragment implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ELineFragment extends BaseFragment implements AdapterView.OnItemCli
         }else  if(group.getChildAt(3).getId() == checkedId){
             mNodes = GDApplication.getmInstance().getTruckMedia().getCeLive().getSubList(mCategorys.get(3).getCategorySubId());
         }
-        mGirdAdapter.refresh(mNodes);
+        mGirdAdapter.refresh(mNodes,null);
     }
 
     @Override

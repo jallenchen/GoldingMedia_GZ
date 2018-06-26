@@ -45,8 +45,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.goldingmedia.BaseActivity;
 import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
@@ -58,11 +58,10 @@ import com.goldingmedia.most.GlobalSettings;
 import com.goldingmedia.most.fblock.FBlock;
 import com.goldingmedia.most.ts_renderer.TsReceiver;
 import com.goldingmedia.mvp.view.activity.JmagazineActivity;
-import com.goldingmedia.mvp.view.activity.ReadBookActivity;
 import com.goldingmedia.mvp.view.animations.Animations;
 import com.goldingmedia.mvp.view.lrc.LrcProcess;
 import com.goldingmedia.mvp.view.lrc.LrcView;
-import com.goldingmedia.mvp.view.ui.ImageViewHolder;
+import com.goldingmedia.mvp.view.ui.GlideImageLoader;
 import com.goldingmedia.mvp.view.ui.MTextView;
 import com.goldingmedia.temporary.CardManager;
 import com.goldingmedia.temporary.DataHelper;
@@ -75,6 +74,8 @@ import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
 import com.goldingmedia.utils.NToast;
 import com.goldingmedia.utils.Utils;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.io.File;
 import java.io.Serializable;
@@ -122,7 +123,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	private Button mNextButton;
 	private Button mEqButton;
 	private Button playblack;
-
+	private ImageView mImgSmall;
 	private LinearLayout mLinearLayout;
 
 	private final static long SHOW_TIME = 800;
@@ -153,6 +154,7 @@ public class MediaPlayActivity extends BaseActivity implements
     private static final int PAUSE_LOOP_TIME = 5000;
 	private static final int PROMPT_LOOP_TIME = 60000;
 	private boolean[] isBannerLoopEnd = {false,false,false};
+	private int[] winSize = new int[3];
 	private boolean isBannerAll = false;
 
 	private Typeface localTypeface;
@@ -162,6 +164,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	private int mPlayDuration = 0;
 	private int index = 0;
 	private int CurrentTime = 0;
+	private int mPromptPos = 1;
 
 	private SeekBar mSeekBar;
 	private SeekBar seekBarVolume;
@@ -195,7 +198,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	public static final int FLAG_HOMEKEY_DISPATCHED = 0x80000000;
 
     private FrameLayout rightLay;
-	private ConvenientBanner[] mBanners = new ConvenientBanner[7];
+	private Banner[] mBanners = new Banner[7];
 	private ImageView mShrink;
 	//private ConvenientBanner mBannerAll ;
 	//private ConvenientBanner mBannerB;
@@ -360,13 +363,14 @@ public class MediaPlayActivity extends BaseActivity implements
 		mMovieView = (SurfaceView)findViewById(surfaceView);
         rightLay = (FrameLayout)findViewById(R.id.rightLay);
 		mShrink = (ImageView) findViewById(R.id.shrink_btn);
-		mBanners[0] = (ConvenientBanner)findViewById(R.id.img_cb_all);
-		mBanners[1] = (ConvenientBanner)findViewById(R.id.img_cb1);
-		mBanners[2] = (ConvenientBanner)findViewById(R.id.img_cb2);
-		mBanners[3] = (ConvenientBanner)findViewById(R.id.img_cb3);
-		mBanners[4] = (ConvenientBanner)findViewById(R.id.img_cb_top);
-		mBanners[5] = (ConvenientBanner)findViewById(R.id.img_cb_bottom);
-        mBanners[6] = (ConvenientBanner)findViewById(R.id.img_cb_mid);
+		mImgSmall = (ImageView) findViewById(R.id.img_small);
+		mBanners[0] = (Banner)findViewById(R.id.img_cb_all);
+		mBanners[1] = (Banner)findViewById(R.id.img_cb1);
+		mBanners[2] = (Banner)findViewById(R.id.img_cb2);
+		mBanners[3] = (Banner)findViewById(R.id.img_cb3);
+		mBanners[4] = (Banner)findViewById(R.id.img_cb_top);
+		mBanners[5] = (Banner)findViewById(R.id.img_cb_bottom);
+        mBanners[6] = (Banner)findViewById(R.id.img_cb_mid);
 
 
 		mLinearLayout = (LinearLayout)findViewById(R.id.linearLayout1);
@@ -423,6 +427,7 @@ public class MediaPlayActivity extends BaseActivity implements
 		mEqButton.setOnClickListener(this);
 		playblack.setOnClickListener(this);
 		mShrink.setOnTouchListener(this);
+		mImgSmall.setOnTouchListener(this);
 
 		//mTopVideo.setOnTouchListener(this);
 		//mMidImg.setOnTouchListener(this);
@@ -1664,6 +1669,12 @@ public class MediaPlayActivity extends BaseActivity implements
 					handlerHolder.sendEmptyMessageDelayed(HANDLER_PLAY_LRC, 200);
 				}
 				break;
+			case Contant.BANNER_WINALL:
+				setBannerVisibilityType(Contant.BANNER_WINALL);
+				break;
+			case Contant.BANNER_WINSUB:
+				setBannerVisibilityType(Contant.BANNER_WINSUB);
+				break;
 		}
 	}
 
@@ -1871,34 +1882,29 @@ public class MediaPlayActivity extends BaseActivity implements
 //				//startWindowAdActivity(mBottomCount, Contant.ADS_WINDOW_ORIENT_BOTTOM);
 //				break;
             case R.id.shrink_btn:
-            	NLog.e(TAG,"-----------------touch");
-                ViewGroup.LayoutParams lp = mBanners[5].getLayoutParams();
-                lp.width = 150;
-                mBanners[5].setLayoutParams(lp);
-                mShrink.setVisibility(View.GONE);
-
-				List<String> imgPaths =  new ArrayList<>();
+				mBanners[5].setVisibility(View.GONE);
+				mShrink.setVisibility(View.GONE);
 				TruckMediaProtos.CTruckMediaNode truck;
 				String fileName;
 				String imgPath;
-
-				for (int i = 0; i < mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).size(); i++) {
-					truck = mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).get(i);
+					int mSize = mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).size();
+                     mPromptPos = mSize - mPromptPos;
+					truck = mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).get(mPromptPos);
 					fileName =  truck.getMediaInfo().getTruckMeta().getTruckFilename();
 					imgPath =  Contant.getTruckMetaNodePath(truck.getMediaInfo().getCategoryId(),truck.getMediaInfo().getCategorySubId(),
 							fileName+"/"+fileName+"_s.jpg",true);
-
-					imgPaths.add(imgPath);
-				}
-
-				mBanners[5].setPages(new CBViewHolderCreator<ImageViewHolder>() {
-					@Override
-					public ImageViewHolder createHolder() {
-						return new ImageViewHolder();
-					}
-				},imgPaths);
-
+				Glide.with(this).load(imgPath)
+						.signature(new StringSignature(Contant.PushTime))
+						.placeholder(R.color.transparent)
+						.into(mImgSmall);
+				mImgSmall.setVisibility(View.VISIBLE);
                 break;
+			case R.id.img_small:
+                TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).get(mPromptPos);
+                if (truckMediaNode != null) {
+                    CardManager.getInstance().action(mPromptPos, truckMediaNode,MediaPlayActivity.this);
+                }
+				break;
 
 			case R.id.paid_tips_lay:
 				showQRCode();
@@ -1988,13 +1994,6 @@ public class MediaPlayActivity extends BaseActivity implements
 			case R.id.playblack:
 				if(mFBlock != null) mFBlock.TimePosition.Set(1000);
 				ExitActivity();
-				break;
-			case R.id.shrink_btn:
-				ViewGroup.LayoutParams lp = mBanners[5].getLayoutParams();
-				lp.width = 150;
-				lp.height = 74;
-				mBanners[5].setLayoutParams(lp);
-				mShrink.setVisibility(View.GONE);
 				break;
 		}
 	}
@@ -2152,18 +2151,22 @@ public class MediaPlayActivity extends BaseActivity implements
 	 * 设置开始轮播以及轮播时间
 	 * @param banners
 	 */
-	private void startBannersTurning(ConvenientBanner[] banners){
+	private void startBannersTurning(Banner[] banners){
 
 		for(int i = 0;i < mBanners.length;i++){
 			if(i==0){
-				if(isBannerAll)
-					mBanners[i].startTurning(WINDOW_LOOP_TIME);
+				if(isBannerAll){
+					mBanners[i].setDelayTime(WINDOW_LOOP_TIME);
+					mBanners[i].startAutoPlay();
+				}
 			}else if(i==4 || i == 5){
-				mBanners[i].startTurning(PROMPT_LOOP_TIME);
+				mBanners[i].setDelayTime(PROMPT_LOOP_TIME);
+				mBanners[i].startAutoPlay();
 			}else if(i==6){
 				//mBanners[i].startTurning(PAUSE_LOOP_TIME);
 			}else{
-                mBanners[i].startTurning(WINDOW_LOOP_TIME);
+				mBanners[i].setDelayTime(WINDOW_LOOP_TIME);
+				mBanners[i].startAutoPlay();
             }
 		}
 	}
@@ -2174,23 +2177,56 @@ public class MediaPlayActivity extends BaseActivity implements
 	 * 停止轮播
 	 * @param banners
 	 */
-	private void stopBannersTurning(ConvenientBanner[] banners){
-		for(ConvenientBanner bn : banners){
+	private void stopBannersTurning(Banner[] banners){
+		for(Banner bn : banners){
 			if(bn!=null){
-				bn.stopTurning();   //停止轮播
+				bn.stopAutoPlay();   //停止轮播
 			}
 		}
 	}
 
 	private void setPauseAdsVisibility(int value){
 	    if(value == View.GONE){
-            mBanners[6].stopTurning();   //停止轮播
+            mBanners[6].stopAutoPlay();   //停止轮播
         }else{
-            mBanners[6].startTurning(PAUSE_LOOP_TIME);
+			mBanners[6].setDelayTime(PAUSE_LOOP_TIME);
+			mBanners[6].startAutoPlay();
         }
         mBanners[6].setVisibility(value);
 
     }
+
+	private void setBannerVisibilityType(int bannerType){
+		if(bannerType == Contant.BANNER_WINALL){
+			mBanners[0].setVisibility(View.VISIBLE);
+			mBanners[0].start();
+			if(mTruckWindowMapNodes.get(Contant.ADS_WINDOW_ORIENT_All).size() == 1){
+				handlerHolder.sendEmptyMessageDelayed(Contant.BANNER_WINSUB,WINDOW_LOOP_TIME);
+			}
+
+			for(int i=1;i<4;i++){
+				mBanners[i].setVisibility(View.GONE);
+				mBanners[i].stopAutoPlay();
+			}
+		}else if(bannerType == Contant.BANNER_WINSUB){
+
+			if(winSize[0] == 0 &&winSize[1] == 0 && winSize[2] == 0){
+				return;
+			}
+			mBanners[0].stopAutoPlay();
+			mBanners[0].setVisibility(View.GONE);
+			for(int i=1;i<4;i++){
+				mBanners[i].setVisibility(View.VISIBLE);
+				mBanners[i].start();
+			}
+
+			if(Utils.getMax(winSize) == 1){
+				handlerHolder.sendEmptyMessageDelayed(Contant.BANNER_WINALL,WINDOW_LOOP_TIME);
+			}
+		}
+	}
+
+
 
 	private void setBannerVisibility(boolean isCbAllDis,boolean isBannerAll){
 		NLog.d(TAG,"AllBanner display:"+isCbAllDis);
@@ -2200,13 +2236,15 @@ public class MediaPlayActivity extends BaseActivity implements
 				if(i == 0 || i == 4 || i == 5){
 					mBanners[i].setVisibility(View.VISIBLE);
 					if(i==4 || i == 5){
-						mBanners[i].startTurning(PROMPT_LOOP_TIME);
+						mBanners[i].setDelayTime(PROMPT_LOOP_TIME);
+						mBanners[i].startAutoPlay();
 					}else{
-						mBanners[i].startTurning(WINDOW_LOOP_TIME);
+						mBanners[i].setDelayTime(WINDOW_LOOP_TIME);
+						mBanners[i].startAutoPlay();
 					}
 				}else{
 					mBanners[i].setVisibility(View.GONE);
-					mBanners[i].stopTurning();
+					mBanners[i].stopAutoPlay();
 				}
 
 			}
@@ -2214,14 +2252,16 @@ public class MediaPlayActivity extends BaseActivity implements
 
 			for(int i = 0;i < mBanners.length-1;i++){
 				if(i == 0){
-					mBanners[i].stopTurning();
+					mBanners[i].stopAutoPlay();
 					mBanners[i].setVisibility(View.GONE);
 				}else{
 					mBanners[i].setVisibility(View.VISIBLE);
 					if(i==4 || i == 5){
-						mBanners[i].startTurning(PROMPT_LOOP_TIME);
+						mBanners[i].setDelayTime(PROMPT_LOOP_TIME);
+						mBanners[i].startAutoPlay();
 					}else{
-						mBanners[i].startTurning(WINDOW_LOOP_TIME);
+						mBanners[i].setDelayTime(WINDOW_LOOP_TIME);
+						mBanners[i].startAutoPlay();
 					}
 
 				}
@@ -2233,7 +2273,7 @@ public class MediaPlayActivity extends BaseActivity implements
 
 	private void setBannerConfig(){
 		for(int i = 0 ;i < mBanners.length;i++){
-			mBanners[i].setOnItemClickListener(new MyOnItemListener(i));
+			mBanners[i].setOnBannerListener(new MyOnItemListener(i));
 			if(i <= 3){
 				setBannerDatas(Contant.ADS_EXTEND_TYPE_WINDOW,mBanners[i],i);
 			}else if(i>3 && i != 6){
@@ -2246,28 +2286,28 @@ public class MediaPlayActivity extends BaseActivity implements
 
 	}
 
-	private void setBannerDatas(int adsType,ConvenientBanner mBanner,int dataType) {
-		List<String> imgPaths =  new ArrayList<>();
-		imgPaths = getImgPath(adsType,dataType);
+
+	private void setBannerDatas(int adsType,Banner mBanner,int dataType) {
+		List<String> imgPaths = getImgPath(adsType,dataType);
 //        if(imgPaths.size() < 2){
 //            mBanner.setCanLoop(false);//当只有一个时，不自动轮播
 //        }else {
 //            mBanner.setCanLoop(true);//自动轮播
 //        }
-		mBanner.setCanLoop(true);//自动轮播
-		mBanner.setManualPageable(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
-		mBanner.setPages(new CBViewHolderCreator<ImageViewHolder>() {
-			@Override
-			public ImageViewHolder createHolder() {
-				return new ImageViewHolder();
-			}
-		},imgPaths)
-				.setPageIndicator(new int[]{R.mipmap.ponit_normal,R.mipmap.point_select}) //设置两个点作为指示器
-				.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL) //设置指示器的方向水平居中
-				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		mBanner.isAutoPlay(true);//自动轮播
+		if(adsType == Contant.ADS_EXTEND_TYPE_FILEPAUSE){
+			mBanner.setViewPagerIsScroll(true);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
+		}else {
+			mBanner.setViewPagerIsScroll(false);//设置不能手动影响  默认是手指触摸 轮播图不能翻页
+		}
+
+		mBanner.setImages(imgPaths);
+		mBanner.setImageLoader(new GlideImageLoader());
+		mBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			int pos = -1;
 					@Override
 					public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+						pos = position+1;
 					}
 
 					@Override
@@ -2276,9 +2316,10 @@ public class MediaPlayActivity extends BaseActivity implements
 
 					@Override
 					public void onPageScrollStateChanged(int state) {
-						if(state == 2 && mBanner.getCurrentItem() == 0){
+						int size = mTruckWindowMapNodes.get(dataType).size();
+						if(state == 2 && pos == size){
 							if(dataType == Contant.ADS_WINDOW_ORIENT_All){
-								setBannerVisibility(false,isBannerAll);
+								setBannerVisibilityType(Contant.BANNER_WINSUB);
 							}else if(dataType == Contant.ADS_WINDOW_ORIENT_TOP){
 								isBannerLoopEnd[0] = true;
 							}else if(dataType == Contant.ADS_WINDOW_ORIENT_MIDDLE){
@@ -2288,14 +2329,33 @@ public class MediaPlayActivity extends BaseActivity implements
 							}
 
 							if(isBannerLoopEnd[0] && isBannerLoopEnd[1] && isBannerLoopEnd[2]){
-								setBannerVisibility(true,isBannerAll);
-								isBannerLoopEnd[0] = false;
-								isBannerLoopEnd[1] = false;
-								isBannerLoopEnd[2] = false;
+								setBannerVisibilityType(Contant.BANNER_WINALL);
+								for(int i=1;i<4;i++){
+									if(mTruckWindowMapNodes.get(i).size() <= 1){
+										isBannerLoopEnd[i-1] = true;
+									}else{
+										isBannerLoopEnd[i-1] = false;
+									}
+								}
+							}
+						}
+
+						if(adsType == Contant.ADS_EXTEND_TYPE_PROMPT && dataType == Contant.ADS_PROMPT_BOTTOM  && state == 2){
+							mPromptPos = pos;
+							if(mImgSmall.getVisibility() == View.VISIBLE){
+								mImgSmall.setVisibility(View.GONE);
+								mShrink.setVisibility(View.VISIBLE);
+								mBanners[5].setVisibility(View.VISIBLE);
 							}
 						}
 					}
 				});
+
+		if(imgPaths.size() != 0){
+			mBanner.start();
+		}else {
+			mBanner.setOnClickListener(null);
+		}
 	}
 
 	private List<String> getImgPath(int adsType,int dataType){
@@ -2339,7 +2399,7 @@ public class MediaPlayActivity extends BaseActivity implements
 		return list;
 	}
 
-	private class MyOnItemListener implements com.bigkoo.convenientbanner.listener.OnItemClickListener{
+	private class MyOnItemListener implements OnBannerListener{
 		int nBannerNum;
 
 		public MyOnItemListener(int bannerNum){
@@ -2347,7 +2407,7 @@ public class MediaPlayActivity extends BaseActivity implements
 		}
 
 		@Override
-		public void onItemClick(int position) {
+		public void OnBannerClick(int position) {
 			TruckMediaProtos.CTruckMediaNode truckMediaNode = null;
 			switch (nBannerNum){
 				case 0:
@@ -2360,9 +2420,9 @@ public class MediaPlayActivity extends BaseActivity implements
 				case 5:
 					truckMediaNode =  mTruckPromptMapNodes.get(nBannerNum-3).get(position);
 					break;
-                case 6:
-                    truckMediaNode = mTruckPauseNodes.get(position);
-                    break;
+				case 6:
+					truckMediaNode = mTruckPauseNodes.get(position);
+					break;
 			}
 			if (truckMediaNode != null) {
 				CardManager.getInstance().action(position, truckMediaNode,MediaPlayActivity.this);
@@ -2376,34 +2436,63 @@ public class MediaPlayActivity extends BaseActivity implements
 
 		list = getWindowList(Contant.ADS_WINDOW_ORIENT_TOP);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_TOP,list);
+		if(list.size() > 1){
+			isBannerLoopEnd[0] = false;
+		}else{
+			isBannerLoopEnd[0] = true;
+		}
+		winSize[0] = list.size();
+
 		list = getWindowList(Contant.ADS_WINDOW_ORIENT_MIDDLE);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_MIDDLE,list);
+		if(list.size() > 1){
+			isBannerLoopEnd[1] = false;
+		}else{
+			isBannerLoopEnd[1] = true;
+		}
+		winSize[1] = list.size();
+
 		list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_BOTTOM,list);
+		if(list.size() > 1){
+			isBannerLoopEnd[2] = false;
+		}else{
+			isBannerLoopEnd[2] = true;
+		}
+		winSize[2] = list.size();
 
 		list = getBannerPromptList(Contant.ADS_PROMPT_TOP);
-		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckPromptMapNodes.put(Contant.ADS_PROMPT_TOP,list);
 		list = getBannerPromptList(Contant.ADS_PROMPT_BOTTOM);
-		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_BOTTOM);
 		mTruckPromptMapNodes.put(Contant.ADS_PROMPT_BOTTOM,list);
+		mPromptPos = list.size();
 		if(list.size() == 0){
-			mShrink.setVisibility(View.GONE);
+			mShrink.setVisibility(View.INVISIBLE);
 		}
 
 		list = getWindowList(Contant.ADS_WINDOW_ORIENT_All);
-		//list = getWindowList(Contant.ADS_WINDOW_ORIENT_MIDDLE);
 		mTruckWindowMapNodes.put(Contant.ADS_WINDOW_ORIENT_All,list);
 
         mTruckPauseNodes = getBannerPauseList();
 
 		if(list.size() != 0){
 			isBannerAll = true;
-			setBannerVisibility(true,isBannerAll);
 		}else{
 			isBannerAll = false;
-			setBannerVisibility(false,isBannerAll);
 		}
+
+		if(isBannerAll){
+			mBanners[0].setVisibility(View.VISIBLE);
+			for(int i = 1;i < 4;i++){
+				mBanners[i].setVisibility(View.GONE);
+			}
+		}else{
+			mBanners[0].setVisibility(View.GONE);
+			for(int i = 1;i < 4;i++){
+				mBanners[i].setVisibility(View.VISIBLE);
+			}
+		}
+
 	}
 
 	private List<TruckMediaProtos.CTruckMediaNode> getWindowList(int orient) {

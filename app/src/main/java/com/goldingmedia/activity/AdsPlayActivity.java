@@ -27,6 +27,7 @@ import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.most.GlobalSettings;
 import com.goldingmedia.most.fblock.FBlock;
 import com.goldingmedia.most.ts_renderer.TsReceiver;
+import com.goldingmedia.mvp.view.ui.Anticlockwise;
 import com.goldingmedia.temporary.Command;
 import com.goldingmedia.temporary.DataHelper;
 import com.goldingmedia.temporary.SharedPreference;
@@ -46,6 +47,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 	private Context mContext;
 	private ImageView mImageView;
 	private SurfaceView mSurfaceView;
+    private Anticlockwise mTimerV;
 	private int mPos = 0;
 	private int mEvenPos = 0;
 	private boolean mFirstAds = false;
@@ -102,6 +104,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 4, 0 );
 
 		mImageView = (ImageView)findViewById(R.id.img);
+        mTimerV = (Anticlockwise) findViewById(R.id.timer);
 		mSurfaceView = (SurfaceView)findViewById(R.id.surfaceView);
 		mSurfaceView.getHolder().addCallback( new Callback() {
 			@Override
@@ -143,6 +146,20 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 		mLimitCounter = 0;
 		handlerHolder.sendEmptyMessageDelayed(1, 100);
 		isServer = IP.isServerTerminal();
+
+        mTimerV.setOnTimeCompleteListener(new Anticlockwise.OnTimeCompleteListener() {
+            @Override
+            public void onTimeComplete() {
+                exitActivity();
+            }
+        });
+        if(Variables.mFirstAds){
+            mTimerV.initTime(TIME_MAX_FIRST_REGULAR);
+        }else {
+            mTimerV.initTime(TIME_MAX_REGULAR);
+        }
+
+        mTimerV.reStart();
 
 	}
 

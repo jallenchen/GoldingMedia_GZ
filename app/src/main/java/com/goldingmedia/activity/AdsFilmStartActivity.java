@@ -19,6 +19,7 @@ import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.most.GlobalSettings;
 import com.goldingmedia.most.fblock.FBlock;
 import com.goldingmedia.most.ts_renderer.TsReceiver;
+import com.goldingmedia.mvp.view.ui.Anticlockwise;
 import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NLog;
@@ -32,7 +33,7 @@ import java.util.TimerTask;
  */
 public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
     private static final String TAG = "AdsFilmStartActivity";
-    private static final int ADS_TIME_MAX = 120;
+    private static final int ADS_TIME_MAX = 15;
     private List<TruckMediaProtos.CTruckMediaNode> mFileStartList;
     private SurfaceView mSurfaceView;
     private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
@@ -42,6 +43,7 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
     private Context mContext;
     private int mPos = 0;
     private Boolean isExitActivity = false;
+    private Anticlockwise mTimerV;
     private HandlerUtils.HandlerHolder handlerHolder;
     private Timer timer = new Timer( );
     private TimerTask task = new TimerTask( ) {
@@ -65,6 +67,7 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
         mContext = this;
         handlerHolder = new HandlerUtils.HandlerHolder(this);
         mSurfaceView = (SurfaceView)findViewById(R.id.surfaceView);
+        mTimerV = (Anticlockwise) findViewById(R.id.timer);
         mSurfaceView.getHolder().addCallback( new SurfaceHolder.Callback() {
             @Override
             public void surfaceDestroyed(SurfaceHolder arg0) {
@@ -109,6 +112,14 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
 
 
         timer.schedule(task, 100,1000);
+        mTimerV.setOnTimeCompleteListener(new Anticlockwise.OnTimeCompleteListener() {
+            @Override
+            public void onTimeComplete() {
+                ExitActivity();
+            }
+        });
+        mTimerV.initTime(ADS_TIME_MAX);
+        mTimerV.reStart();
     }
 
     private void register(){

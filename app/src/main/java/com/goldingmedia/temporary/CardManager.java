@@ -9,6 +9,7 @@ import com.goldingmedia.activity.ELineActivity;
 import com.goldingmedia.activity.MediaPlayActivity;
 import com.goldingmedia.activity.PreviewPlayActivity;
 import com.goldingmedia.activity.WebActivity;
+import com.goldingmedia.activity.WindowAdsPlayActivity;
 import com.goldingmedia.contant.Contant;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.view.activity.JmagazineActivity;
@@ -148,8 +149,13 @@ public class CardManager {
                         NLog.e("CardManager","action TruckIndex:"+index);
                         //index change to list pos
                         action(index-1,actionTruck,context);
-                    }else{
-
+                    }else if(action == Contant.ADS_ACTION_VIDEO){
+//                        intent = new Intent(context, WindowAdsPlayActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.putExtra("position", position);
+//                        intent.putExtra("orient", orient);
+//                        intent.putExtra("truck", truck);
+//                        context.startActivity(intent);
                     }
                     break;
 

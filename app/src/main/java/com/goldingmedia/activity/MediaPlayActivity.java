@@ -162,6 +162,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	private TextView mTotalTimeTextView;
 	private int mTotalTime = 0;
 	private int mPlayDuration = 0;
+	private int mPlayDurationHold = 0;
 	private int index = 0;
 	private int CurrentTime = 0;
 	private int mPromptPos = 1;
@@ -845,11 +846,14 @@ public class MediaPlayActivity extends BaseActivity implements
 		}
 
 		String mStr = getDurationString(0);
+
 		mDurationTextView.setText(mStr);
 		mTotalTimeTextView.setText(getDurationString(mTotalTime));
 
 		int progress = mProgressHold;
+		int adsPauseDuration = mPlayDurationHold;
 		mProgressHold = 0;
+		mPlayDurationHold = 0;
 		if(progress != 0){
 			if(mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() == Contant.MEDIA_TYPE_MUSIC) {
 				CurrentTime = mTotalTime*1000*progress/100;
@@ -861,9 +865,16 @@ public class MediaPlayActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}
-		mPlayDuration = (progress*mTotalTime)/100;
-		mSeekBar.setProgress(progress);
-		mFBlock.TimePosition.Set(progress * 10);
+		if(adsPauseDuration != 0){
+			mPlayDuration = adsPauseDuration;
+			mSeekBar.setProgress(adsPauseDuration * 100/mTotalTime);
+			mFBlock.TimePosition.Set(adsPauseDuration * 1000/mTotalTime);
+		}else{
+			mPlayDuration = (progress*mTotalTime)/100;
+			mSeekBar.setProgress(progress);
+			mFBlock.TimePosition.Set(progress * 10);
+		}
+
 		if (mStop) {
 			mPlayButton.performClick();
 		} else {
@@ -1542,6 +1553,28 @@ public class MediaPlayActivity extends BaseActivity implements
 		}
 	};
 
+	private void startMiddleAds(int playDuration){
+		List<TruckMediaProtos.CTruckMediaNode> filmsAds = new ArrayList<>();
+		if(playDuration % 1200 == 0){
+			if(playDuration / 1200 == 1 ){
+				filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getFilmMidOrientTrucksMap(Contant.ADS_FILM_MID1);
+			}else if(playDuration / 1200 == 2 ){
+				filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getFilmMidOrientTrucksMap(Contant.ADS_FILM_MID2);
+			}else if(playDuration / 1200 == 3 ){
+				filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getFilmMidOrientTrucksMap(Contant.ADS_FILM_MID3);
+			}
+			NLog.d(TAG,"filmsAds:"+filmsAds.size());
+			if(filmsAds.size() != 0){
+				mPlayDurationHold = playDuration+1;
+				Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
+				intent.putExtra("filmAds", (Serializable) filmsAds);
+				intent.putExtra("isfilmStartAds", false);
+				startActivity(intent);
+			}
+		}
+
+	}
+
 	@Override
 	public void handlerMessage(Message msg) {
 		switch (msg.what) {
@@ -1557,6 +1590,7 @@ public class MediaPlayActivity extends BaseActivity implements
 						String mStr = getDurationString(mPlayDuration);
 						mDurationTextView.setText(mStr);
 						mSeekBar.setProgress(mPlayDuration*100/mTotalTime);
+						startMiddleAds(mPlayDuration);
 					} else if(mTotalTime != 0){
 						mPlayDuration = 0;
 						Log.i(TAG, "-----mMsgHandler PlayNextFile");
@@ -1620,6 +1654,7 @@ public class MediaPlayActivity extends BaseActivity implements
 					if(filmsAds.size() != 0){
 						Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
 						intent.putExtra("filmAds", (Serializable) filmsAds);
+						intent.putExtra("isfilmStartAds", true);
 						startActivity(intent);
 					}
 				}

@@ -394,9 +394,16 @@ public class ProtoDataParse {
             String imgPath = Contant.getTruckMetaNodePath(mediaMeta.getCategoryId(),mediaMeta.getCategorySubId(),"",true);
             //UpGzip
             File srcfile = new File(Contant.PushPath+fileName);
+            if(!srcfile.exists()){
+                FinshResp(Contant.CATEGORY_XFTP_ID,Contant.PROPERTY_XFTP_PUSH_ID,code);
+                return code;
+            }
             try {
                 Utils.doUnTarGz(srcfile,imgPath);
             } catch (IOException e) {
+                e.printStackTrace();
+                return  1;
+            }catch (Exception e){
                 e.printStackTrace();
                 return  1;
             }
@@ -405,7 +412,7 @@ public class ProtoDataParse {
             NLog.e(TAG,mediaMeta.getTruckMeta().getTruckFilename()+"--PushDownload:fail");
         }
         FinshResp(Contant.CATEGORY_XFTP_ID,Contant.PROPERTY_XFTP_PUSH_ID,code);
-    return code;
+         return code;
     }
 
     public int upgradeDownload(UpgradeServiceProtos.CUpgradeService upgradeService){

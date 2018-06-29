@@ -371,36 +371,50 @@ public class Utils {
     public static void doUnTarGz(File srcfile, String destpath)
             throws IOException {
         byte[] buf = new byte[1024];
-        FileInputStream fis = new FileInputStream(srcfile);
-         BufferedInputStream bis = new BufferedInputStream(fis);
-         GzipCompressorInputStream cis = new GzipCompressorInputStream(bis);
-        TarArchiveInputStream tais = new TarArchiveInputStream(cis);
+        FileInputStream fis = null ;
+         BufferedInputStream bis = null ;
+         GzipCompressorInputStream cis = null ;
+        TarArchiveInputStream tais = null ;
         TarArchiveEntry tae = null;
-        int pro = 0;
-        while ((tae = tais.getNextTarEntry()) != null) {
-            File f = new File(destpath + "/" + tae.getName());
-            if (tae.isDirectory()) {
-                f.mkdirs();
-            } else {
-                /*
-                 * 父目录不存在则创建
-                 */
-                File parent = f.getParentFile();
-                if (!parent.exists()) {
-                    parent.mkdirs();
-                }
 
-                FileOutputStream fos = new FileOutputStream(f);
-                BufferedOutputStream bos = new BufferedOutputStream(fos);
-                int len;
-                while ((len = tais.read(buf)) != -1) {
-                    bos.write(buf, 0, len);
+        try {
+            fis = new FileInputStream(srcfile);
+            bis = new BufferedInputStream(fis);
+            cis = new GzipCompressorInputStream(bis);
+            tais = new TarArchiveInputStream(cis);
+            FileOutputStream fos;
+            BufferedOutputStream bos;
+            int pro = 0;
+            while ((tae = tais.getNextTarEntry()) != null) {
+                File f = new File(destpath + "/" + tae.getName());
+                if (tae.isDirectory()) {
+                    f.mkdirs();
+                } else {
+                    /*
+                     * 父目录不存在则创建
+                     */
+                    File parent = f.getParentFile();
+                    if (!parent.exists()) {
+                        parent.mkdirs();
+                    }
+
+                    fos = new FileOutputStream(f);
+                    bos = new BufferedOutputStream(fos);
+                    int len;
+                    while ((len = tais.read(buf)) != -1) {
+                        bos.write(buf, 0, len);
+                    }
+                    bos.flush();
+                    bos.close();
                 }
-                bos.flush();
-                bos.close();
             }
+        } finally {
+            fis.close();
+            bis.close();
+            cis.close();
+            tais.close();
         }
-        tais.close();
+
     }
 
     //merge two JPG to one bitmap to display added by jallen

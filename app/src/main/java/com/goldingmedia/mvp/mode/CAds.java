@@ -27,6 +27,7 @@ public class CAds {
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> promptOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> homeOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
     private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> gameOrientTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
+    private HashMap<String, List<TruckMediaProtos.CTruckMediaNode>> filmMidAdsTrucksMap = new HashMap<String, List<TruckMediaProtos.CTruckMediaNode>>();
     public int getCategoryId() {
         return categoryId;
     }
@@ -55,6 +56,7 @@ public class CAds {
         promptOrientTrucksMap.clear();
         homeOrientTrucksMap.clear();
         gameOrientTrucksMap.clear();
+        filmMidAdsTrucksMap.clear();
         for (int i=0; i<mCategorys.size(); i++) {
             List<TruckMediaProtos.CTruckMediaNode> trucks = GDApplication.getmInstance().getDataInsert().getMediaMetaDataList(Contant.TABLE_NAME_ADS, mCategorys.get(i).getCategorySubId());
             subTrucksList.add(trucks);
@@ -85,6 +87,12 @@ public class CAds {
                         gameOrientTrucksMap.put(orient, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
                     }
                     gameOrientTrucksMap.get(orient).add(truck);
+                }else if (type.equals(Contant.ADS_EXTEND_TYPE_FILMMIDDLE+"")) {
+                    String orient = truck.getMediaInfo().getAdsMeta().getTruckWndOrient();
+                    if (!filmMidAdsTrucksMap.containsKey(orient)) {
+                        filmMidAdsTrucksMap.put(orient, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
+                    }
+                    filmMidAdsTrucksMap.get(orient).add(truck);
                 }else {
                     if(!extendTypeTrucksMap.containsKey(type)){
                         extendTypeTrucksMap.put(type, new ArrayList<TruckMediaProtos.CTruckMediaNode>());
@@ -125,6 +133,10 @@ public class CAds {
 
     public List<TruckMediaProtos.CTruckMediaNode> getHomeOrientTrucksMap(int type){
         return homeOrientTrucksMap.containsKey(type+"")?homeOrientTrucksMap.get(type+""):new ArrayList<TruckMediaProtos.CTruckMediaNode>();
+    }
+
+    public List<TruckMediaProtos.CTruckMediaNode> getFilmMidOrientTrucksMap(int type){
+        return filmMidAdsTrucksMap.containsKey(type+"")?filmMidAdsTrucksMap.get(type+""):new ArrayList<TruckMediaProtos.CTruckMediaNode>();
     }
 
     public List<TruckMediaProtos.CTruckMediaNode> getGameOrientTrucksMap(int type){

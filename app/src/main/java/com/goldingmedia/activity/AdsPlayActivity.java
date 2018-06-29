@@ -42,8 +42,8 @@ import java.util.List;
 public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
 
 	private static final String TAG = "AdsPlayActivity";
-	private static final int TIME_MAX_REGULAR = 45;
-	private static final int TIME_MAX_FIRST_REGULAR = 30;
+	private   int TIME_MAX_REGULAR = 45;
+	private   int TIME_MAX_FIRST_REGULAR = 30;
 	private Context mContext;
 	private ImageView mImageView;
 	private SurfaceView mSurfaceView;
@@ -153,14 +153,6 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
                 exitActivity();
             }
         });
-        if(Variables.mFirstAds){
-            mTimerV.initTime(TIME_MAX_FIRST_REGULAR);
-        }else {
-            mTimerV.initTime(TIME_MAX_REGULAR);
-        }
-
-        mTimerV.reStart();
-
 	}
 
 	@Override
@@ -182,10 +174,25 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 				//todo 开机第一次广告 15s*2
 				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FIRST);
 				mFirstAds = true;
+				if(mDataList.size() <=2){
+					TIME_MAX_FIRST_REGULAR = mDataList.size() * 15;
+				}else{
+					TIME_MAX_FIRST_REGULAR = 30;
+				}
 			}else{
 				mDataList  = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_ADS);
+				if(mDataList.size() <=3){
+					TIME_MAX_REGULAR = mDataList.size() * 15;
+				}else{
+					TIME_MAX_REGULAR = 45;
+				}
 			}
-
+			if(Variables.mFirstAds){
+				mTimerV.initTime(TIME_MAX_FIRST_REGULAR);
+			}else {
+				mTimerV.initTime(TIME_MAX_REGULAR);
+			}
+			mTimerV.reStart();
 			initAdInexistence();
 		}
 
@@ -266,6 +273,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 			if(mPlayCnt < 2){
 				mPlayCnt ++;
 			}else{
+				exitActivity();
 				return;
 			}
 		}else{
@@ -273,6 +281,7 @@ public class AdsPlayActivity extends BaseActivity implements HandlerUtils.OnRece
 			if(mPlayCnt < 3){
 				mPlayCnt ++;
 			}else{
+				exitActivity();
 				return;
 			}
 		}

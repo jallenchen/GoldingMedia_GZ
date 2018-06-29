@@ -254,7 +254,7 @@ public class Contant {
     public static final int ADS_EXTEND_TYPE_HOMECOLUMN = 106;
     public static final int ADS_EXTEND_TYPE_MOVICEAREA = 107;
     public static final int ADS_EXTEND_TYPE_GAMEAREA = 108;
-
+    public static final int ADS_EXTEND_TYPE_FILMMIDDLE = 109;
 
 
 ////ADS_WINDOW_ORIENT For windows
@@ -274,6 +274,11 @@ public class Contant {
     public static final int ADS_ACTION_NULL = 0;
     public static final int ADS_ACTION_URL = 1;
     public static final int ADS_ACTION_SUB = 2;
+    public static final int ADS_ACTION_VIDEO = 3;
+
+    public static final int ADS_FILM_MID1 = 1;
+    public static final int ADS_FILM_MID2 = 2;
+    public static final int ADS_FILM_MID3 = 3;
 
     ////DEV_TYPE
     public static final int DEV_TYPE_MASTER = 1;

@@ -33,8 +33,8 @@ import java.util.TimerTask;
  */
 public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
     private static final String TAG = "AdsFilmStartActivity";
-    private static final int ADS_TIME_MAX = 15;
-    private List<TruckMediaProtos.CTruckMediaNode> mFileStartList;
+    private int ADS_TIME_MAX = 120;
+    private List<TruckMediaProtos.CTruckMediaNode> mFileAdsList;
     private SurfaceView mSurfaceView;
     private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
     private final byte[] payloadMac = new byte[4];
@@ -43,6 +43,7 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
     private Context mContext;
     private int mPos = 0;
     private Boolean isExitActivity = false;
+    private Boolean isFilmStartAds = true;
     private Anticlockwise mTimerV;
     private HandlerUtils.HandlerHolder handlerHolder;
     private Timer timer = new Timer( );
@@ -177,6 +178,7 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
                     mTimeCounter ++;
                 }else{
                     ExitActivity();
+                    return;
                 }
 
                 if(mTimeCounter % 15 == 0){
@@ -191,8 +193,20 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
 
     private void initAdsdata(){
        // mFileStartList = getAdsFilmStartList();
-        mFileStartList = (List<TruckMediaProtos.CTruckMediaNode>) getIntent().getSerializableExtra("filmAds");
-        NLog.d(TAG,"---mFileStartList size:"+mFileStartList.size());
+        mFileAdsList = (List<TruckMediaProtos.CTruckMediaNode>) getIntent().getSerializableExtra("filmAds");
+        isFilmStartAds = getIntent().getBooleanExtra("isfilmStartAds",true);
+        if(isFilmStartAds){
+            ADS_TIME_MAX = mFileAdsList.size() * 15;
+        }else{
+            if(mFileAdsList.size() <= 3){
+                ADS_TIME_MAX = mFileAdsList.size() * 15;
+            }else {
+                ADS_TIME_MAX = 45;
+            }
+
+        }
+
+        NLog.d(TAG,"---mFileStartList size:"+mFileAdsList.size());
     }
 
 
@@ -222,15 +236,15 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
 //    }
 
     private void switchAds(){
-        if(mFileStartList.size() == 0){
+        if(mFileAdsList.size() == 0){
             ExitActivity();
             return;
         }
-        if(mPos >= mFileStartList.size()){
+        if(mPos >= mFileAdsList.size()){
             ExitActivity();
             return;
         }
-        playAds(mFileStartList.get(mPos));
+        playAds(mFileAdsList.get(mPos));
         mPos++;
     }
 
@@ -259,6 +273,7 @@ public class AdsFilmStartActivity extends BaseActivity implements HandlerUtils.O
             m_TsReceiver.Stop();
             m_TsReceiver  = null;
         }
+
         finish();
     }
     private synchronized void nullTsExitActivity(){

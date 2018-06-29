@@ -79,5 +79,19 @@ public class DataSharePreference {
         return share.getString("PushTime","0");
     }
 
+    public static  void saveIntData(Context context,String name,int value) {
+        SharedPreferences sh = context.getSharedPreferences(
+                PREF_NAME, Context.MODE_WORLD_WRITEABLE | Context.MODE_WORLD_READABLE);
+        SharedPreferences.Editor ed = sh.edit();
+        ed.putInt(name, value);
+        ed.apply();
+    }
+    public static int getIntData(Context context,String name) {
+        SharedPreferences share = context.getSharedPreferences(
+                PREF_NAME, Context.MODE_WORLD_READABLE
+                        | Context.MODE_WORLD_WRITEABLE);
+        return share.getInt(name,0);
+    }
+
 
 }

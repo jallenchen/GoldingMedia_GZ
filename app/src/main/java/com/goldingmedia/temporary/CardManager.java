@@ -150,12 +150,12 @@ public class CardManager {
                         //index change to list pos
                         action(index-1,actionTruck,context);
                     }else if(action == Contant.ADS_ACTION_VIDEO){
-//                        intent = new Intent(context, WindowAdsPlayActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        intent.putExtra("position", position);
-//                        intent.putExtra("orient", orient);
-//                        intent.putExtra("truck", truck);
-//                        context.startActivity(intent);
+                        intent = new Intent(context, WindowAdsPlayActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("position", 0);
+                        intent.putExtra("orient", 0);
+                        intent.putExtra("truck", truck);
+                        context.startActivity(intent);
                     }
                     break;
 

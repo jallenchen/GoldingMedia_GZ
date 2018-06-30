@@ -11,7 +11,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 19
         versionCode 1
-        versionName "yg.2.0629.1600"
+        versionName "yg.2.0629.1800"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {

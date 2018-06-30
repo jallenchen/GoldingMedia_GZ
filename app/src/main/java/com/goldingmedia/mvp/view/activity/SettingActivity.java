@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.goldingmedia.BaseActivity;
+import com.goldingmedia.GDApplication;
 import com.goldingmedia.R;
 import com.goldingmedia.goldingcloud.TruckMediaProtos;
 import com.goldingmedia.mvp.view.fragment.AboutUsFragment;
@@ -116,5 +117,10 @@ public class SettingActivity extends BaseActivity {
 
     public void onBack(View v){
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

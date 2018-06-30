@@ -51,6 +51,7 @@ import static com.goldingmedia.R.id.surfaceView;
 
 public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.OnReceiveMessageListener{
 
+	private static final String TAG = "WindowAdsPlayActivity";
 	private SurfaceView mMovieView;
 	private Context mContext;
 	private TsReceiver m_TsReceiver = new TsReceiver(GlobalSettings.GetAudioSink(), GlobalSettings.GetSource());
@@ -307,7 +308,7 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 				handler.removeCallbacks(runnable);
 
 				if (lilplaybarIsVisible && lilplaybar.getVisibility() == View.GONE) {
-					Log.i("", "listIsVisible|lilplaybarIsVisible2 = "+listIsVisible+"|"+lilplaybarIsVisible);
+					Log.i(TAG, "listIsVisible|lilplaybarIsVisible2 = "+listIsVisible+"|"+lilplaybarIsVisible);
 					if(isWidescreen){
 						Animations.playbarOpenWide(lilplaybar, SHOW_TIME);
 					}else{
@@ -316,7 +317,7 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 					lilplaybar.setVisibility(View.VISIBLE);
 
 				} else if (!listIsVisible && lilplaybar.getVisibility() == View.VISIBLE) {
-					Log.i("", "listIsVisible|lilplaybarIsVisible1 = "+listIsVisible+"|"+lilplaybarIsVisible);
+					Log.i(TAG, "listIsVisible|lilplaybarIsVisible1 = "+listIsVisible+"|"+lilplaybarIsVisible);
 					lilplaybar.setVisibility(View.GONE);
 					if(isWidescreen){
 						Animations.playbarHiddenWide(lilplaybar, SHOW_TIME);
@@ -397,7 +398,7 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 		Utils.onDemandRecording(true, mOrient==0 ? Contant.PROPERTY_STATISTICS_MEDIA_ID:Contant.PROPERTY_STATISTICS_ADS_ID, mFidList.get(mPosition), mContext);
 		String fid = mFidList.get(mPosition).getMediaInfo().getTruckMeta().getTruckFilename()+".ts";
 		mTotalTime = mFidList.get(mPosition).getPlayInfo().getTotalTime();
-		Log.e("","======time ====  "+mTotalTime);
+		Log.e(TAG,"======time ====  "+mTotalTime);
 		mPlayDuration = 0;
 
 		FBlock.ResetStatus();
@@ -449,14 +450,14 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			Log.e("","-----WindowAdsPlayActivity action = "+action);
+			Log.e(TAG,"-----WindowAdsPlayActivity action = "+action);
 			if("com.golding.nullTsExit".equals(action)){
 				nullTsExitActivity();
 			} else if("com.golding.start.playads".equals(action) || Contant.Actions.CLOSEACTIVITY.equals(action)){
 				ExitActivity();
 			} else if(Contant.Actions.PLAY_STATUS_REPORT.equals(action)){
 				int status = intent.getIntExtra("status", -2);
-				Log.e("","=====return status "+status);
+				Log.e(TAG,"=====return status "+status);
 				switch(status){
 					case Contant.StatusCode.PLAY_STATUS_FAILURE_NO_SDCARD:
 						ExitActivity();
@@ -470,7 +471,7 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 					case Contant.StatusCode.PLAY_STATUS_FILEEND:
 						if (saveProgress) {
 							if (!fileEnd) {
-								Log.i("", "--FILEEND--PlayNextFile");
+								Log.i(TAG, "--FILEEND--PlayNextFile");
 								PlayNextFile();
 							}
 						} else {
@@ -506,22 +507,23 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 						mDurationTextView.setText(mStr);
 						mSeekBar.setProgress(mPlayDuration*100/mTotalTime);
 					} else {
-						mPlayDuration = 0;
-						Log.i("", "--mTimerHandler--PlayNextFile");
-						fileEnd = true;
-						PlayNextFile();
-
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									Thread.sleep(2000);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-								fileEnd = false;
-							}
-						}).start();
+						ExitActivity();
+//						mPlayDuration = 0;
+//						Log.i(TAG, "--mTimerHandler--PlayNextFile");
+//						fileEnd = true;
+//						PlayNextFile();
+//
+//						new Thread(new Runnable() {
+//							@Override
+//							public void run() {
+//								try {
+//									Thread.sleep(2000);
+//								} catch (InterruptedException e) {
+//									e.printStackTrace();
+//								}
+//								fileEnd = false;
+//							}
+//						}).start();
 					}
 				}
 

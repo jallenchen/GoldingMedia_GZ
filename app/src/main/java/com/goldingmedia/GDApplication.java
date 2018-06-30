@@ -43,9 +43,7 @@ public class GDApplication extends Application{
         mInstance = this;
         CrashHandler.getInstance().init(mInstance);
         registerActivityLifecycleCallbacks(new ActivityLifecycleListener());
-
         Contant.PushTime = DataSharePreference.getPushTime(mInstance);//for Glide signature key
-
        // refWatcher= setupLeakCanary();
     }
 

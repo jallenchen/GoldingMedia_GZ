@@ -1556,6 +1556,10 @@ public class MediaPlayActivity extends BaseActivity implements
 	private void startMiddleAds(int playDuration){
 		List<TruckMediaProtos.CTruckMediaNode> filmsAds = new ArrayList<>();
 		if(playDuration % 1200 == 0){
+            boolean isPay = mTruck.getPayInfo().getPayType();
+            if(isPay){//付费电影不播放中插广告
+                return;
+            }
 			if(playDuration / 1200 == 1 ){
 				filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getFilmMidOrientTrucksMap(Contant.ADS_FILM_MID1);
 			}else if(playDuration / 1200 == 2 ){
@@ -1572,8 +1576,24 @@ public class MediaPlayActivity extends BaseActivity implements
 				startActivity(intent);
 			}
 		}
-
 	}
+
+	private void startFirstAds(){
+        if(isPlayFilmAds && mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() != Contant.MEDIA_TYPE_MUSIC ){
+            isPlayFilmAds = false;
+            List<TruckMediaProtos.CTruckMediaNode> filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FILMON);
+            if(filmsAds.size() != 0){
+                boolean isPay = mTruck.getPayInfo().getPayType();
+                if(isPay){//付费电影不播放片头广告
+                    return;
+                }
+                Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
+                intent.putExtra("filmAds", (Serializable) filmsAds);
+                intent.putExtra("isfilmStartAds", true);
+                startActivity(intent);
+            }
+        }
+    }
 
 	@Override
 	public void handlerMessage(Message msg) {
@@ -1648,16 +1668,7 @@ public class MediaPlayActivity extends BaseActivity implements
 				break;
 
 			case HANDLER_MEDIA_PLAY:
-				if(isPlayFilmAds && mTruck.getMediaInfo().getTruckMeta().getTruckMediaType() != Contant.MEDIA_TYPE_MUSIC ){
-					isPlayFilmAds = false;
-					List<TruckMediaProtos.CTruckMediaNode> filmsAds = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_FILMON);
-					if(filmsAds.size() != 0){
-						Intent intent = new Intent(MediaPlayActivity.this,AdsFilmStartActivity.class);
-						intent.putExtra("filmAds", (Serializable) filmsAds);
-						intent.putExtra("isfilmStartAds", true);
-						startActivity(intent);
-					}
-				}
+                startFirstAds();
 				if (m_TsReceiver != null && mFBlock != null && !isPauseActivity)
 					if(mTruck != null) Play();
 				break;

@@ -227,8 +227,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="50px"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="80px"
-                android:layout_marginRight="80px"
+                android:layout_marginLeft="50px"
+                android:layout_marginRight="50px"
                 android:layout_marginTop="@dimen/sm_10"
                 android:orientation="horizontal" >
 
@@ -241,9 +241,9 @@
                     android:focusable="true"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:textColor="@drawable/bottom_textcolor_selector"
+                    android:textColor="@drawable/textcolor_rb_selector"
                     android:textSize="22px"
-                    android:text="@string/movie" />
+                    android:text="@string/ygadwq" />
 
                 <RadioButton
                     android:id="@+id/rb_bm_comic"

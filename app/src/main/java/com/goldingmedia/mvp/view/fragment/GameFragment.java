@@ -259,7 +259,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener,A
             }
 
             if (truckMediaNode != null) {
-                CardManager.getInstance().action(position, truckMediaNode,getActivity());
+                CardManager.getInstance().action(position, truckMediaNode,getActivity(),null);
             }
         }
 

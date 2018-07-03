@@ -156,7 +156,7 @@ public class MediaPlayActivity extends BaseActivity implements
 	private boolean[] isBannerLoopEnd = {false,false,false};
 	private int[] winSize = new int[3];
 	private boolean isBannerAll = false;
-
+	private String filename2pos = null;
 	private Typeface localTypeface;
 	private TextView mDurationTextView;
 	private TextView mTotalTimeTextView;
@@ -272,7 +272,7 @@ public class MediaPlayActivity extends BaseActivity implements
 		classMainId = intent.getIntExtra("classMainId", 0);
 		Log.i(TAG,"-----onCreate()position=" + position);
 		Log.i(TAG,"-----onCreate()classMainId=" + classMainId);
-
+		filename2pos = intent.getStringExtra("filename2pos");
 		setContentView(R.layout.activity_media_play);
 
 		initView();
@@ -1041,6 +1041,10 @@ public class MediaPlayActivity extends BaseActivity implements
 						mGroupAdapter.setPlayGroup();
 						mMediaAdapter.setTrucksToPlsyTrucks();
 						if (mTruck == null) {
+							if(filename2pos != null){
+								position = Utils.truckIndex2Pos(trucks,filename2pos);
+								filename2pos = null;
+							}
 							mTruck = trucks.get(position);
 							new Thread(new Runnable() {
 								@Override
@@ -1948,7 +1952,7 @@ public class MediaPlayActivity extends BaseActivity implements
 			case R.id.img_small:
                 TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckPromptMapNodes.get(Contant.ADS_PROMPT_BOTTOM).get(mPromptPos);
                 if (truckMediaNode != null) {
-                    CardManager.getInstance().action(mPromptPos, truckMediaNode,MediaPlayActivity.this);
+                    CardManager.getInstance().action(mPromptPos, truckMediaNode,MediaPlayActivity.this,null);
                 }
 				break;
 
@@ -2471,7 +2475,7 @@ public class MediaPlayActivity extends BaseActivity implements
 					break;
 			}
 			if (truckMediaNode != null) {
-				CardManager.getInstance().action(position, truckMediaNode,MediaPlayActivity.this);
+				CardManager.getInstance().action(position, truckMediaNode,MediaPlayActivity.this,null);
 			}
 		}
 	}

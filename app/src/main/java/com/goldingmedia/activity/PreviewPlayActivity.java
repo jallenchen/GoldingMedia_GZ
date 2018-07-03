@@ -47,6 +47,7 @@ import com.goldingmedia.temporary.Variables;
 import com.goldingmedia.temporary.Variables.StatusItem;
 import com.goldingmedia.utils.HandlerUtils;
 import com.goldingmedia.utils.NToast;
+import com.goldingmedia.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 	private int classId = 0;
 	private int classSubId = 0;
 	private int classMainId = 0;
-
+	private String filename2pos = null;
 	private LinearLayout relbody;
 
 	private FBlock mFBlock;
@@ -114,7 +115,7 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 		classSubId = intent.getIntExtra("classSubId", 0);
 		classMainId = intent.getIntExtra("classMainId", 0);
 		Log.i("", "---classId|classSubId="+classId+"|"+classSubId);
-
+		filename2pos = intent.getStringExtra("filename2pos");
 		setContentView(R.layout.activity_preview_play);
 		inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		initView();
@@ -535,6 +536,11 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 
 				Log.i("","-----trucks.size() = " + trucks.size());
 				if (trucks != null && trucks.size() != 0)
+				if(filename2pos != null){
+					position = Utils.truckIndex2Pos(trucks,filename2pos);
+					filename2pos = null;
+				}
+
 					mTruck = trucks.get(position);
 
 				Message message = new Message();
@@ -546,6 +552,7 @@ public class PreviewPlayActivity extends BaseActivity implements OnClickListener
 			}
 		}).start();
 	}
+
 
 	private AlertDialog mDialog = null;
 

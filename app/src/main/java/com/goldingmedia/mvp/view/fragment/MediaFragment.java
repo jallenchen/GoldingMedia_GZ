@@ -159,23 +159,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
       //  NToast.shortToast(getActivity(),TAG+"-"+position);
         NLog.e(TAG,"count:"+ mTruckCount+"position:"+position);
 
-        if(mTruckCount == position){
-            String url="";
-            List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = GDApplication.getmInstance().getTruckMedia().getcAds().getExtendTypeTrucksMap(Contant.ADS_EXTEND_TYPE_MOVICEAREA);
-            if(truckMediaNodes.size() != 0){
-                url = truckMediaNodes.get(0).getMediaInfo().getAdsMeta().getTruckAdsUrl();
-            }
-
-            Intent intent = new Intent(getActivity(), WebActivity.class);
-            intent.putExtra("online",true);
-            intent.putExtra("url","http://www.cnblogs.com");
-            intent.putExtra("url",url);
-            startActivity(intent);
-        }else{
-            TruckMediaProtos.CTruckMediaNode truck = (TruckMediaProtos.CTruckMediaNode) mGirdAdapter.getItem(position);
-            CardManager.getInstance().action(position, truck, getActivity());
-
-        }
+        TruckMediaProtos.CTruckMediaNode truck = (TruckMediaProtos.CTruckMediaNode) mGirdAdapter.getItem(position);
+        CardManager.getInstance().action(position, truck, getActivity(),null);
     }
 
     @Override
@@ -256,7 +241,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             TruckMediaProtos.CTruckMediaNode truckMediaNode = mAdsNodes.get(position);
             NLog.d(TAG,"myBannerLisenter:"+position);
             if (truckMediaNode != null) {
-                CardManager.getInstance().action(position, truckMediaNode,getActivity());
+                CardManager.getInstance().action(position, truckMediaNode,getActivity(),null);
             }
         }
     }

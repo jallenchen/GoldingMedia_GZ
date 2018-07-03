@@ -140,6 +140,7 @@ public class WindowAdsPlayActivity extends BaseActivity implements HandlerUtils.
 			mFidList.add((TruckMediaProtos.CTruckMediaNode) mIntent.getSerializableExtra("truck"));
 		} else {
 			mFidList = GDApplication.getmInstance().getTruckMedia().getcAds().getWindowOrientTrucksMap(mOrient);
+			//mPosition = Utils.truckIndex2Pos(mFidList,mPosition);
 		}
 
 		setContentView(R.layout.activity_window_ads_play);

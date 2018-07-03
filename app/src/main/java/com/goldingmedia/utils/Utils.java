@@ -1016,4 +1016,18 @@ public class Utils {
         return max;
     }
 
+    public static int truckIndex2Pos(List<TruckMediaProtos.CTruckMediaNode> trucks, String  filename){
+        int pos = 0;
+        if (filename == null || trucks == null || trucks.size() == 0 ) return pos;
+        for(int i = 0;i< trucks.size();i++){
+            if(trucks.get(i).getMediaInfo().getTruckMeta().getTruckFilename().equals(filename)){
+                pos = i;
+                break;
+            }
+        }
+
+
+        return pos;
+    }
+
 }

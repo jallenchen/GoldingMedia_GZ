@@ -275,7 +275,7 @@ public class ReadBookActivity extends BaseActivity implements HandlerUtils.OnRec
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
 
             if (truckMediaNode != null) {
-                CardManager.getInstance().action(position, truckMediaNode,ReadBookActivity.this);
+                CardManager.getInstance().action(position, truckMediaNode,ReadBookActivity.this,null);
             }
         }
     }

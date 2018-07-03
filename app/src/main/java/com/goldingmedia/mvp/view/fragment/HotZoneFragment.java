@@ -81,7 +81,7 @@ public class HotZoneFragment extends BaseFragment{
             TruckMediaProtos.CTruckMediaNode truckMediaNode =  mTruckMapNodes.get(nBannerNum).get(position);
 
             if (truckMediaNode != null) {
-                CardManager.getInstance().action(position, truckMediaNode, getActivity());
+                CardManager.getInstance().action(position, truckMediaNode, getActivity(),null);
             }
         }
     }

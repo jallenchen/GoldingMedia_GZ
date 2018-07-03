@@ -414,7 +414,6 @@ public class DataSQLHelper {
         return truckMediaNodes;
     }
 
-
     public List<TruckMediaProtos.CTruckMediaNode> getMediaMetaDataList(String tabName,int subId){
         List<TruckMediaProtos.CTruckMediaNode> truckMediaNodes = new ArrayList<>();
         String sql;

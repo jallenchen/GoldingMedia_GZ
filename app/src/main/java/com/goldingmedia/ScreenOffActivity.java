@@ -45,7 +45,7 @@ public class ScreenOffActivity extends BaseActivity {
                 TruckMediaProtos.CTruckMediaNode truckMediaNode =  nodes.get(position);
 
                 if (truckMediaNode != null) {
-                    CardManager.getInstance().action(position, truckMediaNode,ScreenOffActivity.this);
+                    CardManager.getInstance().action(position, truckMediaNode,ScreenOffActivity.this,null);
                 }
             }
         });

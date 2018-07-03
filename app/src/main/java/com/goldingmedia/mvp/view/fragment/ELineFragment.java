@@ -75,7 +75,7 @@ public class ELineFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TruckMediaProtos.CTruckMediaNode truck = (TruckMediaProtos.CTruckMediaNode) mGirdAdapter.getItem(position);
-        CardManager.getInstance().action(position, truck, getActivity());
+        CardManager.getInstance().action(position, truck, getActivity(),null);
     }
 
     @Override

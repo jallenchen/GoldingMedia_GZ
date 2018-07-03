@@ -28,7 +28,7 @@ public class CardManager {
 		return mCardManager;
 	}
 	
-	public void action(int position, TruckMediaProtos.CTruckMediaNode truck, Context context) {
+	public void action(int position, TruckMediaProtos.CTruckMediaNode truck, Context context,String  filename) {
 		Intent intent;
 		NLog.d("Cardmanager","---action:"+context.toString());
 		try {
@@ -45,6 +45,7 @@ public class CardManager {
                 intent.putExtra(StatusItem.classId, truck.getMediaInfo().getCategoryId());
                 intent.putExtra(StatusItem.classSubId, truck.getMediaInfo().getCategorySubId());
                 intent.putExtra(StatusItem.classMainId, truck.getMediaInfo().getTruckMeta().getTruckMediaType());
+                intent.putExtra("filename2pos", filename);
                 context.startActivity(intent);
 
                 break;
@@ -55,6 +56,7 @@ public class CardManager {
                     intent = new Intent(context, MediaPlayActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(StatusItem.classMainId, truck.getMediaInfo().getTruckMeta().getTruckMediaType());
+                    intent.putExtra("filename2pos", filename);
                     startActivity(position, truck, context, intent);
                     break;
 
@@ -62,6 +64,7 @@ public class CardManager {
                     intent = new Intent(context, PreviewPlayActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(StatusItem.classMainId, truck.getMediaInfo().getTruckMeta().getTruckMediaType());
+                    intent.putExtra("filename2pos", filename);
                     startActivity(position, truck, context, intent);
                     break;
                 }
@@ -73,6 +76,7 @@ public class CardManager {
                         intent = new Intent(context, MediaPlayActivity.class);
                         //intent = new Intent(context, WebActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("filename2pos", filename);
                         startActivity(position, truck, context, intent);
                         break;
 
@@ -122,6 +126,7 @@ public class CardManager {
                             return;
                         }
                         intent = new Intent(context, SettingActivity.class);
+                        intent.putExtra("filename2pos", filename);
                         startActivity(position, truck, context, intent);
                         break;
 
@@ -148,7 +153,7 @@ public class CardManager {
                         int index = actionTruck.getMediaInfo().getTruckMeta().getTruckIndex();
                         NLog.e("CardManager","action TruckIndex:"+index);
                         //index change to list pos
-                        action(index-1,actionTruck,context);
+                        action(index,actionTruck,context,actionFilename);
                     }else if(action == Contant.ADS_ACTION_VIDEO){
                         intent = new Intent(context, WindowAdsPlayActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
